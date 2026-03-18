@@ -1,0 +1,71 @@
+nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav > ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+nav li {
+	position: relative;
+}
+
+nav a {
+	display: block;
+	padding: 0.55rem 0.9rem;
+	border-radius: 0.55rem;
+	text-decoration: none;
+	color: var(--culoare-primara);
+	background: linear-gradient(180deg, #f7fbff 0%, #e9f2ff 100%);
+	border: 1px solid var(--culoare-bordura);
+	font-weight: 600;
+	box-shadow: 0 0.12rem 0.3rem rgb(29 53 87 / 10%);
+	transition: background-color 160ms ease, transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+nav a:hover {
+	background: #dcecff;
+	border-color: #9fc5e1;
+	box-shadow: 0 0.2rem 0.5rem rgb(29 53 87 / 16%);
+	transform: translateY(-1px);
+}
+
+nav a:focus-visible {
+	outline: 2px solid var(--culoare-accent-2);
+	outline-offset: 2px;
+}
+
+nav li ul {
+	position: absolute;
+	top: calc(100% + 0.25rem);
+	left: 0;
+	min-width: 12rem;
+	display: none;
+	z-index: 10;
+	background: #ffffff;
+	padding: 0.35rem;
+	border-radius: 0.55rem;
+	border: 1px solid var(--culoare-bordura);
+	box-shadow: 0 0.7rem 1.15rem rgb(15 23 42 / 15%);
+}
+
+nav li:hover > ul,
+nav li:focus-within > ul {
+	display: grid;
+	gap: 0.25rem;
+}
+
+@media screen and (max-width: 760px) {
+	nav > ul {
+		flex-direction: column;
+	}
+
+	nav li ul {
+		position: static;
+		margin-top: 0.25rem;
+	}
+}

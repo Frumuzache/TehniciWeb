@@ -11,12 +11,20 @@
   <title>Magazin de piese de robotica</title>
   <meta name="msapplication-TileColor" content="#1a1a1a">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link rel="icon" href="resurse/ico/favicon.ico?v=2" sizes="any">
   <link rel="icon" type="image/png" href="resurse/ico/favicon-96x96.png?v=2" sizes="96x96">
   <link rel="apple-touch-icon" sizes="180x180" href="resurse/ico/apple-touch-icon.png?v=2">
   <link rel="manifest" href="resurse/ico/site.webmanifest?v=2">
+  <!-- BONUS ETAPA 2 (reset css): resetarea stilurilor este în fișier separat -->
+  <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/general.css" type="text/css" />
+  <link rel="stylesheet" href="./resurse/css/nav.css" type="text/css" />
 
 </head>
 
@@ -24,7 +32,11 @@
 
 
   <header>
-    <h1>Magazin de piese de robotica</h1>
+    <h1>
+      <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+      Magazin de piese de robotica
+      <i class="fa-solid fa-gear fa-spin-pulse" aria-hidden="true"></i>
+    </h1>
     <img src="./resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Placă Arduino Uno" />
     <nav>
       <ul>
@@ -173,54 +185,55 @@
 
       <section id="orar">
         <h2>Stoc orientativ</h2>
-        <table id="tab-orar">
-          <caption>Disponibilitate componente (actualizare zilnică)</caption>
-          <thead>
-
-            <tr>
-              <th>Cod</th>
-              <th>Produs</th>
-              <th>Categorie</th>
-              <th>Stoc</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>R01</td>
-              <td rowspan="2">Arduino Uno R3</td>
-              <td>Placă de dezvoltare</td>
-              <td>24</td>
-            </tr>
-            <tr>
-              <td>R02</td>
-              <td>Placă de dezvoltare</td>
-              <td>18</td>
-            </tr>
-            <tr>
-              <td>R03</td>
-              <td>Raspberry Pi 5</td>
-              <td>Single-board computer</td>
-              <td>12</td>
-            </tr>
-            <tr>
-              <td>R04</td>
-              <td>Senzor de temperatură</td>
-              <td>Senzori</td>
-              <td>40</td>
-            </tr>
-            <tr>
-              <td>R05</td>
-              <td>Servomotor SG90</td>
-              <td>Actuatoare</td>
-              <td>35</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4">Stoc total afișat: 129 bucăți.</td>
-            </tr>
-          </tfoot>
-        </table>
+        <div class="table-scroll">
+          <table id="tab-orar">
+            <caption>Disponibilitate componente (actualizare zilnică)</caption>
+            <thead>
+              <tr>
+                <th>Cod</th>
+                <th>Produs</th>
+                <th>Categorie</th>
+                <th>Stoc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R01</td>
+                <td rowspan="2">Arduino Uno R3</td>
+                <td>Placă de dezvoltare</td>
+                <td>24</td>
+              </tr>
+              <tr>
+                <td>R02</td>
+                <td>Placă de dezvoltare</td>
+                <td>18</td>
+              </tr>
+              <tr>
+                <td>R03</td>
+                <td>Raspberry Pi 5</td>
+                <td>Single-board computer</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td>R04</td>
+                <td>Senzor de temperatură</td>
+                <td>Senzori</td>
+                <td>40</td>
+              </tr>
+              <tr>
+                <td>R05</td>
+                <td>Servomotor SG90</td>
+                <td>Actuatoare</td>
+                <td>35</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">Stoc total afișat: 129 bucăți.</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
         <p><strong>Atenție!</strong> Datele sunt orientative și pot varia pe parcursul zilei.</p>
       </section>
 
@@ -235,6 +248,22 @@
         <h2 class="fg-img">Anunțuri</h2>
         <p><time datetime="2026-03-08">8 martie 2026</time> A sosit lot nou de module infrarosu și senzori digitali.</p>
         <p><time datetime="2026-03-01">1 martie 2026</time> Program extins pentru ateliere de robotică.</p>
+      </section>
+
+      <section id="utilizatori-online">
+        <h2>Utilizatori online</h2>
+        <ul>
+          <li>alex.robotics</li>
+          <li>team_pi_lab</li>
+          <li>maker_hub</li>
+          <li>arduino_kids</li>
+        </ul>
+      </section>
+
+      <section id="date-server">
+        <h2>Date site și server</h2>
+        <p>Uptime server: 99.98% (ultimele 30 zile).</p>
+        <p>Ultima sincronizare stoc: acum 5 minute.</p>
       </section>
 
       <section id="index-intrebari">
@@ -311,7 +340,7 @@
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </section>
 
-    <!-- BONUS 1 (0.05-0.2 pct): Formulă matematică în MathML - liniile 313-323 -->
+    <!-- BONUS ETAPA 2 (MathML): formula este în această secțiune; stilizarea este în general.css la #mathml-formula -->
     <section id="mathml-formula">
       <h2>Formula utilă în robotică (MathML)</h2>
       <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -328,9 +357,9 @@
     <!-- BONUS 2 (0.05 pct): Afișare PDF cu <object> - liniile 326-332 -->
     <section id="pdf-catalog">
       <h2>Fișier PDF prezentat în pagină</h2>
-      <object data="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" type="application/pdf" width="800" height="400" style="max-width:100%;">
+      <object data="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" type="application/pdf" width="800" height="400" style="max-width:100%;">
         <p>Browserul nu poate afișa PDF-ul. Folosește linkul direct:
-          <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" target="_blank" rel="noopener noreferrer">deschide PDF</a>.</p>
+          <a href="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" target="_blank" rel="noopener noreferrer">deschide PDF</a>.</p>
       </object>
       <p>
         <a href="./resurse/ico/site.webmanifest" download="catalog-componente-robotica.webmanifest">Descarcă fișierul de configurare (download cu redenumire)</a>
@@ -339,6 +368,13 @@
 
 
   </main>
+
+  <a id="link-top" href="#inceput-pagina" title="Mergi la începutul paginii">
+    <span class="simbol-top" aria-hidden="true">
+      <span id="triunghi"></span>
+    </span>
+    <span class="text-link-top">text explicativ</span>
+  </a>
 
 
   <footer id="contact">
