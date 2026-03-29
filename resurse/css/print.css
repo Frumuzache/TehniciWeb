@@ -1,0 +1,105 @@
+@media print {
+    /* 1. Bannerul din josul primei pagini */
+    #banner-print {
+        display: block !important;
+        position: absolute;
+        bottom: 1.2cm;
+        left: 15%;
+        width: 70%;
+        border: 4px inset black;
+        text-align: center;
+        padding: 0.35cm;
+        font-weight: bold;
+        background: white;
+        z-index: 1000;
+    }
+
+    #css-printare {
+        display: block !important;
+        font-weight: 700;
+    }
+
+    /* 2. Ascundere elemente media și "back to top" */
+    img, video, iframe, object, picture, figure, figcaption, #link-top, 
+    .container-iframe, #galerie-statica, #pdf-catalog, #playlist-auto {
+        display: none !important;
+    }
+
+    /* 3. Grid-ul paginii redat ca bloc (evită spargerea secțiunilor) */
+    #grid-pagina {
+        display: block !important;
+    }
+    #grid-pagina > * {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        margin-bottom: 10px;
+    }
+
+    /* 4. Link-uri resetate */
+    a {
+        color: black !important;
+        text-decoration: none !important;
+    }
+
+    /* 5. Heading 1 centrat, meniu ca listă neordonată și Page Breaks */
+    h1 {
+        text-align: center !important;
+    }
+    nav ul {
+        display: block !important;
+        list-style-type: disc;
+        padding-left: 1.5cm;
+    }
+    nav > ul > li {
+        display: list-item !important;
+    }
+    nav li ul {
+        display: none !important; /* ascundem subopțiunile */
+    }
+    nav i {
+        display: none !important;
+    }
+    nav {
+        page-break-after: always;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    footer {
+        page-break-before: always;
+    }
+
+    /* 6. Watermark-ul recurent fixat în dreapta jos */
+    body::after {
+        content: "Frumuzache\AAlexandru-Marian";
+        white-space: pre; /* Permite trecerea pe linia a doua cu \A */
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 4cm;
+        height: 1cm;
+        border: 3px solid black;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        opacity: 0.4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        background: white;
+    }
+
+    /* 7. Margini left/right asimetrice (alternativ par/impar) */
+    @page :left {
+        margin-left: 3cm;
+        margin-right: 1cm;
+    }
+    @page :right {
+        margin-left: 1cm;
+        margin-right: 3cm;
+    }
+}

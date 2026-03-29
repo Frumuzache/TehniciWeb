@@ -1,0 +1,29 @@
+{
+  "name": "tw---magazin-de-piese-de-robotica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frumuzache/TehniciWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Frumuzache/TehniciWeb/issues"
+  },
+  "homepage": "https://github.com/Frumuzache/TehniciWeb#readme",
+  "dependencies": {
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "sass": "^1.98.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/general.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/nav.css" type="text/css" />
+  <link rel="stylesheet" href="./resurse/css/print.css" type="text/css" media="print" />
 
 </head>
 
@@ -39,23 +40,38 @@
     </h1>
     <img src="./resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Placă Arduino Uno" />
     <nav>
+      <div id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
       <ul>
         <li>
-          <a href="index.html">Acasă</a>
+          <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span class="meniu-text">Acasă</span>
+          </a>
           <ul>
             <li><a href="#welcome">Prezentare</a></li>
             <li><a href="#evenimente">Evenimente</a></li>
           </ul>
         </li>
         <li>
-          <a href="#produse">Catalog</a>
+          <a href="#produse">
+            <i class="fa-solid fa-book-open"></i>
+            <span class="meniu-text">Catalog</span>
+          </a>
           <ul>
-            <li><a href="#promotii">Promoții</a></li>
-            <li><a href="#orar">Stoc și program</a></li>
+            <li><a href="galerie.html">Galerie statică</a></li>
+            <li><a href="galerie-dinamica.html">Galerie dinamică</a></li>
           </ul>
         </li>
         <li>
-          <a href="#contact">Contact</a>
+          <a href="#contact">
+            <i class="fa-solid fa-envelope"></i>
+            <span class="meniu-text">Contact</span>
+          </a>
           <ul>
             <li><a href="#index-intrebari">Întrebări frecvente</a></li>
             <li><a href="#resurse-video">Video</a></li>
@@ -75,15 +91,19 @@
           <p class="subtitlu">Componente pentru robotică educațională și hobby</p>
         </hgroup>
 
-        <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>, <b>servomotor</b>,
+        <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>,
+          <b>servomotor</b>,
           <b>senzor</b>, <b>Arduino</b> și <b>Raspberry Pi</b>. Oferim inclusiv <b>placă de dezvoltare</b> și module
-          cu <b>infrarosu</b>.</p>
+          cu <b>infrarosu</b>.
+        </p>
         <p>Avem <em>"super-ieftin"</em> doar la produsele marcate, iar la comenzile urgente livrăm <i>ca la carte</i> și
-          <i>cu noaptea în cap</i>.</p>
+          <i>cu noaptea în cap</i>.
+        </p>
         <p><strong>Anunț urgent:</strong> lotul nou de <dfn>senzor de distanță</dfn> și <dfn>senzor de temperatură</dfn>
           este disponibil în stoc limitat.</p>
         <p>Recomandăm lectura <cite>Getting Started with Arduino</cite> și citatul clasic
-          <q>measure twice, cut once</q> pentru orice proiect hardware.</p>
+          <q>measure twice, cut once</q> pentru orice proiect hardware.
+        </p>
         <p>Protocolul standard folosit la module este <abbr title="Inter-Integrated Circuit">I2C</abbr>.</p>
         <p>Pachet firmware vechi <s>v1.2</s> <ins>v1.3</ins>.</p>
 
@@ -95,9 +115,11 @@
           <div>Servomotoare</div>
         </div>
         <p class="anunt intro">Pentru specificații complete vezi documentația externă
-          <a href="https://www.arduino.cc/en/Guide/Introduction" target="_blank" rel="noopener noreferrer">Arduino Guide</a>
+          <a href="https://www.arduino.cc/en/Guide/Introduction" target="_blank" rel="noopener noreferrer">Arduino
+            Guide</a>
           și secțiunea
-          <a href="https://en.wikipedia.org/wiki/Raspberry_Pi#Model_B" target="_blank" rel="noopener noreferrer">Wikipedia Raspberry<wbr>_Pi #Model_B</a>.
+          <a href="https://en.wikipedia.org/wiki/Raspberry_Pi#Model_B" target="_blank"
+            rel="noopener noreferrer">Wikipedia Raspberry<wbr>_Pi #Model_B</a>.
         </p>
         <div id="dv-prezentare-1">
           <div id="dv-prezentare">
@@ -105,7 +127,8 @@
               <picture>
                 <source srcset="./resurse/imagini/Arduino_Uno_-_R3.jpg" media="(max-width:700px)" />
                 <source srcset="./resurse/imagini/raspberry-pi-5-8gb.jpg" media="(max-width:1200px)" />
-                <img src="./resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice" title="Componente de robotică" />
+                <img src="./resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
+                  title="Componente de robotică" />
               </picture>
               <figcaption>Kit demo cu placă de dezvoltare, module cu infrarosu și senzori digitali.</figcaption>
             </figure>
@@ -177,9 +200,12 @@
       <section id="evenimente">
         <h2>Evenimente</h2>
         <ul>
-          <li><time datetime="2026-03-15">15 martie 2026</time> — <b>Atelier Arduino</b>: introducere în conectarea unui servomotor.</li>
-          <li><time datetime="2026-03-22">22 martie 2026</time> — <b>Demo senzori</b>: citire date de la senzor de temperatură și distanță.</li>
-          <li><time datetime="2026-03-29">29 martie 2026</time> — <b>Hackday robotică</b>: construcție mini-robot pe Raspberry Pi.</li>
+          <li><time datetime="2026-03-15">15 martie 2026</time> — <b>Atelier Arduino</b>: introducere în conectarea unui
+            servomotor.</li>
+          <li><time datetime="2026-03-22">22 martie 2026</time> — <b>Demo senzori</b>: citire date de la senzor de
+            temperatură și distanță.</li>
+          <li><time datetime="2026-03-29">29 martie 2026</time> — <b>Hackday robotică</b>: construcție mini-robot pe
+            Raspberry Pi.</li>
         </ul>
       </section>
 
@@ -301,10 +327,12 @@
     <!-- BONUS 3 (0.2-0.3 pct): Hartă de imagini cu <map> și <area> - liniile 273-285 -->
     <section id="galerie-statica">
       <h2>Hartă imagine componente</h2>
-      <img src="resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320" height="200">
+      <img src="resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320"
+        height="200">
       <map name="rpi-map">
-        <area shape="rect" coords="20,30,180,120" alt="Procesor și memorie" href="https://www.raspberrypi.com/products/raspberry-pi-5/"
-          title="Detalii procesor, RAM și performanță" target="_blank" rel="noopener noreferrer">
+        <area shape="rect" coords="20,30,180,120" alt="Procesor și memorie"
+          href="https://www.raspberrypi.com/products/raspberry-pi-5/" title="Detalii procesor, RAM și performanță"
+          target="_blank" rel="noopener noreferrer">
 
         <area shape="circle" coords="245,80,35" alt="Conectori GPIO" href="#produse"
           title="Mergi la secțiunea cu plăci și module compatibile">
@@ -323,8 +351,8 @@
           <a href="https://www.youtube.com/embed/kqtD5dpn9C8" target="ifr-video">Alt clip 1</a>
           <a href="https://www.youtube.com/embed/PkZNo7MFNFg" target="ifr-video">Alt clip 2</a><br />
         </div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/rfscVS0vtbw"
-          name="ifr-video" title="YouTube video player"
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rfscVS0vtbw" name="ifr-video"
+          title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
@@ -357,12 +385,16 @@
     <!-- BONUS 2 (0.05 pct): Afișare PDF cu <object> - liniile 326-332 -->
     <section id="pdf-catalog">
       <h2>Fișier PDF prezentat în pagină</h2>
-      <object data="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" type="application/pdf" width="800" height="400" style="max-width:100%;">
+      <object data="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" type="application/pdf"
+        width="800" height="400" style="max-width:100%;">
         <p>Browserul nu poate afișa PDF-ul. Folosește linkul direct:
-          <a href="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" target="_blank" rel="noopener noreferrer">deschide PDF</a>.</p>
+          <a href="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf" target="_blank"
+            rel="noopener noreferrer">deschide PDF</a>.
+        </p>
       </object>
       <p>
-        <a href="./resurse/ico/site.webmanifest" download="catalog-componente-robotica.webmanifest">Descarcă fișierul de configurare (download cu redenumire)</a>
+        <a href="./resurse/ico/site.webmanifest" download="catalog-componente-robotica.webmanifest">Descarcă fișierul de
+          configurare (download cu redenumire)</a>
       </p>
     </section>
 
@@ -383,7 +415,8 @@
       Adresă: Str. Exemplu nr. 10,<br>
       Corp C, etaj 2, București,<br>
       România —
-      <a href="https://www.google.com/maps?q=Facultatea+de+Matematica+si+Informatica+Universitatea+din+Bucuresti" target="_blank" rel="noopener noreferrer">deschide în Google Maps</a><br>
+      <a href="https://www.google.com/maps?q=Facultatea+de+Matematica+si+Informatica+Universitatea+din+Bucuresti"
+        target="_blank" rel="noopener noreferrer">deschide în Google Maps</a><br>
       E-mail: <a href="mailto:contact@robotica-exemplu.ro">contact@robotica-exemplu.ro</a><br>
       Chat: <a href="https://wa.me/40111222333" target="_blank" rel="noopener noreferrer">WhatsApp</a>
     </address>
@@ -391,13 +424,16 @@
     <!-- BONUS 4 (0.05 pct): Iframe Google Maps în footer la adresă - liniile 354-357 -->
     <iframe
       src="https://www.google.com/maps?q=Facultatea+de+Matematica+si+Informatica+Universitatea+din+Bucuresti&amp;output=embed"
-      width="600" height="250" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-      title="Harta locației"></iframe>
+      width="600" height="250" style="border:0;" allowfullscreen loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade" title="Harta locației"></iframe>
 
     <p><a href="#inceput-pagina">Înapoi la începutul paginii</a></p>
+    <p id="css-printare">Acesta este un proiect școlar!</p>
     <p><small>&copy; Frumuzache Alexandru-Marian
         <time datetime="2026-03-08">8 martie 2026</time></small></p>
   </footer>
+
+  <div id="banner-print">Acesta este un proiect școlar!</div>
 
 
 </body>
