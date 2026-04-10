@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie dinamică</title>
+  <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css">
+  <link rel="stylesheet" href="./resurse/css/general.css" type="text/css">
+  <style>
+    .galerie-dinamica {
+      max-width: 720px;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    .galerie-dinamica img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 0.8rem;
+    }
+
+    .meta {
+      margin-top: 0.6rem;
+      font-weight: 600;
+      color: var(--culoare-primara);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Galerie dinamică</h1>
+    <p><a href="index.html">Înapoi la pagina principală</a></p>
+  </header>
+
+  <main>
+    <section class="galerie-dinamica">
+      <h2>Rulare automată imagini</h2>
+      <img id="img-galerie" src="./resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Imagine galerie">
+      <p id="meta-galerie" class="meta">Arduino Uno R3</p>
+    </section>
+  </main>
+
+  <script>
+    const imagini = [
+      {
+        src: "./resurse/imagini/Arduino_Uno_-_R3.jpg",
+        text: "Arduino Uno R3"
+      },
+      {
+        src: "./resurse/imagini/raspberry-pi-5-8gb.jpg",
+        text: "Raspberry Pi 5"
+      },
+      {
+        src: "./resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg",
+        text: "Kit componente robotice"
+      }
+    ];
+
+    let indexCurent = 0;
+    const imgGalerie = document.getElementById("img-galerie");
+    const metaGalerie = document.getElementById("meta-galerie");
+
+    setInterval(() => {
+      indexCurent = (indexCurent + 1) % imagini.length;
+      imgGalerie.src = imagini[indexCurent].src;
+      imgGalerie.alt = imagini[indexCurent].text;
+      metaGalerie.textContent = imagini[indexCurent].text;
+    }, 3000);
+  </script>
+</body>
+
+</html>

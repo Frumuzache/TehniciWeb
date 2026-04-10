@@ -23,6 +23,14 @@ for (const folder of vectFoldere) {
     }
 }
 
+function caleWeb(...segmente) {
+    return segmente.join("/").replace(/\\/g, "/").replace(/\/+/g, "/");
+}
+
+app.get(["/resurse", "/resurse/"], (req, res) => {
+    afisareEroare(res, 403);
+});
+
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
 app.use(express.static(__dirname));
 
@@ -32,10 +40,10 @@ function initErori() {
     obGlobal.obErori = erori;
 
     const errDefault = erori.eroare_default;
-    errDefault.imagine = path.join(erori.cale_baza, errDefault.imagine);
+    errDefault.imagine = caleWeb(erori.cale_baza, errDefault.imagine);
 
     for (const eroare of erori.info_erori) {
-        eroare.imagine = path.join(erori.cale_baza, eroare.imagine);
+        eroare.imagine = caleWeb(erori.cale_baza, eroare.imagine);
     }
 }
 
@@ -49,6 +57,7 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
     };
 
     const statusCode = eroare?.identificator || errDefault.identificator || 500;
+    const imagineFinala = imagine || eroare?.imagine || errDefault.imagine;
     res.status(statusCode).send(`
         <!doctype html>
         <html lang="ro">
@@ -56,7 +65,7 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
         <body style="font-family: Arial, sans-serif; margin: 2rem;">
             <h1>${titlu || eroare?.titlu || errDefault.titlu}</h1>
             <p>${text || eroare?.text || errDefault.text}</p>
-            ${imagine || eroare?.imagine || errDefault.imagine ? `<p><small>Imagine: ${imagine || eroare?.imagine || errDefault.imagine}</small></p>` : ""}
+            ${imagineFinala ? `<img src="${imagineFinala}" alt="Imagine eroare" style="max-width: 360px; width: 100%; height: auto; border-radius: 8px; border: 1px solid #ddd;">` : ""}
         </body>
         </html>
     `);

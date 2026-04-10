@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie statică</title>
+  <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css">
+  <link rel="stylesheet" href="./resurse/css/general.css" type="text/css">
+  <style>
+    .galerie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .galerie-grid figure {
+      margin: 0;
+      padding: 0.8rem;
+      border: 1px solid var(--culoare-bordura);
+      border-radius: 0.8rem;
+      background: #fff;
+    }
+
+    .galerie-grid img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+
+<body id="inceput-pagina">
+  <header>
+    <h1>Galerie statică</h1>
+    <p><a href="index.html">Înapoi la pagina principală</a></p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Imagini componente robotice</h2>
+      <div class="galerie-grid">
+        <figure>
+          <img src="./resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Arduino Uno R3">
+          <figcaption>Placă Arduino Uno R3</figcaption>
+        </figure>
+        <figure>
+          <img src="./resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Raspberry Pi 5">
+          <figcaption>Raspberry Pi 5</figcaption>
+        </figure>
+        <figure>
+          <img src="./resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Kit componente robotice">
+          <figcaption>Kit pentru prototipare</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>
