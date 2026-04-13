@@ -182,3 +182,5 @@ function pornesteServer(portCurent, incercare = 0) {
 }
 
 pornesteServer(PORT_BAZA);
+
+// Test comentariu commit pls work
