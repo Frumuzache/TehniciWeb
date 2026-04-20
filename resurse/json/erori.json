@@ -1,8 +1,6 @@
 {
-  "cale_baza": "/resurse/imagini",
+  "cale_baza": "resurse/imagini",
   "eroare_default": {
-    "identificator": 500,
-    "status": true,
     "titlu": "Eroare internă",
     "text": "A apărut o eroare neașteptată.",
     "imagine": "res_fb47bfb4982cbc24bcd5345d38943297.jpg"
@@ -12,21 +10,21 @@
       "identificator": 400,
       "status": true,
       "titlu": "Cerere invalidă",
-      "text": "Cererea nu este validă.",
+      "text": "Cererea nu este validă. Vă rugăm să verificați adresa și să încercați din nou.",
       "imagine": "Arduino_Uno_-_R3.jpg"
     },
     {
       "identificator": 403,
       "status": true,
       "titlu": "Acces interzis",
-      "text": "Nu ai permisiunea să accesezi această resursă.",
+      "text": "Nu aveți permisiunea să accesați această resursă.",
       "imagine": "raspberry-pi-5-8gb.jpg"
     },
     {
       "identificator": 404,
       "status": true,
       "titlu": "Pagina nu a fost găsită",
-      "text": "Resursa cerută nu există.",
+      "text": "Resursa cerută nu există. Vă rugăm să verificați adresa și să încercați din nou.",
       "imagine": "res_fb47bfb4982cbc24bcd5345d38943297.jpg"
     }
   ]

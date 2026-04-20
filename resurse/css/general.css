@@ -84,9 +84,11 @@ header h1 i {
 
 #grid-pagina {
     display: grid;
+    grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
         "z1 z1 z1 z1"
-        "z2 z2 z3 z4"
+        "z2 z2 z3 z3"
+        "z2 z2 z4 z4"
         "z5 z6 z6 z7"
         "z8 z8 z8 z8";
     gap: var(--gap-grid);
@@ -101,7 +103,7 @@ header h1 i {
     background: linear-gradient(180deg, rgb(255 255 255 / 96%) 0%, rgb(255 255 255 / 90%) 100%);
     box-shadow: var(--umbra-zona);
     min-width: 0;
-    grid-area: z8;
+    overflow: hidden;
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
@@ -118,7 +120,8 @@ header h1 i {
         linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
 }
 
-#orar {
+#orar,
+#promotii {
     grid-area: z2;
 }
 
@@ -150,7 +153,7 @@ header h1 i {
 #fig1,
 #produse,
 #index-intrebari {
-    grid-area: z8;
+    grid-column: 1 / -1;
 }
 
 h2,
@@ -180,15 +183,91 @@ dl {
     margin: 0.35rem 0 0.6rem;
 }
 
+/* IDENTIFICATOR: stilizare-linkuri */
+
 a {
     color: var(--culoare-primara);
     text-underline-offset: 0.18rem;
     text-decoration-thickness: 0.08rem;
-    transition: color 160ms ease;
+    transition: color 200ms ease;
+    --link-hover-color: rgb(212 160 23 / 25%);
 }
 
-a:hover {
-    color: #153861;
+/* Linkuri vizitate - culoare diferita din schema cromatica */
+a:visited {
+    color: var(--culoare-secundara);
+}
+
+/* Linkuri externe - pseudoelement cu simbol */
+a[href^="http"]::before {
+    content: "⮳";
+    display: inline-block;
+    margin-right: 0.25rem;
+    font-size: 1.5em;
+    color: var(--culoare-accent);
+    transition: color 200ms ease;
+}
+
+/* Hover pe linkuri externe - simbol schimba culoare */
+a[href^="http"]:hover::before {
+    color: var(--culoare-secundara);
+}
+
+/* Linkuri din main - efectul cu pata de culoare radial gradient */
+main p a:not([href^="http"]),
+main article a:not([href^="http"]),
+main figure a:not([href^="http"]),
+main blockquote a:not([href^="http"]) {
+    --link-gradient: radial-gradient(
+        circle,
+        var(--link-hover-color) 0%,
+        var(--link-hover-color) 40%,
+        transparent 80%,
+        transparent 100%
+    );
+    background-image: var(--link-gradient);
+    background-size: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-size 300ms ease, color 200ms ease;
+    position: relative;
+    border-radius: 0.3rem;
+}
+
+/* Hover pe linkuri din main - pata creste din centru */
+main p a:not([href^="http"]):hover,
+main article a:not([href^="http"]):hover,
+main figure a:not([href^="http"]):hover,
+main blockquote a:not([href^="http"]):hover {
+    background-size: 100%;
+    color: var(--culoare-primara);
+}
+
+/* Active state - border in jurul linkului */
+main p a:not([href^="http"]):active,
+main article a:not([href^="http"]):active,
+main figure a:not([href^="http"]):active,
+main blockquote a:not([href^="http"]):active {
+    border: 2px solid var(--culoare-accent);
+    outline: none;
+    padding: 0.1rem 0.3rem;
+}
+
+/* Hover pe linkuri externe din main */
+main p a[href^="http"]:hover,
+main article a[href^="http"]:hover,
+main figure a[href^="http"]:hover,
+main blockquote a[href^="http"]:hover {
+    color: var(--culoare-secundara);
+}
+
+/* Active pe linkuri externe */
+main p a[href^="http"]:active,
+main article a[href^="http"]:active,
+main figure a[href^="http"]:active,
+main blockquote a[href^="http"]:active {
+    border: 2px solid var(--culoare-accent);
+    outline: none;
 }
 
 a:focus-visible,
@@ -334,7 +413,7 @@ summary::-webkit-details-marker {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .taburi-iframe {
@@ -371,10 +450,13 @@ summary::-webkit-details-marker {
 }
 
 .container-iframe iframe {
+    display: block;
     width: min(100%, 43rem);
     min-width: 15rem;
     aspect-ratio: 16 / 9;
     height: auto;
+    margin-left: auto;
+    margin-right: auto;
     border: 0.3rem solid #ffffff;
     box-shadow: 0 0.7rem 1.2rem rgb(0 0 0 / 17%);
 }
@@ -388,8 +470,11 @@ footer address {
 }
 
 footer iframe {
+    display: block;
     width: min(100%, 50rem);
     min-width: 12rem;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 0.65rem;
 }
 
@@ -486,6 +571,7 @@ footer iframe {
     }
 
     #grid-pagina {
+        grid-template-columns: repeat(2, 1fr);
         grid-template-areas:
             "z1 z1"
             "z2 z3"
@@ -498,6 +584,136 @@ footer iframe {
         overflow-x: auto;
         padding-bottom: 0.3rem;
     }
+}
+
+/* ETAPA 4: Stiluri pentru produse dinamice */
+.produse-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.card-produs {
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 0.9rem;
+    padding: 1.5rem;
+    box-shadow: var(--umbra-zona);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+}
+
+.card-produs:hover {
+    box-shadow: var(--umbra-zona-hover);
+    transform: translateY(-4px);
+}
+
+.card-produs h3 {
+    color: var(--culoare-primara);
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.card-produs .categorie {
+    color: var(--culoare-secundara);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-produs .pret {
+    font-size: 1.3rem;
+    color: var(--culoare-accent);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.card-produs .stoc {
+    color: var(--culoare-text);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+.card-produs .descriere {
+    color: var(--culoare-text);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+}
+
+.badge-ieftin {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--culoare-accent), #f0c419);
+    color: #1a1a1a;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    box-shadow: 0 2px 8px rgb(212 160 23 / 30%);
+}
+
+/* CERINTA INDIVIDUALA 1: Stiluri pentru video cu subtitluri VTT */
+#video-component {
+    margin-left: var(--spatiere-laterala);
+    margin-right: var(--spatiere-laterala);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: var(--raza-zona);
+    padding: var(--padding-zona);
+    box-shadow: var(--umbra-zona);
+}
+
+#video-component h2 {
+    color: var(--culoare-primara);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 800px;
+    min-width: 300px;
+    margin: 0 auto 1rem;
+    background: #000;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    box-shadow: var(--umbra-zona);
+}
+
+.responsive-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    background-color: #000;
+    border-radius: 0.9rem;
+}
+
+/* Stilizare pentru textul subtitlurilor VTT */
+.responsive-video::cue {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--culoare-primara);
+    font-size: 1rem;
+    line-height: 1.4;
+    text-align: center;
+    padding: 0.4rem 0.8rem;
+}
+
+.responsive-video::cue(v[voice="narrator"]) {
+    text-align: center;
+}
+
+.video-description {
+    color: var(--culoare-text);
+    font-size: 0.95rem;
+    text-align: center;
+    font-style: italic;
+    margin-top: 1rem;
+    opacity: 0.85;
 }
 
 @media screen and (max-width: 760px) {
@@ -515,6 +731,7 @@ footer iframe {
     }
 
     #grid-pagina {
+        grid-template-columns: 1fr;
         grid-template-areas:
             "z1"
             "z2"
@@ -534,5 +751,10 @@ footer iframe {
 
     #grid-pagina > *:hover {
         transform: none;
+    }
+
+    .produse-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
     }
 }

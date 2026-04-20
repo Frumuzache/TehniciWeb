@@ -1,0 +1,84 @@
+{
+  "produse": [
+    {
+      "id": 1,
+      "cod": "R01",
+      "nume": "Arduino Uno R3",
+      "categorie": "Placă de dezvoltare",
+      "pret": 45.99,
+      "stoc": 24,
+      "descriere": "Placă de prototipare pentru proiecte Arduino cu microcontroler ATmega328P",
+      "ieftin": false
+    },
+    {
+      "id": 2,
+      "cod": "R02",
+      "nume": "Raspberry Pi 5",
+      "categorie": "Single-board computer",
+      "pret": 189.99,
+      "stoc": 12,
+      "descriere": "Calculator compact cu performanțe înalte pentru proiecte IoT și automatizare",
+      "ieftin": false
+    },
+    {
+      "id": 3,
+      "cod": "R03",
+      "nume": "Senzor de temperatură DS18B20",
+      "categorie": "Senzori",
+      "pret": 12.50,
+      "stoc": 40,
+      "descriere": "Senzor digital de temperatură cu interfață 1-Wire",
+      "ieftin": true
+    },
+    {
+      "id": 4,
+      "cod": "R04",
+      "nume": "Servomotor SG90",
+      "categorie": "Actuatoare",
+      "pret": 18.75,
+      "stoc": 35,
+      "descriere": "Servomotor compact perfect pentru robotica educațională",
+      "ieftin": false
+    },
+    {
+      "id": 5,
+      "cod": "R05",
+      "nume": "Senzor de distanță HC-SR04",
+      "categorie": "Senzori",
+      "pret": 22.00,
+      "stoc": 28,
+      "descriere": "Senzor ultrasonic pentru măsurarea distanțelor cu precizie înaltă",
+      "ieftin": true
+    },
+    {
+      "id": 6,
+      "cod": "R06",
+      "nume": "Motor DC 6V",
+      "categorie": "Motoare",
+      "pret": 15.50,
+      "stoc": 30,
+      "descriere": "Motor DC cu reducție și viteză controlabilă, ideal pentru roboți mobili",
+      "ieftin": false
+    },
+    {
+      "id": 7,
+      "cod": "R07",
+      "nume": "Module IR (Infrarosu)",
+      "categorie": "Module senzori",
+      "pret": 8.99,
+      "stoc": 50,
+      "descriere": "Set de module cu infrarosu pentru controlul de la distanță",
+      "ieftin": true
+    },
+    {
+      "id": 8,
+      "cod": "R08",
+      "nume": "Driver motor L298N",
+      "categorie": "Drivere motoare",
+      "pret": 25.00,
+      "stoc": 18,
+      "descriere": "Modul de control pentru motoare DC cu o putere de până la 25W",
+      "ieftin": false
+    }
+  ]
+}

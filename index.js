@@ -2,8 +2,11 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const sass = require("sass");
+const ejs = require("ejs");
 
 const app = express();
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 const obGlobal = {
     obErori: null,
@@ -32,7 +35,7 @@ app.get(["/resurse", "/resurse/"], (req, res) => {
 });
 
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, { index: false }));
 
 function initErori() {
     const continut = fs.readFileSync(path.join(__dirname, "resurse/json/erori.json"), "utf-8");
@@ -127,8 +130,24 @@ function compileazaToateScss() {
 initErori();
 compileazaToateScss();
 
+// Funcție pentru a citi și parsea JSON cu produsele
+function incarcaProduse() {
+    try {
+        const caleFisier = path.join(__dirname, "resurse/json/produse.json");
+        if (fs.existsSync(caleFisier)) {
+            const continut = fs.readFileSync(caleFisier, "utf-8");
+            const dateParsate = JSON.parse(continut);
+            return dateParsate.produse || [];
+        }
+    } catch (err) {
+        console.error("Eroare la încărcarea produselor:", err.message);
+    }
+    return [];
+}
+
 app.get(["/", "/index", "/home"], (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
+    const produse = incarcaProduse();
+    res.render("index", { produse });
 });
 
 app.get("/eroare", (req, res) => {
