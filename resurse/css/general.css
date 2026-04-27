@@ -39,8 +39,9 @@ body {
 }
 
 ::selection {
-    background: rgb(62 146 204 / 22%);
-    color: #0f172a;
+    background: color-mix(in srgb, var(--culoare-accent) 35%, transparent);
+    color: var(--culoare-primara);
+    text-shadow: 0 1px 0 rgb(15 23 42 / 18%);
 }
 
 main,
@@ -146,6 +147,7 @@ header h1 i {
 }
 
 #galerie-statica,
+#galerie-completa,
 #retete,
 #playlist-auto,
 #mathml-formula,
@@ -154,6 +156,79 @@ header h1 i {
 #produse,
 #index-intrebari {
     grid-column: 1 / -1;
+}
+
+/* Bonus CSS: gradient animat pe titluri */
+.titlu-animat {
+    background: linear-gradient(90deg, var(--culoare-primara), var(--culoare-accent), var(--culoare-accent-2));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: titluGradient 6s ease infinite;
+}
+
+@keyframes titluGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Bonus CSS: buton cu glow */
+.buton-glow {
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, var(--culoare-primara), var(--culoare-accent));
+    color: var(--culoare-text-invers);
+    font-weight: 700;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.buton-glow:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+/* Efect CSS: text pe coloane */
+.text-coloane {
+    column-count: 2;
+    column-gap: 2rem;
+    column-rule: 1px solid var(--culoare-bordura);
+}
+
+/* Efect CSS: duotone */
+.efect-duotone {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--raza-zona);
+}
+
+.efect-duotone .efect-duotone-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: grayscale(1) contrast(1.15);
+}
+
+.efect-duotone::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--culoare-primara), var(--culoare-accent));
+    mix-blend-mode: multiply;
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+/* Efect CSS: reflexie */
+.efect-reflexie .efect-reflexie-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-box-reflect: below 6px linear-gradient(transparent 10%, rgba(15, 23, 42, 0.25));
 }
 
 h2,
@@ -583,6 +658,13 @@ footer iframe {
     .table-scroll {
         overflow-x: auto;
         padding-bottom: 0.3rem;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .text-coloane {
+        column-count: 1;
+        column-rule: none;
     }
 }
 

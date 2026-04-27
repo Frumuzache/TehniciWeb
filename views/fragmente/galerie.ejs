@@ -1,0 +1,32 @@
+<section class="galerie-container">
+  <div class="galerie-grid">
+    <% galerie.imagini.forEach((imagine, index) => { %>
+      <figure class="galerie-item">
+        <picture>
+          <source 
+            media="(min-width: 992px)" 
+            srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=400"
+            type="image/jpeg"
+          />
+          <source 
+            media="(min-width: 576px)" 
+            srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=300"
+            type="image/jpeg"
+          />
+          <img 
+            src="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=200"
+            alt="<%= imagine.continut_alternativ || imagine.nume_poza %>"
+            title="<%= imagine.descriere_poza %>"
+            loading="lazy"
+            decoding="async"
+            class="galerie-imagine"
+          />
+        </picture>
+        <figcaption class="galerie-caption">
+          <span class="galerie-index"></span>
+          <span class="galerie-nume"><%= imagine.nume_poza %></span>
+        </figcaption>
+      </figure>
+    <% }); %>
+  </div>
+</section>

@@ -1,0 +1,179 @@
+/* ============================================
+   GALERIE - LAYOUT și STYLING
+   ============================================ */
+
+.galerie-container {
+    width: 100%;
+    padding: 2rem 0;
+    box-sizing: border-box;
+}
+
+/* Grid principal - zig-zag pe ecran mare */
+.galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    align-items: start;
+}
+
+/* Layout zig-zag pentru ecran mare (desktop) */
+@media (min-width: 992px) {
+    .galerie-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    /* Alternare pentru zig-zag */
+    .galerie-item:nth-child(3n+2) {
+        /* Coloana 2 - mai mult offset */
+        transform: translateY(2.5rem);
+    }
+}
+
+/* Grid pe ecran mediu - 2 coloane */
+@media (min-width: 576px) and (max-width: 991px) {
+    .galerie-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .galerie-item {
+        transform: none;
+    }
+}
+
+/* Grid pe ecran mic - 1 coloană */
+@media (max-width: 575px) {
+    .galerie-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .galerie-item {
+        transform: none;
+    }
+}
+
+/* Item-uri galerie */
+.galerie-item {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    min-width: 0;
+}
+
+/* Picture - container pentru picture tag */
+.galerie-item picture {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #f0f0f0;
+    position: relative;
+}
+
+/* Imagini din galerie */
+.galerie-imagine {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    filter: sepia(100%);
+    transition: filter 800ms ease-in-out;
+}
+
+/* Hover effect - imagine */
+.galerie-item:hover .galerie-imagine {
+    filter: sepia(0%);
+}
+
+/* Figcaption - descrierea imaginii */
+.galerie-caption {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    text-align: center;
+    color: #333;
+    flex-wrap: wrap;
+}
+
+/* Index cu cifre romane */
+.galerie-index {
+    font-weight: bold;
+    color: #555;
+    min-width: 2rem;
+    text-align: left;
+    display: inline-block;
+}
+
+/* Implementare counter CSS pentru cifre romane mici */
+.galerie-grid {
+    counter-reset: galerie-counter;
+}
+
+.galerie-item:nth-child(1) .galerie-index::before { content: "i. "; }
+.galerie-item:nth-child(2) .galerie-index::before { content: "ii. "; }
+.galerie-item:nth-child(3) .galerie-index::before { content: "iii. "; }
+.galerie-item:nth-child(4) .galerie-index::before { content: "iv. "; }
+.galerie-item:nth-child(5) .galerie-index::before { content: "v. "; }
+.galerie-item:nth-child(6) .galerie-index::before { content: "vi. "; }
+.galerie-item:nth-child(7) .galerie-index::before { content: "vii. "; }
+.galerie-item:nth-child(8) .galerie-index::before { content: "viii. "; }
+.galerie-item:nth-child(9) .galerie-index::before { content: "ix. "; }
+.galerie-item:nth-child(10) .galerie-index::before { content: "x. "; }
+.galerie-item:nth-child(11) .galerie-index::before { content: "xi. "; }
+.galerie-item:nth-child(12) .galerie-index::before { content: "xii. "; }
+
+/* Numele imaginii */
+.galerie-nume {
+    flex: 1;
+    text-align: center;
+    color: #2c3e50;
+    font-weight: 600;
+    transition: color 800ms ease-in-out, text-shadow 800ms ease-in-out;
+    word-break: break-word;
+}
+
+/* Hover effect - text */
+.galerie-item:hover .galerie-nume {
+    color: #e74c3c;
+    text-shadow: 0 0 8px rgba(231, 76, 60, 0.4), 
+                 0 0 12px rgba(231, 76, 60, 0.3),
+                 0 0 16px rgba(231, 76, 60, 0.2);
+}
+
+/* Optimizare pentru print */
+@media print {
+    .galerie-container {
+        page-break-inside: avoid;
+    }
+    
+    .galerie-imagine {
+        filter: none !important;
+    }
+    
+    .galerie-item {
+        page-break-inside: avoid;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .galerie-imagine,
+    .galerie-nume {
+        transition: none;
+    }
+}

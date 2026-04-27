@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main>
+    <div id="grid-pagina">
+
+      <section id="galerie-completa">
+        <hgroup>
+          <h1>Galeria Componentelor Robotice</h1>
+          <p class="subtitlu">Colecție de imagini ale componentelor noastre</p>
+        </hgroup>
+
+        <p class="intro">
+          Această galerie prezintă o selecție din componentele robotice disponibile în magazinul nostru.
+          Imaginile sunt filtrate în funcție de ziua săptămânii, pentru a oferi o experiență dinamică.
+          Utilizează hover pentru a vedea tranziția efectelor vizuale.
+        </p>
+
+        <%- include('../fragmente/galerie') %>
+
+        <div class="info-galerie">
+          <h2>Despre imaginile din galerie</h2>
+          <p>
+            Imaginile sunt afișate conform unui calendar și sunt disponibile pe anumite zile ale săptămânii.
+            Pentru a testa schimbarea imaginilor în funcție de dată, puteți folosi parametrul de query <code>?data=YYYY-MM-DD</code>
+            în URL.
+          </p>
+          <p>
+            Gagleria se adapteaza la dimensiunea ecranului: pe ecrane mari are 3 coloane, pe medii 2 coloane,
+            iar pe mobile apare cu 1 coloană.
+          </p>
+        </div>
+
+      </section>
+
+    </div>
+
+    <a id="link-top" href="#inceput-pagina" title="Mergi la începutul paginii">
+      <span class="simbol-top" aria-hidden="true">
+        <span id="triunghi"></span>
+      </span>
+      <span class="text-link-top">Back to top</span>
+    </a>
+
+  </main>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+
+</html>

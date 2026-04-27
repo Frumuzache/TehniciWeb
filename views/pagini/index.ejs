@@ -14,25 +14,27 @@
 
       <section id="welcome">
         <hgroup>
-          <h2>Bine ati venit</h2>
+          <h2 class="titlu-animat">Bine ati venit</h2>
           <p class="subtitlu">Componente pentru robotică educațională și hobby</p>
         </hgroup>
 
-        <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>,
-          <b>servomotor</b>,
-          <b>senzor</b>, <b>Arduino</b> și <b>Raspberry Pi</b>. Oferim inclusiv <b>placă de dezvoltare</b> și module
-          cu <b>infrarosu</b>.
-        </p>
-        <p>Avem <em>"super-ieftin"</em> doar la produsele marcate, iar la comenzile urgente livrăm <i>ca la carte</i> și
-          <i>cu noaptea în cap</i>.
-        </p>
-        <p><strong>Anunț urgent:</strong> lotul nou de <dfn>senzor de distanță</dfn> și <dfn>senzor de temperatură</dfn>
-          este disponibil în stoc limitat.</p>
-        <p>Recomandăm lectura <cite>Getting Started with Arduino</cite> și citatul clasic
-          <q>measure twice, cut once</q> pentru orice proiect hardware.
-        </p>
-        <p>Protocolul standard folosit la module este <abbr title="Inter-Integrated Circuit">I2C</abbr>.</p>
-        <p>Pachet firmware vechi <s>v1.2</s> <ins>v1.3</ins>.</p>
+        <div class="text-coloane">
+          <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>,
+            <b>servomotor</b>,
+            <b>senzor</b>, <b>Arduino</b> și <b>Raspberry Pi</b>. Oferim inclusiv <b>placă de dezvoltare</b> și module
+            cu <b>infrarosu</b>.
+          </p>
+          <p>Avem <em>"super-ieftin"</em> doar la produsele marcate, iar la comenzile urgente livrăm <i>ca la carte</i> și
+            <i>cu noaptea în cap</i>.
+          </p>
+          <p><strong>Anunț urgent:</strong> lotul nou de <dfn>senzor de distanță</dfn> și <dfn>senzor de temperatură</dfn>
+            este disponibil în stoc limitat.</p>
+          <p>Recomandăm lectura <cite>Getting Started with Arduino</cite> și citatul clasic
+            <q>measure twice, cut once</q> pentru orice proiect hardware.
+          </p>
+          <p>Protocolul standard folosit la module este <abbr title="Inter-Integrated Circuit">I2C</abbr>.</p>
+          <p>Pachet firmware vechi <s>v1.2</s> <ins>v1.3</ins>.</p>
+        </div>
 
         <div class="intro-oferte">
           <div>Arduino</div>
@@ -48,13 +50,14 @@
           <a href="https://en.wikipedia.org/wiki/Raspberry_Pi#Model_B" target="_blank"
             rel="noopener noreferrer">Wikipedia Raspberry<wbr>_Pi #Model_B</a>.
         </p>
+        <p><a class="buton-glow" href="#produse">Vezi catalogul</a></p>
         <div id="dv-prezentare-1">
           <div id="dv-prezentare">
-            <figure>
+            <figure class="efect-duotone">
               <picture>
                 <source srcset="/resurse/imagini/Arduino_Uno_-_R3.jpg" media="(max-width:700px)" />
                 <source srcset="/resurse/imagini/raspberry-pi-5-8gb.jpg" media="(max-width:1200px)" />
-                <img src="/resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
+                <img class="efect-duotone-img" src="/resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
                   title="Componente de robotică" />
               </picture>
               <figcaption>Kit demo cu placă de dezvoltare, module cu infrarosu și senzori digitali.</figcaption>
@@ -86,6 +89,15 @@
           <h3>Livrare rapidă</h3>
           <p>Comenzile plasate până la ora 14:00 pleacă în aceeași zi lucrătoare.</p>
         </article>
+
+        <div class="card shadow-sm mt-3">
+          <div class="card-body">
+            <h3 class="card-title">Pachet Bootstrap</h3>
+            <p class="card-text">Exemplu de componentă Bootstrap care reflectă customizarea temei și a fonturilor.</p>
+            <button class="btn btn-primary">Vezi oferta</button>
+            <button class="btn btn-outline-secondary ms-2">Detalii</button>
+          </div>
+        </div>
       </section>
 
       <section id="produse">
@@ -190,9 +202,9 @@
         <p><strong>Atenție!</strong> Datele sunt orientative și pot varia pe parcursul zilei.</p>
       </section>
 
-      <figure id="fig1" class="fg-img">
+      <figure id="fig1" class="fg-img efect-reflexie">
         <a href="/resurse/imagini/raspberry-pi-5-8gb.jpg" title="Deschide imaginea mărită">
-          <img src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Placă Raspberry Pi">
+          <img class="efect-reflexie-img" src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Placă Raspberry Pi">
         </a>
         <figcaption>Click pe imagine pentru mărire în același tab.</figcaption>
       </figure>
@@ -252,19 +264,21 @@
     </div>
 
     <section id="galerie-statica">
+      <h2>Galerie - Componente Robotice</h2>
+      <%- include('../fragmente/galerie') %>
+      <p class="text-centrat"><a href="/galerie">Vizitează pagina completă a galeriei</a></p>
+
       <h2>Hartă imagine componente</h2>
-      <img src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320"
-        height="200">
+      <figure>
+        <a href="/resurse/imagini/raspberry-pi-5-8gb.jpg" title="Deschide imaginea mărită">
+          <img src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320" height="200">
+        </a>
+        <figcaption>Hartă interactivă: apasă pe zone pentru detalii.</figcaption>
+      </figure>
       <map name="rpi-map">
-        <area shape="rect" coords="20,30,180,120" alt="Procesor și memorie"
-          href="https://www.raspberrypi.com/products/raspberry-pi-5/" title="Detalii procesor, RAM și performanță"
-          target="_blank" rel="noopener noreferrer">
-
-        <area shape="circle" coords="245,80,35" alt="Conectori GPIO" href="#produse"
-          title="Mergi la secțiunea cu plăci și module compatibile">
-
-        <area shape="circle" coords="275,155,28" alt="Porturi alimentare" href="#indicatori"
-          title="Vezi indicatorii de stoc pentru alimentare și accesorii">
+        <area shape="rect" coords="20,30,180,120" alt="Procesor și memorie" href="https://www.raspberrypi.com/products/raspberry-pi-5/" title="Detalii procesor, RAM și performanță" target="_blank" rel="noopener noreferrer">
+        <area shape="circle" coords="245,80,35" alt="Conectori GPIO" href="#produse" title="Mergi la secțiunea cu plăci și module compatibile">
+        <area shape="circle" coords="275,155,28" alt="Porturi alimentare" href="#indicatori" title="Vezi indicatorii de stoc pentru alimentare și accesorii">
       </map>
     </section>
 

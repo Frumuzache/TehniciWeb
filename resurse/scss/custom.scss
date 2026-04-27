@@ -1,0 +1,39 @@
+// Customizare Bootstrap folosind Sass
+
+// Configurare Bootstrap cu @use + with
+@use "../../node_modules/bootstrap/scss/bootstrap" with (
+  $theme-colors: (
+    "primary": #1d3557,
+    "secondary": #457b9d,
+    "success": #2a9d8f,
+    "warning": #d4a017,
+    "danger": #e63946,
+    "info": #38bdf8,
+    "light": #f8fafc,
+    "dark": #0f172a
+  ),
+  $body-bg: #eef3fb,
+  $body-color: #0f172a,
+  $btn-color: #f8fafc,
+  $grid-breakpoints: (
+    xs: 0,
+    sm: 520px,
+    md: 860px,
+    lg: 1140px,
+    xl: 1320px,
+    xxl: 1520px
+  ),
+  $border-radius: 0.9rem,
+  $border-radius-sm: 0.6rem,
+  $border-radius-lg: 1.2rem,
+  $font-size-base: 1rem,
+  $h1-font-size: 2.4rem,
+  $h2-font-size: 1.8rem,
+  $h3-font-size: 1.4rem,
+  $font-family-sans-serif: ("Inter" "Segoe UI" Arial sans-serif),
+  $btn-padding-y: 0.55rem,
+  $btn-padding-x: 1.1rem,
+  $btn-border-radius: 0.9rem,
+  $card-border-radius: 1rem,
+  $input-border-radius: 0.7rem
+);

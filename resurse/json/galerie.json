@@ -1,0 +1,69 @@
+{
+  "cale_galerie": "resurse/imagini/galerie",
+  "imagini": [
+    {
+      "fisier_imagine": "robot1.jpg",
+      "nume_poza": "Robot industrial în acțiune",
+      "continut_alternativ": "Robot mecanic cu brațe articulate într-o fabrică",
+      "descriere_poza": "Exemplu de robot industrial cu capacitate de mișcare precisă",
+      "intervale_zile": [["luni", "miercuri"], ["vineri", "duminică"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "circuit_board.jpg",
+      "nume_poza": "Plăci electronice colorate",
+      "continut_alternativ": "Plăci de circuit cu componente electronice",
+      "descriere_poza": "Detaliu al componentelor electronice pe o plăcuță de circuit",
+      "intervale_zile": [["luni", "joi"], ["sâmbată", "duminică"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "robot_arm.jpg",
+      "nume_poza": "Brațul robotului cu senzori",
+      "continut_alternativ": "Brațul mecanic al unui robot cu senzori montați",
+      "descriere_poza": "Brațul manipulator al robotului dotat cu senzori de proximitate",
+      "intervale_zile": [["marți", "joi"], ["sâmbată", "sâmbată"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "motor_servo.jpg",
+      "nume_poza": "Motoare servomotor de precizie",
+      "continut_alternativ": "Trei servomotoare galbene pe un fundal alb",
+      "descriere_poza": "Servomotoare utilizate pentru control precis în sistemele robotice",
+      "intervale_zile": [["luni", "marți"], ["joi", "vineri"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "sensor_array.jpg",
+      "nume_poza": "Senzori de distanță în linie",
+      "continut_alternativ": "Senzori ultrasonici aliniate pe o platformă",
+      "descriere_poza": "Sistem de senzori IR pentru detectare obstacole",
+      "intervale_zile": [["marți", "miercuri"], ["vineri", "luni"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "assembly_line.jpg",
+      "nume_poza": "Linie de asamblare cu roboți",
+      "continut_alternativ": "Roboți industriali pe o linie de producție",
+      "descriere_poza": "Linie de asamblare automatizată cu roboți cooperanți",
+      "intervale_zile": [["miercuri", "joi"], ["duminică", "duminică"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "gripper_hand.jpg",
+      "nume_poza": "Gripper pneumatic pentru prehensiune",
+      "continut_alternativ": "Dispozitiv pneumatic de prindere pe un brațul robot",
+      "descriere_poza": "Gripper cu control pneumatic pentru manipulare obiecte",
+      "intervale_zile": [["luni", "marți"], ["miercuri", "duminică"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "wiring_diagram.jpg",
+      "nume_poza": "Diagramă de cablajul complex",
+      "continut_alternativ": "Fir și conexiuni într-o cutie de control",
+      "descriere_poza": "Sistemul de cablare și conexiuni pentru integrare roboți",
+      "intervale_zile": [["luni", "joi"], ["sâmbată", "luni"]],
+      "atribuire": null
+    }
+  ]
+}
