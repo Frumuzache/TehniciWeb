@@ -1,269 +1,350 @@
-$primary: var(--culoare-primara);
-$border: var(--culoare-bordura);
-$accent: var(--culoare-accent);
-$bg-gradient: linear-gradient(180deg, #f7fbff 0%, #e9f2ff 100%);
+/* variabile scss - refera variabile css custom definite in general.css */
+$primary:     var(--culoare-primara);
+$border:      var(--culoare-bordura);
+$accent:      var(--culoare-accent);
+$accent-2:    var(--culoare-accent-2);
+$accent-2-85: var(--culoare-accent-2-85);
+$accent-90:   var(--culoare-accent-90);
+$alerta:      var(--culoare-alerta);
+$suprafata:   var(--culoare-suprafata);
+$umbra-nav:   var(--culoare-umbra-nav);
+$text:        var(--culoare-text);
+$text-invers: var(--culoare-text-invers);
+$zona-3:      var(--culoare-zona-3);
+$nav-2:       var(--culoare-nav-2);
 
+/* pozitionare relativa necesara pentru a ancora submeniurile */
 nav {
-    position: relative;
-
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    #hamburger {
-        display: none;
-    }
+  position: relative;
 }
 
-@media screen and (min-width: 1001px) {
-    %transition-base-desktop {
-        transition: all 0.3s ease-in-out;
-    }
-
-    nav > ul {
-        display: flex;
-        gap: 0.5rem;
-
-        > li {
-            position: relative;
-
-            > a {
-                @extend %transition-base-desktop;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.55rem 0.9rem;
-                border-radius: 0.55rem;
-                text-decoration: none;
-                color: $primary;
-                background: $bg-gradient;
-                border: 1px solid $border;
-                font-weight: 600;
-                position: relative;
-                z-index: 1;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    inset: 0;
-                    border: 2px solid transparent;
-                    border-radius: 0.55rem;
-                    background:
-                        linear-gradient(transparent, transparent) padding-box,
-                        linear-gradient(120deg, rgba(56, 189, 248, 0.85), rgba(212, 160, 23, 0.9)) border-box;
-                    transform: scaleY(0);
-                    transform-origin: center;
-                    transition: transform 0.4s ease;
-                    pointer-events: none;
-                    z-index: -1;
-                }
-
-                &:hover::before,
-                &:focus-visible::before {
-                    transform: scaleY(1);
-                }
-            }
-
-            ul {
-                position: absolute;
-                top: calc(100% + 0.25rem);
-                left: 0;
-                min-width: 12rem;
-                background: #fff;
-                padding: 0.35rem;
-                border-radius: 0.55rem;
-                border: 1px solid $border;
-                box-shadow: 0 0.7rem 1.15rem rgba(15, 23, 42, 0.15);
-                z-index: 10;
-
-                transform: scale(0);
-                transform-origin: top left;
-                transition: transform 0.35s ease, opacity 0.35s ease;
-                opacity: 0;
-                display: block;
-                visibility: hidden;
-
-                li a {
-                    display: block;
-                    padding: 0.4rem 0.8rem;
-                    color: $primary;
-                    text-decoration: none;
-                    position: relative;
-
-                    &::after {
-                        content: "";
-                        position: absolute;
-                        bottom: 2px;
-                        left: 0;
-                        width: 0;
-                        height: 3px;
-                        border-top: 1px solid $primary;
-                        border-bottom: 1px solid $primary;
-                        transition: width 0.3s ease;
-                    }
-
-                    &:hover::after,
-                    &:focus-visible::after {
-                        width: 100%;
-                    }
-                }
-            }
-
-            &:hover > ul,
-            &:focus-within > ul {
-                transform: scale(1);
-                opacity: 1;
-                visibility: visible;
-            }
-        }
-    }
+/* reset liste pentru toate nivelurile de navigare */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-@media screen and (max-width: 1000px) and (min-width: 761px) {
-    nav > ul {
-        display: flex;
-        gap: 0.5rem;
-
-        > li {
-            position: relative;
-        }
-
-        > li > a {
-            padding: 0.6rem;
-            border-radius: 0.55rem;
-            background: $bg-gradient;
-            border: 1px solid $border;
-            text-align: center;
-            text-decoration: none;
-
-            .meniu-text {
-                display: none;
-            }
-
-            i {
-                font-size: 1.4rem;
-                color: $primary;
-            }
-        }
-
-        > li:hover > ul,
-        > li:focus-within > ul {
-            display: block;
-            position: absolute;
-            background: white;
-            padding: 0.4rem;
-            border: 1px solid $border;
-            border-radius: 0.55rem;
-        }
-
-        > li ul {
-            display: none;
-        }
-    }
+/* hamburger ascuns implicit; devine vizibil doar pe ecran mic (<760px) */
+nav #hamburger {
+  display: none;
 }
 
+/* animatie pentru bare: schimba culoare, transformare geometrica si opacitate - 3 cadre cheie */
 @keyframes burgerHoverAnim {
-    0% {
-        background-color: $primary;
-        transform: scaleX(1) rotate(0deg);
-        opacity: 1;
-    }
-    50% {
-        background-color: $accent;
-        transform: scaleX(0.8) rotate(5deg);
-        opacity: 0.6;
-    }
-    100% {
-        background-color: #e63946;
-        transform: scaleX(1.1) rotate(-5deg);
-        opacity: 1;
-    }
+  0% {
+    background-color: $primary;
+    transform: scaleX(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    background-color: $accent;
+    transform: scaleX(0.8) rotate(5deg);
+    opacity: 0.6;
+  }
+  100% {
+    background-color: $alerta;
+    transform: scaleX(1.1) rotate(-5deg);
+    opacity: 1;
+  }
 }
 
+/* ===== DESKTOP (min-width: 1001px) ===== */
+@media screen and (min-width: 1001px) {
+
+  /* tranzitie generala pe link-urile principale */
+  nav > ul > li > a {
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* meniu orizontal cu spatiere intre elemente */
+  nav > ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* pozitionare relativa pe fiecare li pentru a ancora submeniu */
+  nav > ul > li {
+    position: relative;
+  }
+
+  /* stilizare link-uri principale: gradient, border, culori */
+  nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 0.55rem;
+    text-decoration: none;
+    color: $primary;
+    background: linear-gradient(180deg, $zona-3 0%, $nav-2 100%);
+    border: 1px solid $border;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* pseudo-element ::before pentru efectul de border animat la hover */
+  nav > ul > li > a::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: 0.55rem;
+    /* gradient vizibil doar pe border, interiorul ramane transparent */
+    background: linear-gradient(transparent, transparent) padding-box, linear-gradient(120deg, $accent-2-85, $accent-90) border-box;
+    /* invizibil initial prin scaleY(0) */
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* border-ul apare la hover/focus: scaleY(0) -> scaleY(1) */
+  nav > ul > li > a:hover::before,
+  nav > ul > li > a:focus-visible::before {
+    transform: scaleY(1);
+  }
+
+  /* submeniu: ascuns initial cu scale(0), opacity 0 si visibility hidden */
+  nav > ul > li ul {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    min-width: 12rem;
+    background: $suprafata;
+    padding: 0.35rem;
+    border-radius: 0.55rem;
+    border: 1px solid $border;
+    box-shadow: 0 0.7rem 1.15rem $umbra-nav;
+    z-index: 10;
+    transform: scale(0);
+    transform-origin: top left;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    opacity: 0;
+    display: block;
+    /* visibility hidden previne interactiuni cand submeniu e ascuns */
+    visibility: hidden;
+  }
+
+  /* stilizare link-uri din submeniu */
+  nav > ul > li ul li a {
+    display: block;
+    padding: 0.4rem 0.8rem;
+    color: $primary;
+    text-decoration: none;
+    position: relative;
+  }
+
+  /* pseudo-element ::after pentru linia de subliniere animata */
+  nav > ul > li ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    border-top: 1px solid $primary;
+    border-bottom: 1px solid $primary;
+    transition: width 0.3s ease;
+  }
+
+  /* linia creste pana la latimea completa la hover/focus tastatura */
+  nav > ul > li ul li a:hover::after,
+  nav > ul > li ul li a:focus-visible::after {
+    width: 100%;
+  }
+
+  /* submeniu devine vizibil la hover/focus pe li-ul parinte */
+  nav > ul > li:hover > ul,
+  nav > ul > li:focus-within > ul {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* ===== MOBIL (max-width: 760px): hamburger + meniu vertical ===== */
 @media screen and (max-width: 760px) {
-    nav {
-        #hamburger {
-            display: block;
-            width: 40px;
-            height: 30px;
-            position: relative;
-            cursor: pointer;
-            z-index: 100;
 
-            span {
-                position: absolute;
-                width: 100%;
-                height: 5px;
-                background-color: $primary;
-                border-radius: 3px;
-                left: 0;
+  /* hamburger vizibil pe mobil - container cu 3 bare */
+  nav #hamburger {
+    display: block !important;
+    width: 40px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+    z-index: 100;
+  }
 
-                &:nth-child(1) {
-                    top: 0;
-                }
+  /* stiluri comune pentru cele 3 bare orizontale */
+  nav #hamburger span {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: $primary;
+    border-radius: 3px;
+    left: 0;
+  }
 
-                &:nth-child(2) {
-                    top: 50%;
-                    transform: translateY(-50%);
-                }
+  /* bara 1 sus - animatie auto-play la aparitia hamburgerului */
+  nav #hamburger span:nth-child(1) {
+    top: 0;
+    animation: burgerHoverAnim 0.8s 150ms;
+  }
 
-                &:nth-child(3) {
-                    bottom: 0;
-                }
-            }
-        }
+  /* bara 2 mijloc - top calculat fara transform ca sa nu conflicte cu animatia */
+  nav #hamburger span:nth-child(2) {
+    top: calc(50% - 2.5px);
+    animation: burgerHoverAnim 0.8s 300ms;
+  }
 
-        @for $i from 1 through 3 {
-            &:hover #hamburger span:nth-child(#{$i}) {
-                animation: burgerHoverAnim 0.8s forwards;
-                animation-delay: #{$i * 150}ms;
-            }
-        }
+  /* bara 3 jos */
+  nav #hamburger span:nth-child(3) {
+    bottom: 0;
+    animation: burgerHoverAnim 0.8s 450ms;
+  }
 
-        > ul {
-            position: absolute;
-            top: 2.2rem;
-            left: -1rem;
-            background: #000;
-            padding: 3rem 1rem 1rem 2rem;
-            width: 250px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-            z-index: 50;
-            clip-path: polygon(0% 0%, 100% 0%, 75% 20%, 100% 40%, 75% 60%, 100% 80%, 75% 100%, 0% 100%);
-            transform-origin: top left;
-            transform: scale(0);
-            opacity: 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-
-            li {
-                > a {
-                    color: white;
-                    text-decoration: none;
-                    font-size: 1.05rem;
-                    font-weight: bold;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.6rem;
-
-                    .meniu-text {
-                        color: white;
-                    }
-                }
-
-                ul {
-                    display: none;
-                }
-            }
-        }
-
-        &:hover > ul,
-        &:focus-within > ul {
-            transform: scale(1);
-            opacity: 1;
-        }
+  // @for genereaza animatia la hover/click cu delay diferit pentru fiecare bara (bara i = delay i*150ms)
+  @for $i from 1 through 3 {
+    nav:hover #hamburger span:nth-child(#{$i}),
+    nav #hamburger:hover span:nth-child(#{$i}),
+    nav.active #hamburger span:nth-child(#{$i}) {
+      animation: burgerHoverAnim 0.8s forwards;
+      animation-delay: #{$i * 150}ms;
     }
+  }
+
+  /* panoul de meniu mobil: forma poligonala clip-path, ascuns initial cu scale(0) */
+  nav > ul {
+    position: absolute;
+    top: 2.2rem;
+    left: -1rem;
+    background: $text;
+    padding: 3rem 1rem 1rem 2rem;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    z-index: 50;
+    clip-path: polygon(0% 0%, 100% 0%, 75% 20%, 100% 40%, 75% 60%, 100% 80%, 75% 100%, 0% 100%);
+    transform-origin: top left;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    visibility: hidden;
+  }
+
+  /* meniu deschis la click (clasa .active adaugata prin JS) sau focus tastatura */
+  nav.active > ul,
+  nav:focus-within > ul {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* stilizare link-uri principale din meniu mobil */
+  nav > ul li > a {
+    color: $text-invers;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.4rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* pseudo-element ::before pentru highlight colorat la hover */
+  nav > ul li > a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: $accent;
+    border-radius: 0.4rem;
+    z-index: -1;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+  }
+
+  /* highlight apare la hover prin scaleY(0) -> scaleY(1) */
+  nav > ul li > a:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* icon-ul se coloreaza la hover */
+  nav > ul li > a:hover i {
+    color: $primary;
+  }
+
+  /* culoarea textului linkurilor in meniu mobil */
+  nav > ul li > a .meniu-text {
+    color: $text-invers;
+  }
+
+  /* culoarea textului se schimba la hover */
+  nav > ul li > a:hover .meniu-text {
+    color: $text;
+  }
+
+  /* submeniu mobil ascuns cu max-height 0 si overflow hidden */
+  nav > ul li ul {
+    list-style: none;
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid $accent;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  /* clasa .open pe li expandeaza submeniu la max-height */
+  nav > ul li.open > ul {
+    max-height: 500px;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* stilizare link-uri din submeniu mobil */
+  nav > ul li ul li a {
+    display: block;
+    padding: 0.5rem 0.6rem;
+    color: $text-invers;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-radius: 0.3rem;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  /* pseudo-element ::before pentru highlight in submeniu */
+  nav > ul li ul li a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: $accent-2;
+    border-radius: 0.3rem;
+    z-index: -1;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+
+  /* highlight apare in submeniu la hover */
+  nav > ul li ul li a:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* indent suplimentar la hover pentru feedback vizual */
+  nav > ul li ul li a:hover {
+    padding-left: 1rem;
+  }
 }

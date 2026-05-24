@@ -2,84 +2,14 @@
 <html lang="ro">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="Frumuzache Alexandru-Marian">
-  <meta name="keywords"
-    content="motor, servomotor, senzor, senzor de distanță, senzor de temperatură, placă de dezvoltare, Arduino, Raspberry Pi, robotică, infrarosu">
-  <meta name="description" content="Magazinul tau online pentru componente de robotica">
-  <title>Magazin de piese de robotica</title>
-  <meta name="msapplication-TileColor" content="#1a1a1a">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <link rel="icon" href="resurse/ico/favicon.ico?v=2" sizes="any">
-  <link rel="icon" type="image/png" href="resurse/ico/favicon-96x96.png?v=2" sizes="96x96">
-  <link rel="apple-touch-icon" sizes="180x180" href="resurse/ico/apple-touch-icon.png?v=2">
-  <link rel="manifest" href="resurse/ico/site.webmanifest?v=2">
-  <!-- BONUS ETAPA 2 (reset css): resetarea stilurilor este în fișier separat -->
-  <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css" />
-  <link rel="stylesheet" href="./resurse/css/general.css" type="text/css" />
-  <link rel="stylesheet" href="./resurse/css/nav.css" type="text/css" />
-  <link rel="stylesheet" href="./resurse/css/print.css" type="text/css" media="print" />
+  <%- include('./fragmente/head') %>
 
 </head>
 
 <body id="inceput-pagina">
 
 
-  <header>
-    <h1>
-      <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-      Magazin de piese de robotica
-      <i class="fa-solid fa-gear fa-spin-pulse" aria-hidden="true"></i>
-    </h1>
-    <img src="./resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Placă Arduino Uno" />
-    <nav>
-      <div id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <ul>
-        <li>
-          <a href="/">
-            <i class="fa-solid fa-house"></i>
-            <span class="meniu-text">Acasă</span>
-          </a>
-          <ul>
-            <li><a href="#welcome">Prezentare</a></li>
-            <li><a href="#evenimente">evenimente</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#produse">
-            <i class="fa-solid fa-book-open"></i>
-            <span class="meniu-text">Catalog</span>
-          </a>
-          <ul>
-            <li><a href="galerie.html">Galerie statică</a></li>
-            <li><a href="galerie-dinamica.html">Galerie dinamică</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#contact">
-            <i class="fa-solid fa-envelope"></i>
-            <span class="meniu-text">Contact</span>
-          </a>
-          <ul>
-            <li><a href="#index-intrebari">Întrebări frecvente</a></li>
-            <li><a href="#resurse-video">Video</a></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <%- include('./fragmente/header') %>
 
 
   <main>
@@ -164,8 +94,9 @@
       <section id="produse">
         <h2>Produsele noastre</h2>
         <p>Catalog pentru proiecte de robotică: componentă de bază, module și accesorii.</p>
-        
-        <!-- ETAPA 4: Afișare dinamică a produselor din JSON -->
+
+        <!-- ETAPA 4: Afișare dinamică — produsele vin din produse.json via Express, folosind EJS -->
+        <!-- <%= %> afișează valoarea; <% %> execută cod JavaScript; <%- %> afișează HTML brut -->
         <% if (produse && produse.length > 0) { %>
           <div class="produse-container">
             <% produse.forEach(produs => { %>
@@ -232,6 +163,64 @@
         </ul>
       </section>
 
+      <section id="orar">
+        <h2>Stoc orientativ</h2>
+        <div class="table-scroll">
+          <table id="tab-orar">
+            <caption>Disponibilitate componente (actualizare zilnică)</caption>
+            <thead>
+              <tr>
+                <th>Cod</th>
+                <th>Produs</th>
+                <th>Categorie</th>
+                <th>Stoc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R01</td>
+                <td rowspan="1">Arduino Uno R3</td>
+                <td>Placă de dezvoltare</td>
+                <td>24</td>
+              </tr>
+              <tr>
+                <td>R02</td>
+                <td>ESP 32</td>
+                <td>Placă de dezvoltare</td>
+                <td>18</td>
+              </tr>
+              <tr>
+                <td>R03</td>
+                <td>Raspberry Pi 5</td>
+                <td>Single-board computer</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td>R04</td>
+                <td>Senzor de temperatură</td>
+                <td>Senzori</td>
+                <td>40</td>
+              </tr>
+              <tr>
+                <td>R05</td>
+                <td>Servomotor SG90</td>
+                <td>Actuatoare</td>
+                <td>35</td>
+              </tr>
+              <tr>
+                <td colspan="4">Stocuri actualizate zilnic, valori orientative.</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">Stoc total afișat: 129 bucăți.</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p><strong>Atenție!</strong> Datele sunt orientative și pot varia pe parcursul zilei.</p>
+      </section>
+
       <figure id="fig1" class="fg-img">
         <a href="resurse/imagini/raspberry-pi-5-8gb.jpg" title="Deschide imaginea mărită">
           <img src="resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Placă Raspberry Pi">
@@ -293,41 +282,30 @@
 
     </div>
 
-    <!-- CERINTA INDIVIDUALA 1 (video-vtt): Videoclip cu subtitluri VTT în mai multe limbi -->
+    <!-- CERINTA INDIVIDUALA (video-vtt): Videoclip cu subtitluri VTT în mai multe limbi -->
     <section id="video-component">
       <h2>Videoclip demonstrativ</h2>
       <div class="video-container">
-        <video 
-          id="demo-video" 
-          class="responsive-video" 
-          controls 
+        <!-- controls: butoane player vizibile; preload="metadata": încarcă durata/dimensiunea fără tot videoclipul -->
+        <!-- poster: imagine afișată înainte de redare; playsinline: evită fullscreen automat pe mobile -->
+        <video
+          id="demo-video"
+          class="responsive-video"
+          controls
           playsinline
-          preload="metadata" 
+          preload="metadata"
           poster="./resurse/imagini/Arduino_Uno_-_R3.jpg"
           width="800"
           height="450">
-          
-          <!-- Sursa video - format MP4 (local) -->
+
+          <!-- Browserul alege primul format pe care îl suportă (MP4 sau WebM) -->
           <source src="./resurse/imagini/demo-robotica.mp4" type="video/mp4">
-          
-            <!-- Sursa video - format WebM (local) -->
-            <source src="./resurse/imagini/demo-robotica.webm" type="video/webm">
-          
-          <!-- Pista de subtitluri în limba română (default) -->
-          <track 
-            kind="subtitles" 
-            src="./resurse/subtitles/ro.vtt" 
-            srclang="ro" 
-            label="Română" 
-            default>
-          
-          <!-- Pista de subtitluri în limba engleză -->
-          <track 
-            kind="subtitles" 
-            src="./resurse/subtitles/en.vtt" 
-            srclang="en" 
-            label="English">
-          
+          <source src="./resurse/imagini/demo-robotica.webm" type="video/webm">
+
+          <!-- srclang: codul de limbă; default: trackul activ la încărcare; kind="subtitles": tip pistă -->
+          <track kind="subtitles" src="./resurse/subtitles/ro.vtt" srclang="ro" label="Română" default>
+          <track kind="subtitles" src="./resurse/subtitles/en.vtt" srclang="en" label="English">
+
           Browserul tău nu suportă elementul video HTML5.
         </video>
       </div>
@@ -411,6 +389,7 @@
     </section>
 
     <script>
+      /* Previne scroll-ul automat al browserului când videoclipul primește focus la play */
       (() => {
         const video = document.getElementById("demo-video");
         if (!video) return;
@@ -418,7 +397,7 @@
         let lastScrollY = 0;
 
         video.addEventListener("pointerdown", () => {
-          lastScrollY = window.scrollY;
+          lastScrollY = window.scrollY; // salvăm poziția înainte de click
         });
 
         video.addEventListener("play", () => {
@@ -432,6 +411,7 @@
             }
           }
 
+          // Dacă browserul a derulat pagina la focus, o aducem înapoi
           requestAnimationFrame(() => {
             if (Math.abs(window.scrollY - beforePlayY) > 20) {
               window.scrollTo({ top: beforePlayY, behavior: "auto" });
@@ -452,32 +432,7 @@
   </a>
 
 
-  <footer id="contact">
-    <address>
-      Telefon: <a href="tel:+40111222333">+40 111 222 333</a><br>
-      Adresă: Str. Exemplu nr. 10,<br>
-      Corp C, etaj 2, București,<br>
-      România —
-      <a href="https://www.google.com/maps?q=Facultatea+de+Matematica+si+Informatica+Universitatea+din+Bucuresti"
-        target="_blank" rel="noopener noreferrer">deschide în Google Maps</a><br>
-      E-mail: <a href="mailto:contact@robotica-exemplu.ro">contact@robotica-exemplu.ro</a><br>
-      Chat: <a href="https://wa.me/40111222333" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-    </address>
-
-    <!-- BONUS 4 (0.05 pct): Iframe Google Maps în footer la adresă - liniile 354-357 -->
-    <iframe
-      src="https://www.google.com/maps?q=Facultatea+de+Matematica+si+Informatica+Universitatea+din+Bucuresti&amp;output=embed"
-      width="600" height="250" style="border:0;" allowfullscreen loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade" title="Harta locației"></iframe>
-
-    <p><a href="#inceput-pagina">Înapoi la începutul paginii</a></p>
-    <p id="css-printare">Acesta este un proiect școlar!</p>
-    <p><small>&copy; Frumuzache Alexandru-Marian
-        <time datetime="2026-03-08">8 martie 2026</time></small></p>
-  </footer>
-
-  <div id="banner-print">Acesta este un proiect școlar!</div>
-
+  <%- include('./fragmente/footer') %>
 
 </body>
 

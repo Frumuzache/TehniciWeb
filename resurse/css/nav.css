@@ -1,137 +1,17 @@
 nav {
   position: relative;
 }
+
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 nav #hamburger {
   display: none;
 }
 
-@media screen and (min-width: 1001px) {
-  nav > ul > li > a {
-    transition: all 0.3s ease-in-out;
-  }
-  nav > ul {
-    display: flex;
-    gap: 0.5rem;
-  }
-  nav > ul > li {
-    position: relative;
-  }
-  nav > ul > li > a {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.55rem 0.9rem;
-    border-radius: 0.55rem;
-    text-decoration: none;
-    color: var(--culoare-primara);
-    background: linear-gradient(180deg, #f7fbff 0%, #e9f2ff 100%);
-    border: 1px solid var(--culoare-bordura);
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-  }
-  nav > ul > li > a::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 2px solid transparent;
-    border-radius: 0.55rem;
-    background: linear-gradient(transparent, transparent) padding-box, linear-gradient(120deg, rgba(56, 189, 248, 0.85), rgba(212, 160, 23, 0.9)) border-box;
-    transform: scaleY(0);
-    transform-origin: center;
-    transition: transform 0.4s ease;
-    pointer-events: none;
-    z-index: -1;
-  }
-  nav > ul > li > a:hover::before, nav > ul > li > a:focus-visible::before {
-    transform: scaleY(1);
-  }
-  nav > ul > li ul {
-    position: absolute;
-    top: calc(100% + 0.25rem);
-    left: 0;
-    min-width: 12rem;
-    background: #fff;
-    padding: 0.35rem;
-    border-radius: 0.55rem;
-    border: 1px solid var(--culoare-bordura);
-    box-shadow: 0 0.7rem 1.15rem rgba(15, 23, 42, 0.15);
-    z-index: 10;
-    transform: scale(0);
-    transform-origin: top left;
-    transition: transform 0.35s ease, opacity 0.35s ease;
-    opacity: 0;
-    display: block;
-    visibility: hidden;
-  }
-  nav > ul > li ul li a {
-    display: block;
-    padding: 0.4rem 0.8rem;
-    color: var(--culoare-primara);
-    text-decoration: none;
-    position: relative;
-  }
-  nav > ul > li ul li a::after {
-    content: "";
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    width: 0;
-    height: 3px;
-    border-top: 1px solid var(--culoare-primara);
-    border-bottom: 1px solid var(--culoare-primara);
-    transition: width 0.3s ease;
-  }
-  nav > ul > li ul li a:hover::after, nav > ul > li ul li a:focus-visible::after {
-    width: 100%;
-  }
-  nav > ul > li:hover > ul, nav > ul > li:focus-within > ul {
-    transform: scale(1);
-    opacity: 1;
-    visibility: visible;
-  }
-}
-@media screen and (max-width: 1000px) and (min-width: 761px) {
-  nav > ul {
-    display: flex;
-    gap: 0.5rem;
-  }
-  nav > ul > li {
-    position: relative;
-  }
-  nav > ul > li > a {
-    padding: 0.6rem;
-    border-radius: 0.55rem;
-    background: linear-gradient(180deg, #f7fbff 0%, #e9f2ff 100%);
-    border: 1px solid var(--culoare-bordura);
-    text-align: center;
-    text-decoration: none;
-  }
-  nav > ul > li > a .meniu-text {
-    display: none;
-  }
-  nav > ul > li > a i {
-    font-size: 1.4rem;
-    color: var(--culoare-primara);
-  }
-  nav > ul > li:hover > ul,
-  nav > ul > li:focus-within > ul {
-    display: block;
-    position: absolute;
-    background: white;
-    padding: 0.4rem;
-    border: 1px solid var(--culoare-bordura);
-    border-radius: 0.55rem;
-  }
-  nav > ul > li ul {
-    display: none;
-  }
-}
 @keyframes burgerHoverAnim {
   0% {
     background-color: var(--culoare-primara);
@@ -144,20 +24,125 @@ nav #hamburger {
     opacity: 0.6;
   }
   100% {
-    background-color: #e63946;
+    background-color: var(--culoare-alerta);
     transform: scaleX(1.1) rotate(-5deg);
     opacity: 1;
   }
 }
-@media screen and (max-width: 760px) {
-  nav #hamburger {
+
+@media screen and (min-width: 1001px) {
+
+  nav > ul > li > a {
+    transition: all 0.3s ease-in-out;
+  }
+
+  nav > ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  nav > ul > li {
+    position: relative;
+  }
+
+  nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 0.55rem;
+    text-decoration: none;
+    color: var(--culoare-primara);
+    background: linear-gradient(180deg, var(--culoare-zona-3) 0%, var(--culoare-nav-2) 100%);
+    border: 1px solid var(--culoare-bordura);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  nav > ul > li > a::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: 0.55rem;
+    background: linear-gradient(transparent, transparent) padding-box, linear-gradient(120deg, var(--culoare-accent-2-85), var(--culoare-accent-90)) border-box;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  nav > ul > li > a:hover::before,
+  nav > ul > li > a:focus-visible::before {
+    transform: scaleY(1);
+  }
+
+  nav > ul > li ul {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    min-width: 12rem;
+    background: var(--culoare-suprafata);
+    padding: 0.35rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--culoare-bordura);
+    box-shadow: 0 0.7rem 1.15rem var(--culoare-umbra-nav);
+    z-index: 10;
+    transform: scale(0);
+    transform-origin: top left;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    opacity: 0;
     display: block;
+    visibility: hidden;
+  }
+
+  nav > ul > li ul li a {
+    display: block;
+    padding: 0.4rem 0.8rem;
+    color: var(--culoare-primara);
+    text-decoration: none;
+    position: relative;
+  }
+
+  nav > ul > li ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    border-top: 1px solid var(--culoare-primara);
+    border-bottom: 1px solid var(--culoare-primara);
+    transition: width 0.3s ease;
+  }
+
+  nav > ul > li ul li a:hover::after,
+  nav > ul > li ul li a:focus-visible::after {
+    width: 100%;
+  }
+
+  nav > ul > li:hover > ul,
+  nav > ul > li:focus-within > ul {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+
+@media screen and (max-width: 760px) {
+
+  nav #hamburger {
+    display: block !important;
     width: 40px;
     height: 30px;
     position: relative;
     cursor: pointer;
     z-index: 100;
   }
+
   nav #hamburger span {
     position: absolute;
     width: 100%;
@@ -166,33 +151,48 @@ nav #hamburger {
     border-radius: 3px;
     left: 0;
   }
+
   nav #hamburger span:nth-child(1) {
     top: 0;
+    animation: burgerHoverAnim 0.8s 150ms;
   }
+
   nav #hamburger span:nth-child(2) {
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(50% - 2.5px);
+    animation: burgerHoverAnim 0.8s 300ms;
   }
+
   nav #hamburger span:nth-child(3) {
     bottom: 0;
+    animation: burgerHoverAnim 0.8s 450ms;
   }
-  nav:hover #hamburger span:nth-child(1) {
+
+  nav:hover #hamburger span:nth-child(1),
+  nav #hamburger:hover span:nth-child(1),
+  nav.active #hamburger span:nth-child(1) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 150ms;
   }
-  nav:hover #hamburger span:nth-child(2) {
+
+  nav:hover #hamburger span:nth-child(2),
+  nav #hamburger:hover span:nth-child(2),
+  nav.active #hamburger span:nth-child(2) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 300ms;
   }
-  nav:hover #hamburger span:nth-child(3) {
+
+  nav:hover #hamburger span:nth-child(3),
+  nav #hamburger:hover span:nth-child(3),
+  nav.active #hamburger span:nth-child(3) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 450ms;
   }
+
   nav > ul {
     position: absolute;
     top: 2.2rem;
     left: -1rem;
-    background: #000;
+    background: var(--culoare-text);
     padding: 3rem 1rem 1rem 2rem;
     width: 250px;
     display: flex;
@@ -204,24 +204,105 @@ nav #hamburger {
     transform: scale(0);
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
+    visibility: hidden;
   }
+
+  nav.active > ul,
+  nav:focus-within > ul {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
   nav > ul li > a {
-    color: white;
+    color: var(--culoare-text-invers);
     text-decoration: none;
     font-size: 1.05rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.4rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
+
+  nav > ul li > a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--culoare-accent);
+    border-radius: 0.4rem;
+    z-index: -1;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+  }
+
+  nav > ul li > a:hover::before {
+    transform: scaleY(1);
+  }
+
+  nav > ul li > a:hover i {
+    color: var(--culoare-primara);
+  }
+
   nav > ul li > a .meniu-text {
-    color: white;
+    color: var(--culoare-text-invers);
   }
+
+  nav > ul li > a:hover .meniu-text {
+    color: var(--culoare-text);
+  }
+
   nav > ul li ul {
-    display: none;
+    list-style: none;
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--culoare-accent);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    visibility: hidden;
+    opacity: 0;
   }
-  nav:hover > ul, nav:focus-within > ul {
-    transform: scale(1);
+
+  nav > ul li.open > ul {
+    max-height: 500px;
+    visibility: visible;
     opacity: 1;
+  }
+
+  nav > ul li ul li a {
+    display: block;
+    padding: 0.5rem 0.6rem;
+    color: var(--culoare-text-invers);
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-radius: 0.3rem;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  nav > ul li ul li a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--culoare-accent-2);
+    border-radius: 0.3rem;
+    z-index: -1;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+
+  nav > ul li ul li a:hover::before {
+    transform: scaleY(1);
+  }
+
+  nav > ul li ul li a:hover {
+    padding-left: 1rem;
   }
 }

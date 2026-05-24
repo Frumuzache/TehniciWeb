@@ -1,10 +1,12 @@
 <header>
+  <!-- aria-hidden="true" pe iconițe: nu sunt citite de screen readere (decorative) -->
   <h1>
     <i class="fa-solid fa-microchip" aria-hidden="true"></i>
     Magazin de piese de robotica
     <i class="fa-solid fa-gear fa-spin-pulse" aria-hidden="true"></i>
   </h1>
   <img src="/resurse/imagini/Arduino_Uno_-_R3.jpg" alt="Placă Arduino Uno" />
+  <!-- Navigare cu submeniu dropdown; meniul hamburger este activat din scriptul de mai jos -->
   <nav>
     <div id="hamburger">
       <span></span>
@@ -24,7 +26,21 @@
         </ul>
       </li>
       <li>
-        <a href="#produse">
+        <a href="/produse">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span class="meniu-text">Produse</span>
+        </a>
+        <ul>
+          <li><a href="/produse">Toate</a></li>
+          <% if (typeof categorii !== 'undefined') { %>
+            <% for (const cat of categorii) { %>
+              <li><a href="/produse?categorie=<%= cat %>"><%= cat.charAt(0).toUpperCase() + cat.slice(1) %></a></li>
+            <% } %>
+          <% } %>
+        </ul>
+      </li>
+      <li>
+        <a href="/#catalog">
           <i class="fa-solid fa-book-open"></i>
           <span class="meniu-text">Catalog</span>
         </a>
@@ -34,15 +50,33 @@
         </ul>
       </li>
       <li>
-        <a href="#contact">
+        <a href="/#contact">
           <i class="fa-solid fa-envelope"></i>
           <span class="meniu-text">Contact</span>
         </a>
         <ul>
-          <li><a href="#index-intrebari">Întrebări frecvente</a></li>
-          <li><a href="#resurse-video">Video</a></li>
+          <li><a href="/#index-intrebari">Întrebări frecvente</a></li>
+          <li><a href="/#resurse-video">Video</a></li>
         </ul>
       </li>
     </ul>
   </nav>
 </header>
+<script>
+  /* Meniu hamburger: toggle clasa 'active' la click, închidere la click în afara navului */
+  (function () {
+    var hamburger = document.getElementById('hamburger');
+    var nav = hamburger.closest('nav');
+
+    hamburger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      nav.classList.toggle('active');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) {
+        nav.classList.remove('active');
+      }
+    });
+  })();
+</script>

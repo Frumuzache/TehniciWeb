@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <link rel="stylesheet" href="/resurse/css/produse.css" type="text/css" />
+  <title>Produse | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-produse" class="container-fluid px-3 px-md-4 py-4">
+
+    <h2 id="titlu-produse">
+      <% if (categorieSelectata) { %>
+        Produse &mdash; <%= categorieSelectata.charAt(0).toUpperCase() + categorieSelectata.slice(1) %>
+      <% } else { %>
+        Toate produsele
+      <% } %>
+    </h2>
+
+    <!-- ═══ SECȚIUNEA DE FILTRE (nu este <form>) ═══ -->
+    <div id="sectiune-filtre" class="p-3 p-md-4 mb-4 rounded-3 border">
+
+      <h3 class="fs-6 fw-bold text-uppercase mb-3" style="letter-spacing:.06em;">Filtre și sortare</h3>
+
+      <!-- Grid Bootstrap: row + col pentru aliniere ordonată pe coloane -->
+      <div class="row g-3">
+
+        <!-- 1. TEXT: protocol (caracteristică cu mai multe valori) -->
+        <div class="col-12 col-md-6 col-lg-3">
+          <label class="form-label small fw-semibold" for="filtru-protocol">Protocol conținut:</label>
+          <input type="text" class="form-control form-control-sm" id="filtru-protocol"
+                 placeholder="ex: I2C, SPI...">
+        </div>
+
+        <!-- 2. RANGE: preț maxim (min stânga, max dreapta, valoare curentă afișată) -->
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="form-label small fw-semibold text-body">Preț maxim (RON):</label>
+          <div class="d-flex align-items-center gap-2">
+            <span id="pret-min-label" class="small text-body-secondary">0</span>
+            <input type="range" class="form-range flex-grow-1" id="filtru-pret" min="0" max="300" value="300">
+            <span id="pret-max-label" class="small text-body-secondary">300</span>
+            <span id="pret-valoare-curenta" class="small fw-bold text-body" style="white-space:nowrap;">(300 RON)</span>
+          </div>
+        </div>
+
+        <!-- 3. DATALIST: greutate maximă -->
+        <div class="col-12 col-md-6 col-lg-3">
+          <label class="form-label small fw-semibold" for="filtru-greutate">Greutate maximă (g):</label>
+          <input type="text" class="form-control form-control-sm" id="filtru-greutate"
+                 list="lista-greutati" placeholder="oricare">
+          <datalist id="lista-greutati">
+            <!-- populat din JS pe baza datelor din articole -->
+          </datalist>
+        </div>
+
+        <!-- 4. RADIO: disponibilitate — toggle buttons Bootstrap -->
+        <div class="col-12 col-md-6 col-lg-2">
+          <p class="form-label small fw-semibold mb-2">Disponibilitate:</p>
+          <div class="btn-group w-100" role="group" aria-label="Disponibilitate">
+            <input type="radio" class="btn-check" name="in_stoc" id="stoc-oricare" value="oricare" checked autocomplete="off">
+            <label class="btn btn-outline-secondary btn-sm" for="stoc-oricare">Oricare</label>
+
+            <input type="radio" class="btn-check" name="in_stoc" id="stoc-da" value="da" autocomplete="off">
+            <label class="btn btn-outline-success btn-sm" for="stoc-da">În stoc</label>
+
+            <input type="radio" class="btn-check" name="in_stoc" id="stoc-nu" value="nu" autocomplete="off">
+            <label class="btn btn-outline-danger btn-sm" for="stoc-nu">Epuizat</label>
+          </div>
+        </div>
+
+        <!-- 5. CHECKBOX: subcategorie — toggle buttons Bootstrap -->
+        <div class="col-12">
+          <p class="form-label small fw-semibold mb-2">Subcategorie:</p>
+          <div class="btn-group flex-wrap" role="group" aria-label="Subcategorie">
+            <% for (const sc of subcategorii) { %>
+              <input type="checkbox" class="btn-check cb-subcategorie"
+                     id="sc-<%= sc %>" value="<%= sc %>" checked autocomplete="off">
+              <label class="btn btn-outline-primary btn-sm" for="sc-<%= sc %>">
+                <%= sc.replace('_', ' ') %>
+              </label>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- 6. TEXTAREA: cuvânt cheie în descriere — floating label Bootstrap -->
+        <div class="col-12 col-md-6">
+          <div class="form-floating">
+            <textarea class="form-control" id="filtru-descriere"
+                      placeholder="ex: Bluetooth, IoT..." style="height:80px;"></textarea>
+            <label for="filtru-descriere">Cuvânt cheie în descriere</label>
+            <div class="invalid-feedback">
+              Câmpul conține doar spații. Introduceți un cuvânt valid sau lăsați gol.
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. SELECT SIMPLU: compatibilitate (prima opțiune = "oricare" = default) -->
+        <div class="col-12 col-md-6 col-lg-3">
+          <label class="form-label small fw-semibold" for="filtru-compat">Compatibilitate:</label>
+          <select id="filtru-compat" class="form-select form-select-sm">
+            <option value="">oricare</option>
+            <% for (const cp of compatibilitati) { %>
+              <option value="<%= cp %>"><%= cp %></option>
+            <% } %>
+          </select>
+        </div>
+
+        <!-- 8. SELECT MULTIPLU: excludere protocoale -->
+        <div class="col-12 col-md-6 col-lg-5">
+          <label class="form-label small fw-semibold" for="filtru-proto-exclude">
+            Selectați valorile pe care NU le doriți:
+          </label>
+          <select id="filtru-proto-exclude" class="form-select form-select-sm" multiple size="4">
+            <option value="I2C">I2C</option>
+            <option value="SPI">SPI</option>
+            <option value="UART">UART</option>
+            <option value="PWM">PWM</option>
+            <option value="ADC">ADC</option>
+            <option value="USB">USB</option>
+            <option value="Bluetooth">Bluetooth</option>
+            <option value="CAN">CAN</option>
+            <option value="1-Wire">1-Wire</option>
+            <option value="analogic">analogic</option>
+            <option value="digital">digital</option>
+          </select>
+        </div>
+
+      </div><!-- /.row -->
+
+      <!-- ═══ BUTOANE ═══ -->
+      <!-- Pe ecran mic: doar iconuri. Pe sm+: iconuri + text. -->
+      <div id="butoane-filtre" class="d-flex flex-wrap gap-2 mt-3">
+
+        <button id="btn-filtreaza" class="btn btn-primary btn-sm">
+          <i class="bi bi-funnel-fill"></i>
+          <span class="d-none d-sm-inline"> Filtrează</span>
+        </button>
+
+        <button id="btn-sort-asc" class="btn btn-secondary btn-sm">
+          <i class="bi bi-sort-up"></i>
+          <span class="d-none d-sm-inline"> Sortare crescătoare</span>
+        </button>
+
+        <button id="btn-sort-desc" class="btn btn-secondary btn-sm">
+          <i class="bi bi-sort-down"></i>
+          <span class="d-none d-sm-inline"> Sortare descrescătoare</span>
+        </button>
+
+        <button id="btn-calcul" class="btn btn-warning btn-sm">
+          <i class="bi bi-calculator-fill"></i>
+          <span class="d-none d-sm-inline"> Calculează</span>
+        </button>
+
+        <button id="btn-reset" class="btn btn-outline-danger btn-sm">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <span class="d-none d-sm-inline"> Resetare</span>
+        </button>
+
+      </div>
+
+      <div id="mesaj-validare" class="alert alert-danger mt-2 py-2 px-3 small" role="alert" hidden></div>
+
+    </div><!-- /#sectiune-filtre -->
+
+    <!-- ═══ GRID PRODUSE ═══ -->
+    <div id="grid-produse">
+
+      <% for (const prod of produse) { %>
+        <article
+          id="ar_ent_<%= prod.id %>"
+          class="produs <%= prod.categorie %> <%= prod.subcategorie %>"
+          data-id="<%= prod.id %>"
+          data-pret="<%= prod.pret %>"
+          data-greutate="<%= prod.greutate %>"
+          data-subcategorie="<%= prod.subcategorie %>"
+          data-compatibilitate="<%= prod.compatibilitate %>"
+          data-protocoale="<%= prod.protocoale ? prod.protocoale.join(',') : '' %>"
+          data-in-stoc="<%= prod.in_stoc ? 'da' : 'nu' %>"
+          data-descriere="<%= (prod.descriere || '').toLowerCase().replace(/"/g, '&quot;') %>"
+        >
+          <h3><a href="/produs/<%= prod.id %>"><%= prod.nume %></a></h3>
+
+          <div class="produs-coloane">
+            <!-- Coloana 1: categorie, imagine, descriere -->
+            <div class="col-stanga">
+              <p class="badge-categorie <%= prod.categorie %>"><%= prod.categorie %></p>
+              <img
+                src="/resurse/imagini/produse/<%= prod.imagine %>"
+                alt="<%= prod.nume %>"
+                class="produs-imagine"
+                onerror="this.src='/resurse/imagini/produse/placeholder.svg'"
+              >
+              <p class="produs-descriere"><%= prod.descriere %></p>
+            </div>
+
+            <!-- Coloana 2: caracteristici -->
+            <div class="col-dreapta">
+              <p>
+                <strong class="eticheta">Preț:</strong>
+                <span class="valoare pret-valoare"><%= parseFloat(prod.pret).toFixed(2) %> RON</span>
+              </p>
+              <p>
+                <strong class="eticheta">Compatibilitate:</strong>
+                <span class="valoare"><%= prod.compatibilitate %></span>
+              </p>
+              <p>
+                <strong class="eticheta">Protocoale:</strong>
+                <span class="valoare">
+                  <%= prod.protocoale && prod.protocoale.length ? prod.protocoale.join(', ') : '—' %>
+                </span>
+              </p>
+              <p>
+                <strong class="eticheta">Adăugat:</strong>
+                <time
+                  datetime="<%= new Date(prod.data_adaugare).toISOString().split('T')[0] %>"
+                  class="valoare"
+                >
+                  <%= formatDataRo(prod.data_adaugare) %>
+                </time>
+              </p>
+              <p>
+                <strong class="eticheta">În stoc:</strong>
+                <span class="valoare stoc-<%= prod.in_stoc ? 'da' : 'nu' %>">
+                  <%= prod.in_stoc ? '✓ Da' : '✗ Nu' %>
+                </span>
+              </p>
+              <p>
+                <strong class="eticheta">Greutate:</strong>
+                <span class="valoare"><%= prod.greutate %> g</span>
+              </p>
+            </div>
+          </div>
+
+          <a href="/produs/<%= prod.id %>" class="link-detalii">
+            <i class="bi bi-info-circle-fill"></i> Detalii complete
+          </a>
+        </article>
+      <% } %>
+
+      <% if (produse.length === 0) { %>
+        <p class="mesaj-gol">Nu există produse în această categorie.</p>
+      <% } %>
+
+    </div><!-- /#grid-produse -->
+
+  </main>
+
+  <a id="link-top" href="#inceput-pagina" title="Mergi la începutul paginii">
+    <span class="simbol-top" aria-hidden="true"><span id="triunghi"></span></span>
+    <span class="text-link-top">Back to top</span>
+  </a>
+
+  <%- include('../fragmente/footer') %>
+
+  <script src="/resurse/js/produse.js"></script>
+
+</body>
+</html>

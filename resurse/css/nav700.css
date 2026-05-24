@@ -1,0 +1,97 @@
+/* stiluri pentru mobil (<760px) - fisier separat generat din nav.scss */
+@media screen and (max-width: 760px) {
+  /* bonus etapa 3: hamburger cu 3 bare span pozitionate absolut in container */
+  nav #hamburger {
+    display: block !important;
+    width: 40px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  /* fiecare span e o bara orizontala pozitionata absolut */
+  nav #hamburger span {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: var(--culoare-primara);
+    border-radius: 3px;
+    left: 0;
+  }
+
+  /* animatie auto-play la aparitia hamburgerului, cu delay succesiv */
+  nav #hamburger span:nth-child(1) { top: 0; animation: burgerHoverAnim 0.8s 150ms; }
+  nav #hamburger span:nth-child(2) { top: calc(50% - 2.5px); animation: burgerHoverAnim 0.8s 300ms; }
+  nav #hamburger span:nth-child(3) { bottom: 0; animation: burgerHoverAnim 0.8s 450ms; }
+
+  /* bonus etapa 3: animatii succesive pe bare la hover (delay generat cu @for in sass)
+     bara 1: 150ms, bara 2: 300ms, bara 3: 450ms */
+  nav:hover #hamburger span:nth-child(1),
+  nav.active #hamburger span:nth-child(1) {
+    animation: burgerHoverAnim 0.8s forwards;
+    animation-delay: 150ms;
+  }
+
+  nav:hover #hamburger span:nth-child(2),
+  nav.active #hamburger span:nth-child(2) {
+    animation: burgerHoverAnim 0.8s forwards;
+    animation-delay: 300ms;
+  }
+
+  nav:hover #hamburger span:nth-child(3),
+  nav.active #hamburger span:nth-child(3) {
+    animation: burgerHoverAnim 0.8s forwards;
+    animation-delay: 450ms;
+  }
+
+  /* meniu vertical cu forma neregulata (clip-path), ascuns initial cu scale(0) */
+  nav > ul {
+    position: absolute;
+    top: 2.2rem;
+    left: -1rem;
+    background: var(--culoare-text);
+    padding: 3rem 1rem 1rem 2rem;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    z-index: 50;
+    clip-path: polygon(0% 0%, 100% 0%, 75% 20%, 100% 40%, 75% 60%, 100% 80%, 75% 100%, 0% 100%);
+    transform-origin: top left;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+
+  /* meniul devine vizibil cand nav primeste clasa .active (prin JS la click) */
+  nav.active > ul {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  nav > ul li > a {
+    color: var(--culoare-text-invers);
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  nav > ul li > a .meniu-text {
+    color: var(--culoare-text-invers);
+  }
+
+  /* submeniurile sunt ascunse pe mobil */
+  nav > ul li ul {
+    display: none;
+  }
+
+  /* meniul se deschide la focus (accesibilitate tastatura) */
+  nav:focus-within > ul {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="./resurse/css/reset.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/general.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/nav.css" type="text/css" />
+  <link rel="stylesheet" href="./resurse/css/nav1000.css" type="text/css" />
+  <link rel="stylesheet" href="./resurse/css/nav700.css" type="text/css" />
   <link rel="stylesheet" href="./resurse/css/print.css" type="text/css" media="print" />
 
 </head>
@@ -435,6 +437,102 @@
 
   <div id="banner-print">Acesta este un proiect școlar!</div>
 
+  <script>
+    // Inițializează meniu hamburger și submeniuri pe mobile
+    (function() {
+      function setupHamburger() {
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.querySelector('nav');
+        
+        if (!hamburger || !nav) {
+          console.error('Element not found', { hamburger, nav });
+          return;
+        }
+        
+        console.log('✓ Hamburger și nav găsite');
+        
+        // Adaugă event listener la hamburger
+        hamburger.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          nav.classList.toggle('active');
+        });
+        
+        // Găsește TOATE link-urile principale
+        const mainUl = nav.querySelector('> ul');
+        const allMainLinks = mainUl.querySelectorAll('> li > a');
+        
+        console.log('Main links found:', allMainLinks.length);
+        
+        allMainLinks.forEach((link, index) => {
+          const parentLi = link.parentElement;
+          const submenu = parentLi.querySelector('> ul');
+          
+          if (submenu) {
+            console.log('Link', index, 'has submenu');
+            
+            // Adaugă chevron
+            const chevron = document.createElement('span');
+            chevron.innerHTML = ' ▼';
+            chevron.style.fontSize = '0.7rem';
+            chevron.style.marginLeft = 'auto';
+            link.appendChild(chevron);
+            
+            // Previne navigarea și deschide submeniu
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              console.log('Click on link with submenu');
+              
+              // Închide alte submeniuri
+              allMainLinks.forEach(otherLink => {
+                const otherParent = otherLink.parentElement;
+                if (otherParent !== parentLi) {
+                  otherParent.classList.remove('open');
+                }
+              });
+              
+              // Toggle curent
+              parentLi.classList.toggle('open');
+              console.log('Toggled, open now:', parentLi.classList.contains('open'));
+              
+              return false;
+            });
+          }
+        });
+        
+        // Submeniuri - acestea NU se previne navigarea
+        const allSubLinks = nav.querySelectorAll('ul ul a');
+        allSubLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            allMainLinks.forEach(mainLink => {
+              mainLink.parentElement.classList.remove('open');
+            });
+          });
+        });
+        
+        // Click în afara
+        document.addEventListener('click', (e) => {
+          if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+            nav.classList.remove('active');
+            allMainLinks.forEach(mainLink => {
+              mainLink.parentElement.classList.remove('open');
+            });
+          }
+        });
+        
+        console.log('✓ Setup complet');
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupHamburger);
+      } else {
+        setupHamburger();
+      }
+    })();
+  </script>
 
 </body>
 

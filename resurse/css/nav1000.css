@@ -1,0 +1,46 @@
+/* stiluri pentru tableta (761px - 1000px): meniu orizontal cu doar icoane */
+@media screen and (max-width: 1000px) and (min-width: 761px) {
+  nav > ul {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  nav > ul > li {
+    position: relative;
+  }
+
+  nav > ul > li > a {
+    padding: 0.6rem;
+    border-radius: 0.55rem;
+    background: linear-gradient(180deg, var(--culoare-zona-3) 0%, var(--culoare-nav-2) 100%);
+    border: 1px solid var(--culoare-bordura);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  /* textul linkurilor e ascuns pe tableta - apar doar iconurile FontAwesome */
+  nav > ul > li > a .meniu-text {
+    display: none;
+  }
+
+  nav > ul > li > a i {
+    font-size: 1.4rem;
+    color: var(--culoare-primara);
+  }
+
+  /* submeniul apare la hover ca bloc pozitionat absolut sub parinte */
+  nav > ul > li:hover > ul,
+  nav > ul > li:focus-within > ul {
+    display: block;
+    position: absolute;
+    background: var(--culoare-suprafata);
+    padding: 0.4rem;
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 0.55rem;
+  }
+
+  /* submeniurile sunt ascunse implicit */
+  nav > ul > li ul {
+    display: none;
+  }
+}

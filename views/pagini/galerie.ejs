@@ -2,11 +2,13 @@
 <html lang="ro">
 
 <head>
+  <!-- Include fragmentul head.ejs: meta, fonturi, CSS-uri -->
   <%- include('../fragmente/head') %>
 </head>
 
 <body id="inceput-pagina">
 
+  <!-- Include fragmentul header.ejs: logo, nav, hamburger -->
   <%- include('../fragmente/header') %>
 
   <main>
@@ -24,6 +26,7 @@
           Utilizează hover pentru a vedea tranziția efectelor vizuale.
         </p>
 
+        <!-- Include fragmentul galerie.ejs: randarea dinamică a imaginilor din ziua curentă -->
         <%- include('../fragmente/galerie') %>
 
         <div class="info-galerie">
@@ -52,6 +55,7 @@
 
   </main>
 
+  <!-- Include fragmentul footer.ejs: contact, hartă Google Maps, copyright cu IP -->
   <%- include('../fragmente/footer') %>
 
 </body>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <link rel="stylesheet" href="/resurse/css/produse.css" type="text/css" />
+  <title><%= produs.nume %> | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-produs">
+
+    <nav class="breadcrumb" aria-label="Navigare">
+      <a href="/produse">← Înapoi la produse</a>
+      <span class="breadcrumb-sep"> / </span>
+      <span><%= produs.nume %></span>
+    </nav>
+
+    <article id="ar_ent_<%= produs.id %>" class="produs-detaliu <%= produs.categorie %>">
+
+      <h2><%= produs.nume %></h2>
+      <p class="badge-categorie <%= produs.categorie %>" style="display:inline-block; margin-bottom:1rem;">
+        <%= produs.categorie %>
+      </p>
+
+      <div class="produs-detaliu-layout">
+
+        <!-- Imagine produs -->
+        <div class="produs-detaliu-imagine">
+          <img
+            src="/resurse/imagini/produse/<%= produs.imagine %>"
+            alt="<%= produs.nume %>"
+            onerror="this.src='/resurse/imagini/produse/placeholder.svg'"
+          >
+        </div>
+
+        <!-- Toate detaliile -->
+        <div class="produs-detaliu-info">
+
+          <table class="tabel-detalii">
+            <tbody>
+              <tr>
+                <th>Categorie</th>
+                <td><%= produs.categorie %></td>
+              </tr>
+              <tr>
+                <th>Subcategorie</th>
+                <td><%= produs.subcategorie.replace('_', ' ') %></td>
+              </tr>
+              <tr>
+                <th>Preț</th>
+                <td class="pret-valoare"><%= parseFloat(produs.pret).toFixed(2) %> RON</td>
+              </tr>
+              <tr>
+                <th>Greutate</th>
+                <td><%= produs.greutate %> g</td>
+              </tr>
+              <tr>
+                <th>Compatibilitate</th>
+                <td><%= produs.compatibilitate %></td>
+              </tr>
+              <tr>
+                <th>Protocoale</th>
+                <td><%= produs.protocoale && produs.protocoale.length ? produs.protocoale.join(', ') : '—' %></td>
+              </tr>
+              <tr>
+                <th>În stoc</th>
+                <td class="stoc-<%= produs.in_stoc ? 'da' : 'nu' %>">
+                  <%= produs.in_stoc ? '✓ Da' : '✗ Nu' %>
+                </td>
+              </tr>
+              <tr>
+                <th>Adăugat în ofertă</th>
+                <td>
+                  <time datetime="<%= new Date(produs.data_adaugare).toISOString().split('T')[0] %>">
+                    <%= formatDataRo(produs.data_adaugare) %>
+                  </time>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="produs-descriere-complet">
+            <h3>Descriere</h3>
+            <p><%= produs.descriere %></p>
+          </div>
+
+        </div><!-- /.produs-detaliu-info -->
+
+      </div><!-- /.produs-detaliu-layout -->
+
+    </article>
+
+  </main>
+
+  <a id="link-top" href="#inceput-pagina" title="Mergi la începutul paginii">
+    <span class="simbol-top" aria-hidden="true"><span id="triunghi"></span></span>
+    <span class="text-link-top">Back to top</span>
+  </a>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+</html>

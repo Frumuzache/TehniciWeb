@@ -2,18 +2,22 @@
 <html lang="ro">
 
 <head>
+  <!-- Include fragmentul head.ejs: meta, fonturi, CSS-uri -->
   <%- include('./fragmente/head') %>
 </head>
 
 <body id="inceput-pagina">
 
+  <!-- Include fragmentul header.ejs: logo, nav, hamburger -->
   <%- include('./fragmente/header') %>
 
   <main>
     <div id="grid-pagina">
+      <!-- Variabilele titlu, text, imagine sunt trimise din afisareEroare() în index.js -->
       <section id="error-section">
         <h2><%= titlu %></h2>
         <p><%= text %></p>
+        <!-- Imaginea de eroare este opțională (configurată în erori.json) -->
         <% if (imagine) { %>
           <img src="/<%= imagine %>" alt="<%= titlu %>" style="max-width: 100%; height: auto; margin: 20px 0;">
         <% } %>

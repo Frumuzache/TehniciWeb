@@ -1,0 +1,450 @@
+/* ═══════════════════════════════════════════════════════════════════
+   produse.css — stiluri pentru paginile /produse și /produs/:id
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Layout principal ── */
+#main-produse,
+#main-produs {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+}
+
+#titlu-produse {
+    font-size: 1.6rem;
+    color: var(--culoare-primara);
+    border-bottom: 3px solid var(--culoare-accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Secțiunea de filtre ── */
+#sectiune-filtre {
+    background: var(--culoare-zona-2, #f5f9ff);
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem 1rem;
+    margin-bottom: 2rem;
+}
+
+#sectiune-filtre h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--culoare-primara);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#grid-filtre {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.filtru-grup-lat {
+    grid-column: span 2;
+}
+
+.filtru-grup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.filtru-grup label:first-child,
+.filtru-grup > label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--culoare-primara-intensa, #1f3d63);
+}
+
+.filtru-grup input[type="text"],
+.filtru-grup textarea,
+.filtru-grup select {
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.88rem;
+    background: var(--culoare-suprafata);
+    color: var(--culoare-text);
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.filtru-grup input[type="text"]:focus,
+.filtru-grup textarea:focus,
+.filtru-grup select:focus {
+    outline: none;
+    border-color: var(--culoare-secundara);
+    box-shadow: 0 0 0 2px rgba(69,123,157,0.18);
+}
+
+.filtru-grup textarea {
+    resize: vertical;
+    min-height: 56px;
+}
+
+/* Range */
+.range-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.range-wrapper input[type="range"] {
+    flex: 1;
+    min-width: 80px;
+    accent-color: var(--culoare-secundara);
+}
+
+#pret-valoare-curenta {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--culoare-secundara);
+    white-space: nowrap;
+}
+
+/* Fieldset (radio + checkbox) */
+.filtru-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+}
+
+.filtru-fieldset legend {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--culoare-primara-intensa);
+    margin-bottom: 0.3rem;
+    float: left;
+    width: 100%;
+}
+
+.radio-label,
+.checkbox-label {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+}
+
+/* Butoane */
+#butoane-filtre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+}
+
+.btn-filtru {
+    padding: 0.5rem 1.1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--culoare-secundara, #457b9d);
+    color: #fff;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-filtru:hover { background: var(--culoare-primara, #1d3557); }
+.btn-filtru:active { transform: scale(0.97); }
+
+.btn-principal {
+    background: var(--culoare-primara, #1d3557);
+}
+
+.btn-reset {
+    background: #888;
+}
+
+.btn-reset:hover { background: #555; }
+
+.mesaj-eroare {
+    color: #c0392b;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 0.4rem 0.8rem;
+}
+
+/* ── Grid produse ── */
+#grid-produse {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.produs {
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 10px;
+    padding: 1rem 1.1rem 0.9rem;
+    width: calc(50% - 0.65rem);
+    min-width: 300px;
+    box-shadow: 0 2px 8px var(--culoare-umbra-card, rgba(15,23,42,0.08));
+    transition: box-shadow 0.2s;
+}
+
+.produs:hover {
+    box-shadow: 0 4px 14px var(--culoare-umbra-hover, rgba(15,23,42,0.14));
+}
+
+.produs h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+    color: var(--culoare-primara);
+}
+
+.produs h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.produs h3 a:hover { text-decoration: underline; }
+
+.produs-coloane {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0.8rem;
+}
+
+/* Coloana stanga */
+.col-stanga {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.produs-imagine {
+    width: 140px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1px solid var(--culoare-bordura);
+    background: #f0f4f8;
+}
+
+.produs-descriere {
+    font-size: 0.78rem;
+    color: var(--culoare-text-secundar, #334155);
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Badge categorie */
+.badge-categorie {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.badge-categorie.microcontrolere { background: #1d3557; }
+.badge-categorie.senzori         { background: #457b9d; }
+.badge-categorie.motoare         { background: #e63946; }
+.badge-categorie.alimentare      { background: #2a9d8f; }
+.badge-categorie.module          { background: #e9c46a; color: #1d3557; }
+
+/* Coloana dreapta */
+.col-dreapta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.col-dreapta p {
+    font-size: 0.84rem;
+    margin: 0;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.eticheta {
+    background: var(--culoare-primara, #1d3557);
+    color: #fff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.valoare {
+    color: var(--culoare-text, #0f172a);
+}
+
+.pret-valoare {
+    font-weight: 700;
+    color: var(--culoare-accent, #d4a017);
+    font-size: 1rem;
+}
+
+.stoc-da { color: #2a9d8f; font-weight: 700; }
+.stoc-nu { color: #e63946; font-weight: 700; }
+
+.link-detalii {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--culoare-secundara);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-detalii:hover { text-decoration: underline; }
+
+.mesaj-gol {
+    width: 100%;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* ── Div calcul flotant ── */
+.div-calcul-fix {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--culoare-primara, #1d3557);
+    color: #fff;
+    padding: 1rem 1.3rem;
+    border-radius: 10px;
+    z-index: 9999;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    min-width: 200px;
+    animation: fadeInUp 0.25s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ Pagina produs unic ═══ */
+.breadcrumb {
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+    color: var(--culoare-text-secundar);
+}
+
+.breadcrumb a { color: var(--culoare-secundara); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { margin: 0 0.3rem; color: #aaa; }
+
+.produs-detaliu {
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 12px;
+    padding: 1.5rem 2rem 2rem;
+    box-shadow: 0 3px 12px var(--culoare-umbra-card);
+}
+
+.produs-detaliu h2 {
+    font-size: 1.5rem;
+    color: var(--culoare-primara);
+    margin-bottom: 0.5rem;
+}
+
+.produs-detaliu-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    margin-top: 1.2rem;
+}
+
+.produs-detaliu-imagine img {
+    width: 100%;
+    max-width: 280px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--culoare-bordura);
+}
+
+.tabel-detalii {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabel-detalii th,
+.tabel-detalii td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--culoare-bordura);
+    text-align: left;
+    vertical-align: top;
+}
+
+.tabel-detalii th {
+    background: var(--culoare-primara, #1d3557);
+    color: #fff;
+    font-weight: 700;
+    width: 170px;
+    white-space: nowrap;
+}
+
+.tabel-detalii td { background: var(--culoare-suprafata); }
+.tabel-detalii tr:last-child th,
+.tabel-detalii tr:last-child td { border-bottom: none; }
+
+.produs-descriere-complet {
+    margin-top: 1.5rem;
+}
+
+.produs-descriere-complet h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--culoare-primara);
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--culoare-accent);
+    padding-bottom: 0.25rem;
+}
+
+.produs-descriere-complet p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--culoare-text-secundar);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .produs {
+        width: 100%;
+    }
+    .filtru-grup-lat { grid-column: span 1; }
+}
+
+@media (max-width: 650px) {
+    .produs-coloane {
+        grid-template-columns: 1fr;
+    }
+    .col-stanga { align-items: flex-start; }
+    .produs-detaliu-layout { grid-template-columns: 1fr; }
+}

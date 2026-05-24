@@ -1,19 +1,23 @@
+<!-- Fragment reutilizabil: afișare dinamică a galeriei filtrate după ziua curentă -->
+<!-- galerie.imagini vine din Express (esteImagineAstazi), galerie.cale_galerie e prefixul URL -->
 <section class="galerie-container">
   <div class="galerie-grid">
     <% galerie.imagini.forEach((imagine, index) => { %>
       <figure class="galerie-item">
+        <!-- <picture> cu breakpoints: imaginea e servită redimensionată de ruta Sharp din index.js (?w=px) -->
         <picture>
-          <source 
-            media="(min-width: 992px)" 
+          <source
+            media="(min-width: 992px)"
             srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=400"
             type="image/jpeg"
           />
-          <source 
-            media="(min-width: 576px)" 
+          <source
+            media="(min-width: 576px)"
             srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=300"
             type="image/jpeg"
           />
-          <img 
+          <!-- Imaginea fallback (200px); loading="lazy": nu se încarcă până nu e vizibilă -->
+          <img
             src="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=200"
             alt="<%= imagine.continut_alternativ || imagine.nume_poza %>"
             title="<%= imagine.descriere_poza %>"
