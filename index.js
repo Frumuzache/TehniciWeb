@@ -122,13 +122,15 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
     };
 
     const statusCode = eroare?.identificator || errDefault.identificator || 500;
+    // status: false în erori.json → răspuns cu HTTP 200 (nu se schimbă codul)
+    const httpStatus = (eroare?.status === false) ? 200 : statusCode;
     const params = {
         imagine: imagine || eroare?.imagine || errDefault.imagine,
         titlu: titlu || eroare?.titlu || errDefault.titlu,
         text: text || eroare?.text || errDefault.text,
     };
 
-    res.status(statusCode).render("pagini/eroare", params, (err, html) => {
+    res.status(httpStatus).render("pagini/eroare", params, (err, html) => {
         if (err) {
             res.send(`<!doctype html><html lang="ro"><head><meta charset="utf-8">
                 <title>${params.titlu}</title></head><body>
@@ -356,41 +358,46 @@ app.get("/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "resurse/ico/favicon.ico"));
 });
 
+app.use((req, res, next) => {
+    if (req.url.endsWith(".ejs")) {
+        afisareEroare(res, 400);
+        return;
+    }
+    next();
+});
+
+app.get("/:pagina", (req, res) => {
+    const pagina = req.params.pagina;
+    res.render(`pagini/${pagina}`, {}, (err, html) => {
+        if (err) {
+            if (err.message && err.message.startsWith("Failed to lookup view")) {
+                afisareEroare(res, 404);
+            } else {
+                afisareEroare(res, 500);
+            }
+        } else {
+            res.send(html);
+        }
+    });
+});
+
 app.use((req, res) => {
     if (req.url.startsWith("/resurse") && path.extname(req.url) === "") {
         afisareEroare(res, 403);
-        return;
-    }
-    if (req.url.endsWith(".ejs")) {
-        afisareEroare(res, 400);
         return;
     }
     afisareEroare(res, 404);
 });
 
 // ─── Pornire server ───────────────────────────────────────────────────────────
-const PORT_BAZA = 5000;
-const MAX_INCERCARI_PORT = 20;
+const PORT_BAZA = 8080;
 
-function pornesteServer(portCurent, incercare = 0) {
-    const server = app.listen(portCurent, () => {
-        console.log("Folder index.js", __dirname);
-        console.log("Folder curent (de lucru)", process.cwd());
-        console.log(`Serverul a pornit pe portul ${portCurent}!`);
-    });
-
-    server.on("error", (err) => {
-        if (err.code === "EADDRINUSE" && incercare < MAX_INCERCARI_PORT) {
-            const portUrmator = portCurent + 1;
-            console.warn(`Portul ${portCurent} este ocupat. Încerc pe ${portUrmator}...`);
-            setTimeout(() => pornesteServer(portUrmator, incercare + 1), 100);
-            return;
-        }
-        if (err.code === "EADDRINUSE") {
-            console.error(`Nu am găsit port liber în intervalul ${PORT_BAZA}-${PORT_BAZA + MAX_INCERCARI_PORT}.`);
-            process.exit(1);
-        }
-        throw err;
+function pornesteServer() {
+    app.listen(PORT_BAZA, () => {
+        console.log("Folder index.js (__dirname)", __dirname);
+        console.log("Fisier index.js (__filename)", __filename);
+        console.log("Folder curent de lucru (process.cwd())", process.cwd());
+        console.log(`Serverul a pornit pe portul ${PORT_BAZA}!`);
     });
 }
 
@@ -408,9 +415,9 @@ verificaGalerie();
 compileazaToateScss();
 
 initDB()
-    .then(() => pornesteServer(PORT_BAZA))
+    .then(() => pornesteServer())
     .catch(err => {
         console.error("Eroare la conectarea la baza de date:", err.message);
         console.warn("Serverul porneste fara conexiune la BD - rutele /produse nu vor functiona.");
-        pornesteServer(PORT_BAZA);
+        pornesteServer();
     });

@@ -3,66 +3,139 @@
   "imagini": [
     {
       "fisier_imagine": "robot1.jpg",
-      "nume_poza": "Robot industrial în acțiune",
-      "continut_alternativ": "Robot mecanic cu brațe articulate într-o fabrică",
-      "descriere_poza": "Exemplu de robot industrial cu capacitate de mișcare precisă",
+      "nume_poza": "Roboți industriali de sudare FANUC",
+      "continut_alternativ": "Șase brațe robotice FANUC pe o linie de producție industrială",
+      "descriere_poza": "Roboți industriali cu 6 axe folosiți pentru sudare automată în fabrici",
       "intervale_zile": [["luni", "miercuri"], ["vineri", "duminică"]],
-      "atribuire": null
+      "atribuire": {
+        "autor": "Phasmatisnox",
+        "url_autor": "https://commons.wikimedia.org/wiki/User:Phasmatisnox",
+        "licenta": "CC BY 3.0",
+        "url_sursa": "https://commons.wikimedia.org/wiki/File:FANUC_6-axis_welding_robots.jpg"
+      }
     },
     {
       "fisier_imagine": "circuit_board.jpg",
-      "nume_poza": "Plăci electronice colorate",
-      "continut_alternativ": "Plăci de circuit cu componente electronice",
-      "descriere_poza": "Detaliu al componentelor electronice pe o plăcuță de circuit",
-      "intervale_zile": [["luni", "joi"], ["sâmbată", "duminică"]],
-      "atribuire": null
+      "nume_poza": "Placă Arduino Uno R3",
+      "continut_alternativ": "Placă de dezvoltare Arduino Uno R3 pe fundal alb",
+      "descriere_poza": "Arduino Uno R3 – platformă de prototipare open-source bazată pe microcontroller ATmega328P",
+      "intervale_zile": [["luni", "joi"], ["sâmbătă", "duminică"]],
+      "atribuire": {
+        "autor": "SparkFun Electronics",
+        "url_autor": "https://www.flickr.com/people/41898857@N04",
+        "licenta": "CC BY 2.0",
+        "url_sursa": "https://commons.wikimedia.org/wiki/File:Arduino_Uno_-_R3.jpg"
+      }
     },
     {
       "fisier_imagine": "robot_arm.jpg",
-      "nume_poza": "Brațul robotului cu senzori",
-      "continut_alternativ": "Brațul mecanic al unui robot cu senzori montați",
-      "descriere_poza": "Brațul manipulator al robotului dotat cu senzori de proximitate",
-      "intervale_zile": [["marți", "joi"], ["sâmbată", "sâmbată"]],
+      "nume_poza": "Braț robotic articulat",
+      "continut_alternativ": "Braț mecanic articulat al unui robot industrial",
+      "descriere_poza": "Braț manipulator robotic cu multiple grade de libertate, utilizat în automatizare industrială",
+      "intervale_zile": [["marți", "joi"], ["sâmbătă", "sâmbătă"]],
       "atribuire": null
     },
     {
       "fisier_imagine": "motor_servo.jpg",
-      "nume_poza": "Motoare servomotor de precizie",
-      "continut_alternativ": "Trei servomotoare galbene pe un fundal alb",
-      "descriere_poza": "Servomotoare utilizate pentru control precis în sistemele robotice",
+      "nume_poza": "Placă electronică verde",
+      "continut_alternativ": "Componentele verzi ale unei plăci electronice de circuit",
+      "descriere_poza": "Detaliu macro al componentelor electronice montate pe o placă de circuit imprimat",
       "intervale_zile": [["luni", "marți"], ["joi", "vineri"]],
       "atribuire": null
     },
     {
       "fisier_imagine": "sensor_array.jpg",
-      "nume_poza": "Senzori de distanță în linie",
-      "continut_alternativ": "Senzori ultrasonici aliniate pe o platformă",
-      "descriere_poza": "Sistem de senzori IR pentru detectare obstacole",
+      "nume_poza": "Senzor ultrasonic HC-SR04",
+      "continut_alternativ": "Senzor de distanță cu ultrasunete pe fundal alb",
+      "descriere_poza": "Senzor ultrasonic HC-SR04 pentru măsurarea distanței față de obstacole în roboți mobili",
       "intervale_zile": [["marți", "miercuri"], ["vineri", "luni"]],
-      "atribuire": null
+      "atribuire": {
+        "autor": "Physiker1978",
+        "url_autor": "https://commons.wikimedia.org/wiki/User:Physiker1978",
+        "licenta": "CC BY-SA 4.0",
+        "url_sursa": "https://commons.wikimedia.org/wiki/File:Ultrasonic_sensor.jpg"
+      }
     },
     {
       "fisier_imagine": "assembly_line.jpg",
-      "nume_poza": "Linie de asamblare cu roboți",
-      "continut_alternativ": "Roboți industriali pe o linie de producție",
-      "descriere_poza": "Linie de asamblare automatizată cu roboți cooperanți",
+      "nume_poza": "Linie de asamblare automatizată",
+      "continut_alternativ": "Linie de producție industrială cu roboți și transportoare",
+      "descriere_poza": "Linie de asamblare automatizată cu sisteme robotice cooperante",
       "intervale_zile": [["miercuri", "joi"], ["duminică", "duminică"]],
       "atribuire": null
     },
     {
       "fisier_imagine": "gripper_hand.jpg",
-      "nume_poza": "Gripper pneumatic pentru prehensiune",
-      "continut_alternativ": "Dispozitiv pneumatic de prindere pe un brațul robot",
-      "descriere_poza": "Gripper cu control pneumatic pentru manipulare obiecte",
+      "nume_poza": "Componentă electronică detaliată",
+      "continut_alternativ": "Detaliu macro al componentelor electronice pe o placă de circuit",
+      "descriere_poza": "Componentele electronice montate cu precizie pe o placă de circuit imprimat",
       "intervale_zile": [["luni", "marți"], ["miercuri", "duminică"]],
       "atribuire": null
     },
     {
       "fisier_imagine": "wiring_diagram.jpg",
-      "nume_poza": "Diagramă de cablajul complex",
-      "continut_alternativ": "Fir și conexiuni într-o cutie de control",
-      "descriere_poza": "Sistemul de cablare și conexiuni pentru integrare roboți",
-      "intervale_zile": [["luni", "joi"], ["sâmbată", "luni"]],
+      "nume_poza": "Componente robotice colorate",
+      "continut_alternativ": "Componente și piese electronice colorate pentru robotică",
+      "descriere_poza": "Colecție de componente electronice specifice proiectelor de robotică educațională",
+      "intervale_zile": [["luni", "joi"], ["sâmbătă", "luni"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "breadboard.jpg",
+      "nume_poza": "Breadboard pentru prototipare",
+      "continut_alternativ": "Breadboard alb cu găuri pentru componente electronice",
+      "descriere_poza": "Breadboard (placă de testare fără lipire) folosit pentru prototiparea rapidă a circuitelor",
+      "intervale_zile": [["marți", "sâmbătă"]],
+      "atribuire": {
+        "autor": "Toluaj",
+        "url_autor": "https://commons.wikimedia.org/wiki/User:Toluaj",
+        "licenta": "CC BY-SA 3.0",
+        "url_sursa": "https://commons.wikimedia.org/wiki/File:Breadboard.jpg"
+      }
+    },
+    {
+      "fisier_imagine": "photoresistor.jpg",
+      "nume_poza": "Fotorezistor LDR",
+      "continut_alternativ": "Fotorezistor mic de culoare portocalie pe fundal alb",
+      "descriere_poza": "Fotorezistor (LDR – Light Dependent Resistor) utilizat pentru detectarea luminii în roboți",
+      "intervale_zile": [["luni", "joi"], ["sâmbătă", "duminică"]],
+      "atribuire": {
+        "autor": "Analogauthority",
+        "url_autor": "https://commons.wikimedia.org/wiki/User:Analogauthority",
+        "licenta": "Domeniu public",
+        "url_sursa": "https://commons.wikimedia.org/wiki/File:Photoresistor.jpg"
+      }
+    },
+    {
+      "fisier_imagine": "robot_lab.jpg",
+      "nume_poza": "Laborator de robotică",
+      "continut_alternativ": "Echipamente și componente într-un laborator de robotică",
+      "descriere_poza": "Mediu de lucru dintr-un laborator de robotică cu componente și unelte specifice",
+      "intervale_zile": [["joi", "duminică"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "tech_parts.jpg",
+      "nume_poza": "Piese tehnice de precizie",
+      "continut_alternativ": "Piese mecanice și electronice de precizie pentru robotică",
+      "descriere_poza": "Componente mecanice de precizie utilizate în construcția brațelor robotice",
+      "intervale_zile": [["luni", "miercuri"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "electronics.jpg",
+      "nume_poza": "Sistem electronic integrat",
+      "continut_alternativ": "Placă electronică cu componente integrate pentru sisteme robotice",
+      "descriere_poza": "Sistem de control electronic cu microcontroller și module periferice pentru robotică",
+      "intervale_zile": [["vineri", "luni"]],
+      "atribuire": null
+    },
+    {
+      "fisier_imagine": "raspberry_pi.jpg",
+      "nume_poza": "Calculator single-board",
+      "continut_alternativ": "Placă de calculator de dimensiuni reduse pentru proiecte IoT și robotică",
+      "descriere_poza": "Calculator single-board utilizat ca unitate centrală de procesare în roboți autonomi",
+      "intervale_zile": [["marți", "vineri"]],
       "atribuire": null
     }
   ]

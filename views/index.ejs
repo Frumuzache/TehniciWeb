@@ -55,9 +55,9 @@
           <div id="dv-prezentare">
             <figure>
               <picture>
-                <source srcset="./resurse/imagini/Arduino_Uno_-_R3.jpg" media="(max-width:700px)" />
-                <source srcset="./resurse/imagini/raspberry-pi-5-8gb.jpg" media="(max-width:1200px)" />
-                <img src="./resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
+                <source srcset="/resurse/imagini/Arduino_Uno_-_R3.jpg" media="(max-width:700px)" />
+                <source srcset="/resurse/imagini/raspberry-pi-5-8gb.jpg" media="(max-width:1200px)" />
+                <img src="/resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
                   title="Componente de robotică" />
               </picture>
               <figcaption>Kit demo cu placă de dezvoltare, module cu infrarosu și senzori digitali.</figcaption>
@@ -222,8 +222,8 @@
       </section>
 
       <figure id="fig1" class="fg-img">
-        <a href="resurse/imagini/raspberry-pi-5-8gb.jpg" title="Deschide imaginea mărită">
-          <img src="resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Placă Raspberry Pi">
+        <a href="/resurse/imagini/raspberry-pi-5-8gb.jpg" title="Deschide imaginea mărită">
+          <img src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Placă Raspberry Pi">
         </a>
         <figcaption>Click pe imagine pentru mărire în același tab.</figcaption>
       </figure>
@@ -282,6 +282,20 @@
 
     </div>
 
+    <!-- Galerie dinamică: același fragment ca /galerie — fără duplicare de cod -->
+    <section id="galerie-acasa">
+      <hgroup>
+        <h2>Galeria componentelor</h2>
+        <p class="subtitlu">Imagini din colecția noastră, filtrate după ziua săptămânii</p>
+      </hgroup>
+      <% if (galerie && galerie.imagini && galerie.imagini.length > 0) { %>
+        <%- include('./fragmente/galerie') %>
+      <% } else { %>
+        <p class="intro">Nu există imagini disponibile pentru ziua de astăzi.</p>
+      <% } %>
+      <p class="intro"><a href="/galerie">Vezi galeria completă &rarr;</a></p>
+    </section>
+
     <!-- CERINTA INDIVIDUALA (video-vtt): Videoclip cu subtitluri VTT în mai multe limbi -->
     <section id="video-component">
       <h2>Videoclip demonstrativ</h2>
@@ -294,17 +308,17 @@
           controls
           playsinline
           preload="metadata"
-          poster="./resurse/imagini/Arduino_Uno_-_R3.jpg"
+          poster="/resurse/imagini/Arduino_Uno_-_R3.jpg"
           width="800"
           height="450">
 
           <!-- Browserul alege primul format pe care îl suportă (MP4 sau WebM) -->
-          <source src="./resurse/imagini/demo-robotica.mp4" type="video/mp4">
-          <source src="./resurse/imagini/demo-robotica.webm" type="video/webm">
+          <source src="/resurse/imagini/demo-robotica.mp4" type="video/mp4">
+          <source src="/resurse/imagini/demo-robotica.webm" type="video/webm">
 
           <!-- srclang: codul de limbă; default: trackul activ la încărcare; kind="subtitles": tip pistă -->
-          <track kind="subtitles" src="./resurse/subtitles/ro.vtt" srclang="ro" label="Română" default>
-          <track kind="subtitles" src="./resurse/subtitles/en.vtt" srclang="en" label="English">
+          <track kind="subtitles" src="/resurse/subtitles/ro.vtt" srclang="ro" label="Română" default>
+          <track kind="subtitles" src="/resurse/subtitles/en.vtt" srclang="en" label="English">
 
           Browserul tău nu suportă elementul video HTML5.
         </video>
@@ -317,7 +331,7 @@
     <!-- BONUS 3 (0.2-0.3 pct): Hartă de imagini cu <map> și <area> - liniile 273-285 -->
     <section id="galerie-statica">
       <h2>Hartă imagine componente</h2>
-      <img src="resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320"
+      <img src="/resurse/imagini/raspberry-pi-5-8gb.jpg" alt="Hartă imagine Raspberry Pi" usemap="#rpi-map" width="320"
         height="200">
       <map name="rpi-map">
         <area shape="rect" coords="20,30,180,120" alt="Procesor și memorie"
@@ -383,7 +397,7 @@
         </p>
       </object>
       <p>
-        <a href="./resurse/ico/site.webmanifest" download="catalog-componente-robotica.webmanifest">Descarcă fișierul de
+        <a href="/resurse/ico/site.webmanifest" download="catalog-componente-robotica.webmanifest">Descarcă fișierul de
           configurare (download cu redenumire)</a>
       </p>
     </section>

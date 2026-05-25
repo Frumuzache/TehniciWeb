@@ -1,24 +1,47 @@
-<!-- Fragment reutilizabil: afișare dinamică a galeriei filtrate după ziua curentă -->
-<!-- galerie.imagini vine din Express (esteImagineAstazi), galerie.cale_galerie e prefixul URL -->
+<%
+/*
+  galerie.imagini este deja filtrat după ziua curentă și trunchiat la număr par.
+  galerie.cale_galerie este ruta de bază a imaginilor (ex: /resurse/imagini/galerie).
+
+  Patternul zig-zag pe 3 coloane (se repetă la fiecare 4 perechi):
+    perechea % 4 == 0: img img [spacer]
+    perechea % 4 == 1: img [spacer] img
+    perechea % 4 == 2: [spacer] img img
+    perechea % 4 == 3: img [spacer] img
+  Spacer-ele sunt div.galerie-spacer; pe ecrane medii/mici sunt ascunse prin CSS.
+*/
+%>
 <section class="galerie-container">
   <div class="galerie-grid">
-    <% galerie.imagini.forEach((imagine, index) => { %>
+    <% galerie.imagini.forEach(function(imagine, index) {
+         var pairIndex     = Math.floor(index / 2);
+         var isFirstInPair = (index % 2 === 0);
+         var isLastInPair  = (index % 2 === 1);
+         var pairMod       = pairIndex % 4;
+    %>
+
+      <%/* Spacer ÎNAINTE de pereche (rândul 3: [spacer] img img) */%>
+      <% if (isFirstInPair && pairMod === 2) { %>
+        <div class="galerie-spacer" aria-hidden="true"></div>
+      <% } %>
+
       <figure class="galerie-item">
-        <!-- <picture> cu breakpoints: imaginea e servită redimensionată de ruta Sharp din index.js (?w=px) -->
         <picture>
+          <%/* Ecran mare (≥992px): 400px lățime */%>
           <source
             media="(min-width: 992px)"
-            srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=400"
+            srcset="/resurse/imagini/galerie/<%= imagine.fisier_imagine %>?w=400"
             type="image/jpeg"
           />
+          <%/* Ecran mediu (576–991px): 300px lățime */%>
           <source
             media="(min-width: 576px)"
-            srcset="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=300"
+            srcset="/resurse/imagini/galerie/<%= imagine.fisier_imagine %>?w=300"
             type="image/jpeg"
           />
-          <!-- Imaginea fallback (200px); loading="lazy": nu se încarcă până nu e vizibilă -->
+          <%/* Ecran mic / fallback: 200px */%>
           <img
-            src="<%= galerie.cale_galerie %>/<%= imagine.fisier_imagine %>?w=200"
+            src="/resurse/imagini/galerie/<%= imagine.fisier_imagine %>?w=200"
             alt="<%= imagine.continut_alternativ || imagine.nume_poza %>"
             title="<%= imagine.descriere_poza %>"
             loading="lazy"
@@ -26,11 +49,37 @@
             class="galerie-imagine"
           />
         </picture>
+
         <figcaption class="galerie-caption">
           <span class="galerie-index"></span>
           <span class="galerie-nume"><%= imagine.nume_poza %></span>
+          <% if (imagine.atribuire) { %>
+            <span class="galerie-atribuire">
+              Foto: <% if (imagine.atribuire.url_autor) { %>
+                <a href="<%= imagine.atribuire.url_autor %>" target="_blank" rel="noopener noreferrer"><%= imagine.atribuire.autor %></a>
+              <% } else { %>
+                <%= imagine.atribuire.autor %>
+              <% } %>
+              &ndash; <% if (imagine.atribuire.url_sursa) { %>
+                <a href="<%= imagine.atribuire.url_sursa %>" target="_blank" rel="noopener noreferrer"><%= imagine.atribuire.licenta %></a>
+              <% } else { %>
+                <%= imagine.atribuire.licenta %>
+              <% } %>
+            </span>
+          <% } %>
         </figcaption>
       </figure>
+
+      <%/* Spacer DUPĂ prima imagine (rândurile 2 și 4: img [spacer] img) */%>
+      <% if (isFirstInPair && (pairMod === 1 || pairMod === 3)) { %>
+        <div class="galerie-spacer" aria-hidden="true"></div>
+      <% } %>
+
+      <%/* Spacer DUPĂ ultima imagine (rândul 1: img img [spacer]) */%>
+      <% if (isLastInPair && pairMod === 0) { %>
+        <div class="galerie-spacer" aria-hidden="true"></div>
+      <% } %>
+
     <% }); %>
   </div>
 </section>

@@ -1,17 +1,22 @@
+/* variabile scss - refera variabile css custom definite in general.css */
+/* pozitionare relativa necesara pentru a ancora submeniurile */
 nav {
   position: relative;
 }
 
+/* reset liste pentru toate nivelurile de navigare */
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* hamburger ascuns implicit; devine vizibil doar pe ecran mic (<760px) */
 nav #hamburger {
   display: none;
 }
 
+/* animatie pentru bare: schimba culoare, transformare geometrica si opacitate - 3 cadre cheie */
 @keyframes burgerHoverAnim {
   0% {
     background-color: var(--culoare-primara);
@@ -29,22 +34,22 @@ nav #hamburger {
     opacity: 1;
   }
 }
-
+/* ===== DESKTOP (min-width: 1001px) ===== */
 @media screen and (min-width: 1001px) {
-
+  /* tranzitie generala pe link-urile principale */
   nav > ul > li > a {
     transition: all 0.3s ease-in-out;
   }
-
+  /* meniu orizontal cu spatiere intre elemente */
   nav > ul {
     display: flex;
     gap: 0.5rem;
   }
-
+  /* pozitionare relativa pe fiecare li pentru a ancora submeniu */
   nav > ul > li {
     position: relative;
   }
-
+  /* stilizare link-uri principale: gradient, border, culori */
   nav > ul > li > a {
     display: flex;
     align-items: center;
@@ -59,26 +64,28 @@ nav #hamburger {
     position: relative;
     z-index: 1;
   }
-
+  /* pseudo-element ::before pentru efectul de border animat la hover */
   nav > ul > li > a::before {
     content: "";
     position: absolute;
     inset: 0;
     border: 2px solid transparent;
     border-radius: 0.55rem;
+    /* gradient vizibil doar pe border, interiorul ramane transparent */
     background: linear-gradient(transparent, transparent) padding-box, linear-gradient(120deg, var(--culoare-accent-2-85), var(--culoare-accent-90)) border-box;
+    /* invizibil initial prin scaleY(0) */
     transform: scaleY(0);
     transform-origin: center;
     transition: transform 0.4s ease;
     pointer-events: none;
     z-index: -1;
   }
-
+  /* border-ul apare la hover/focus: scaleY(0) -> scaleY(1) */
   nav > ul > li > a:hover::before,
   nav > ul > li > a:focus-visible::before {
     transform: scaleY(1);
   }
-
+  /* submeniu: ascuns initial cu scale(0), opacity 0 si visibility hidden */
   nav > ul > li ul {
     position: absolute;
     top: calc(100% + 0.25rem);
@@ -95,9 +102,10 @@ nav #hamburger {
     transition: transform 0.35s ease, opacity 0.35s ease;
     opacity: 0;
     display: block;
+    /* visibility hidden previne interactiuni cand submeniu e ascuns */
     visibility: hidden;
   }
-
+  /* stilizare link-uri din submeniu */
   nav > ul > li ul li a {
     display: block;
     padding: 0.4rem 0.8rem;
@@ -105,7 +113,7 @@ nav #hamburger {
     text-decoration: none;
     position: relative;
   }
-
+  /* pseudo-element ::after pentru linia de subliniere animata */
   nav > ul > li ul li a::after {
     content: "";
     position: absolute;
@@ -117,12 +125,12 @@ nav #hamburger {
     border-bottom: 1px solid var(--culoare-primara);
     transition: width 0.3s ease;
   }
-
+  /* linia creste pana la latimea completa la hover/focus tastatura */
   nav > ul > li ul li a:hover::after,
   nav > ul > li ul li a:focus-visible::after {
     width: 100%;
   }
-
+  /* submeniu devine vizibil la hover/focus pe li-ul parinte */
   nav > ul > li:hover > ul,
   nav > ul > li:focus-within > ul {
     transform: scale(1);
@@ -130,10 +138,9 @@ nav #hamburger {
     visibility: visible;
   }
 }
-
-
+/* ===== MOBIL (max-width: 760px): hamburger + meniu vertical ===== */
 @media screen and (max-width: 760px) {
-
+  /* hamburger vizibil pe mobil - container cu 3 bare */
   nav #hamburger {
     display: block !important;
     width: 40px;
@@ -142,7 +149,7 @@ nav #hamburger {
     cursor: pointer;
     z-index: 100;
   }
-
+  /* stiluri comune pentru cele 3 bare orizontale */
   nav #hamburger span {
     position: absolute;
     width: 100%;
@@ -151,43 +158,40 @@ nav #hamburger {
     border-radius: 3px;
     left: 0;
   }
-
+  /* bara 1 sus - animatie auto-play la aparitia hamburgerului */
   nav #hamburger span:nth-child(1) {
     top: 0;
     animation: burgerHoverAnim 0.8s 150ms;
   }
-
+  /* bara 2 mijloc - top calculat fara transform ca sa nu conflicte cu animatia */
   nav #hamburger span:nth-child(2) {
     top: calc(50% - 2.5px);
     animation: burgerHoverAnim 0.8s 300ms;
   }
-
+  /* bara 3 jos */
   nav #hamburger span:nth-child(3) {
     bottom: 0;
     animation: burgerHoverAnim 0.8s 450ms;
   }
-
   nav:hover #hamburger span:nth-child(1),
   nav #hamburger:hover span:nth-child(1),
   nav.active #hamburger span:nth-child(1) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 150ms;
   }
-
   nav:hover #hamburger span:nth-child(2),
   nav #hamburger:hover span:nth-child(2),
   nav.active #hamburger span:nth-child(2) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 300ms;
   }
-
   nav:hover #hamburger span:nth-child(3),
   nav #hamburger:hover span:nth-child(3),
   nav.active #hamburger span:nth-child(3) {
     animation: burgerHoverAnim 0.8s forwards;
     animation-delay: 450ms;
   }
-
+  /* panoul de meniu mobil: forma poligonala clip-path, ascuns initial cu scale(0) */
   nav > ul {
     position: absolute;
     top: 2.2rem;
@@ -206,14 +210,14 @@ nav #hamburger {
     transition: transform 0.5s ease, opacity 0.5s ease;
     visibility: hidden;
   }
-
+  /* meniu deschis la click (clasa .active adaugata prin JS) sau focus tastatura */
   nav.active > ul,
   nav:focus-within > ul {
     transform: scale(1) !important;
     opacity: 1 !important;
     visibility: visible !important;
   }
-
+  /* stilizare link-uri principale din meniu mobil */
   nav > ul li > a {
     color: var(--culoare-text-invers);
     text-decoration: none;
@@ -228,9 +232,9 @@ nav #hamburger {
     position: relative;
     z-index: 1;
   }
-
+  /* pseudo-element ::before pentru highlight colorat la hover */
   nav > ul li > a::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background-color: var(--culoare-accent);
@@ -240,23 +244,23 @@ nav #hamburger {
     transform-origin: center;
     transition: transform 0.4s ease;
   }
-
+  /* highlight apare la hover prin scaleY(0) -> scaleY(1) */
   nav > ul li > a:hover::before {
     transform: scaleY(1);
   }
-
+  /* icon-ul se coloreaza la hover */
   nav > ul li > a:hover i {
     color: var(--culoare-primara);
   }
-
+  /* culoarea textului linkurilor in meniu mobil */
   nav > ul li > a .meniu-text {
     color: var(--culoare-text-invers);
   }
-
+  /* culoarea textului se schimba la hover */
   nav > ul li > a:hover .meniu-text {
     color: var(--culoare-text);
   }
-
+  /* submeniu mobil ascuns cu max-height 0 si overflow hidden */
   nav > ul li ul {
     list-style: none;
     margin-top: 0.5rem;
@@ -268,13 +272,13 @@ nav #hamburger {
     visibility: hidden;
     opacity: 0;
   }
-
+  /* clasa .open pe li expandeaza submeniu la max-height */
   nav > ul li.open > ul {
     max-height: 500px;
     visibility: visible;
     opacity: 1;
   }
-
+  /* stilizare link-uri din submeniu mobil */
   nav > ul li ul li a {
     display: block;
     padding: 0.5rem 0.6rem;
@@ -285,9 +289,9 @@ nav #hamburger {
     transition: all 0.2s ease;
     position: relative;
   }
-
+  /* pseudo-element ::before pentru highlight in submeniu */
   nav > ul li ul li a::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background-color: var(--culoare-accent-2);
@@ -297,11 +301,11 @@ nav #hamburger {
     transform-origin: center;
     transition: transform 0.3s ease;
   }
-
+  /* highlight apare in submeniu la hover */
   nav > ul li ul li a:hover::before {
     transform: scaleY(1);
   }
-
+  /* indent suplimentar la hover pentru feedback vizual */
   nav > ul li ul li a:hover {
     padding-left: 1rem;
   }
