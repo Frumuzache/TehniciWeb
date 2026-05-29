@@ -24,3 +24,17 @@
 </footer>
 
 <div id="banner-print">Acesta este un proiect școlar!</div>
+
+<!-- Banner cookies: animat pe ecran mare, static pe ecran mic/mediu -->
+<div id="banner-cookies" role="alertdialog" aria-label="Banner acceptare cookie-uri">
+  <div id="banner-cookies-continut">
+    <span>
+      <strong>Proiect școlar</strong> &mdash; acest site a fost realizat în scop didactic.
+      Acceptați cookie-urile pentru o experiență completă?
+    </span>
+    <button id="btn-accept-cookies" onclick="acceptaCookies()" type="button">OK</button>
+  </div>
+</div>
+
+<script src="/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/resurse/js/cookies.js"></script>

@@ -25,14 +25,14 @@
       "status": true,
       "titlu": "Pagina nu a fost găsită",
       "text": "Resursa cerută nu există. Vă rugăm să verificați adresa și să încercați din nou.",
-      "imagine": "res_fb47bfb4982cbc24bcd5345d38943297.jpg"
+      "imagine": "galerie/circuit_board.jpg"
     },
     {
       "identificator": 500,
       "status": true,
       "titlu": "Eroare internă de server",
       "text": "A apărut o eroare neașteptată pe server. Vă rugăm să încercați din nou mai târziu.",
-      "imagine": "res_fb47bfb4982cbc24bcd5345d38943297.jpg"
+      "imagine": "galerie/breadboard.jpg"
     }
   ]
 }

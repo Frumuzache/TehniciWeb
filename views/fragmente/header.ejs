@@ -67,6 +67,40 @@
       </li>
     </ul>
   </nav>
+
+  <!-- Zona utilizator: login sau info cont -->
+  <div id="zona-user">
+    <% if (locals.utilizator) { %>
+      <div id="info-user">
+        <% if (utilizator.poza) { %>
+          <img src="/poze_uploadate/<%= utilizator.poza %>" alt="Poza profil" class="poza-profil-mic" />
+        <% } else { %>
+          <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+        <% } %>
+        <span class="user-salut">
+          Salut, <strong><%= utilizator.prenume || utilizator.username %></strong>!
+        </span>
+        <% if (utilizator.rol !== 'comun') { %>
+          <span class="badge-rol badge-rol--<%= utilizator.rol %>"><%= utilizator.rol %></span>
+        <% } %>
+        <a href="/profil" class="btn-user">Profil</a>
+        <% if (locals.Drepturi && utilizator.areDreptul(Drepturi.vizualizareUtilizatori)) { %>
+          <a href="/useri" class="btn-user">Utilizatori</a>
+        <% } %>
+        <a href="/logout" class="btn-user btn-user--logout">Deconectare</a>
+      </div>
+    <% } else { %>
+      <% if (locals.mesajLogin) { %>
+        <p class="mesaj-login-eroare"><%= mesajLogin %></p>
+      <% } %>
+      <form action="/login" method="POST" id="form-login-header">
+        <input type="text" name="username" placeholder="Username" required autocomplete="username" />
+        <input type="password" name="parola" placeholder="Parolă" required autocomplete="current-password" />
+        <button type="submit"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Autentificare</button>
+      </form>
+      <a href="/inregistrare" class="btn-user btn-user--inreg">Cont nou</a>
+    <% } %>
+  </div>
 </header>
 <script>
   /* Meniu hamburger: toggle clasa 'active' la click, închidere la click în afara navului */

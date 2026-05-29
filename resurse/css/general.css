@@ -168,6 +168,10 @@ header h1 i {
     linear-gradient(180deg, var(--culoare-suprafata) 0%, var(--culoare-zona-2) 100%);
 }
 
+#grid-pagina > #welcome {
+    overflow: visible;
+}
+
 #orar,
 #promotii {
     grid-area: z2;
@@ -251,12 +255,24 @@ header h1 i {
     position: relative;
     overflow: hidden;
     border-radius: var(--raza-zona);
+    display: inline-block;
+    max-width: 24rem;
+    width: 100%;
 }
 
 .efect-duotone .efect-duotone-img {
     display: block;
     width: 100%;
     height: auto;
+    filter: grayscale(0) contrast(1);
+    transition: filter 400ms ease;
+    min-width: unset;
+    max-width: unset;
+    border: none;
+    box-shadow: none;
+}
+
+.efect-duotone:hover .efect-duotone-img {
     filter: grayscale(1) contrast(1.15);
 }
 
@@ -266,16 +282,43 @@ header h1 i {
     inset: 0;
     background: linear-gradient(135deg, var(--culoare-primara), var(--culoare-accent));
     mix-blend-mode: multiply;
-    opacity: 0.65;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 400ms ease;
 }
 
-/* Efect CSS: reflexie */
-.efect-reflexie .efect-reflexie-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    -webkit-box-reflect: below 6px linear-gradient(transparent 10%, rgba(15, 23, 42, 0.25));
+.efect-duotone:hover::after {
+    opacity: 0.65;
+}
+
+/* Efect CSS: reflexie pe text */
+.efect-reflexie {
+    position: relative;
+    margin-bottom: 3rem;
+    overflow: visible;
+    line-height: 1;
+}
+
+.efect-reflexie::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+    opacity: 0.22;
+    transform: translateY(-0.18em) scaleY(-1) skewX(-14deg);
+    transform-origin: bottom left;
+    pointer-events: none;
+    transition: transform 350ms ease, opacity 350ms ease;
+}
+
+.efect-reflexie:hover::after {
+    transform: translateY(-0.18em) scaleY(-2.5) skewX(-14deg);
+    opacity: 0.38;
 }
 
 h2,
@@ -891,3 +934,463 @@ footer iframe {
         gap: 1rem;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   CERINTA INDIVIDUALA: bootstrap_js_ — Carousel Bootstrap
+   ═══════════════════════════════════════════════════════════════════ */
+#carusel-produse {
+    margin-left: var(--spatiere-laterala);
+    margin-right: var(--spatiere-laterala);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-radius: var(--raza-zona);
+    overflow: hidden;
+    box-shadow: var(--umbra-zona);
+    border: 1px solid var(--culoare-bordura);
+}
+
+#carusel-produse h2 {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, var(--culoare-primara) 0%, var(--culoare-secundara) 100%);
+    color: var(--culoare-text-invers);
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--culoare-bordura);
+}
+
+#carusel-principal {
+    background: var(--culoare-primara);
+}
+
+.carusel-imagine {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    min-width: unset;
+}
+
+.carusel-placeholder {
+    height: 400px;
+    background: var(--culoare-zona-8);
+    color: var(--culoare-text-secundar);
+}
+
+#carusel-principal .carousel-caption {
+    background: linear-gradient(0deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.45) 70%, transparent 100%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 2rem 1rem;
+    text-align: left;
+}
+
+#carusel-principal .carousel-caption h5 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+#carusel-principal .carousel-caption p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+#carusel-principal .carusel-descriere {
+    opacity: 0.9;
+}
+
+#carusel-principal .carousel-control-prev,
+#carusel-principal .carousel-control-next {
+    width: 8%;
+    opacity: 0.75;
+    transition: opacity 200ms;
+}
+
+#carusel-principal .carousel-control-prev:hover,
+#carusel-principal .carousel-control-next:hover {
+    opacity: 1;
+}
+
+#carusel-principal .carousel-indicators {
+    margin-bottom: 0.4rem;
+}
+
+#carusel-principal .carousel-indicators [data-bs-target] {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: var(--culoare-accent-2);
+    opacity: 0.55;
+    border: none;
+    transition: opacity 200ms;
+}
+
+#carusel-principal .carousel-indicators [data-bs-target].active {
+    opacity: 1;
+    background-color: var(--culoare-accent);
+}
+
+@media screen and (max-width: 860px) {
+    .carusel-imagine,
+    .carusel-placeholder {
+        height: 260px;
+    }
+
+    #carusel-principal .carousel-caption {
+        padding: 0.75rem 1rem 0.5rem;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .carusel-imagine,
+    .carusel-placeholder {
+        height: 200px;
+    }
+
+    #carusel-principal .carousel-caption h5 {
+        font-size: 1rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CERINTA INDIVIDUALA: animatie-banner — Banner cookies animat
+   c1 = #c7d9ec (culoare-bordura)
+   c2 = #1d3557 (culoare-primara)
+   c3 = #38bdf8 (culoare-accent-2)
+   ═══════════════════════════════════════════════════════════════════ */
+#banner-cookies {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1060;
+    padding: 0.75rem 1.5rem;
+    border-top: 3px solid #38bdf8;
+    background-color: #1d3557;
+    color: var(--culoare-text-invers);
+    font-size: 0.95rem;
+    transform: translateX(-100%);
+}
+
+#banner-cookies-continut {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#btn-accept-cookies {
+    background-color: var(--culoare-accent-2);
+    color: var(--culoare-primara);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.35rem 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 200ms ease, transform 150ms ease;
+}
+
+#btn-accept-cookies:hover {
+    background-color: var(--culoare-accent);
+    transform: scale(1.05);
+}
+
+#banner-cookies.animeaza {
+    animation-name: apareBanner;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes apareBanner {
+    0% {
+        transform: translateX(-100%);
+        background-color: #c7d9ec;
+        border-top-color: #457b9d;
+        color: #0f172a;
+    }
+    50% {
+        transform: translateX(-50%);
+        background-color: #457b9d;
+        border-top-color: #1d3557;
+        color: #f8fafc;
+    }
+    100% {
+        transform: translateX(0);
+        background-color: #1d3557;
+        border-top-color: #38bdf8;
+        color: #f8fafc;
+    }
+}
+
+/* Ecran mediu si mic: banner static, fara animatie */
+@media screen and (max-width: 860px) {
+    #banner-cookies,
+    #banner-cookies.animeaza {
+        transform: none;
+        animation: none;
+    }
+}
+
+/* ─── Zona utilizator (header) ─────────────────────────────────────────── */
+#zona-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.4rem 1rem;
+    background: var(--culoare-primara);
+    color: var(--culoare-text-invers);
+    font-size: 0.875rem;
+}
+
+#form-login-header {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#form-login-header input {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    background: var(--culoare-fundal-suprafata-90);
+    color: var(--culoare-text);
+}
+
+#form-login-header button {
+    padding: 0.3rem 0.8rem;
+    background: var(--culoare-secundara);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.2s;
+}
+
+#form-login-header button:hover { background: var(--culoare-accent-2); }
+
+.btn-user {
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background: var(--culoare-secundara);
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.btn-user:hover { background: var(--culoare-accent-2); }
+
+.btn-user--logout { background: #c0392b; }
+.btn-user--logout:hover { background: #e74c3c; }
+
+.btn-user--inreg { background: var(--culoare-accent); color: var(--culoare-text); }
+.btn-user--inreg:hover { background: #e0b030; }
+
+.mesaj-login-eroare {
+    color: #ffd6d6;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.badge-rol {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.badge-rol--admin     { background: #c0392b; color: #fff; }
+.badge-rol--moderator { background: #d48806; color: #fff; }
+.badge-rol--comun     { background: var(--culoare-secundara); color: #fff; }
+
+.poza-profil-mic {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--culoare-bordura);
+}
+
+/* ─── Pagini formular (inregistrare, profil, confirmare) ───────────────── */
+#main-inregistrare,
+#main-profil,
+#main-confirmare {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+}
+
+.form-card {
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 10px;
+    padding: 2rem 2.5rem;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 7%);
+}
+
+.form-card hgroup h2 { font-size: 1.5rem; color: var(--culoare-primara); margin-bottom: 0.2rem; }
+.form-card hgroup .subtitlu { color: var(--culoare-secundara); font-size: 0.9rem; margin-bottom: 1.2rem; }
+
+.alerta {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.alerta--eroare { background: #fde8e8; color: #7b2020; border: 1px solid #f5c6c6; }
+.alerta--succes { background: #e6f4ea; color: #1a5c2a; border: 1px solid #b2dfba; }
+
+.info-cont {
+    background: var(--culoare-fundal);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.875rem;
+}
+
+.info-cont p { margin: 0.2rem 0; }
+
+.poza-profil-container { margin-top: 0.6rem; }
+.poza-profil-mare {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--culoare-secundara);
+}
+
+.camp-formular {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.camp-formular label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--culoare-primara);
+    margin-bottom: 0.3rem;
+}
+
+.camp-formular input[type="text"],
+.camp-formular input[type="email"],
+.camp-formular input[type="password"],
+.camp-formular input[type="file"] {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: var(--culoare-fundal);
+    color: var(--culoare-text);
+    transition: border-color 0.2s;
+}
+
+.camp-formular input:focus {
+    outline: none;
+    border-color: var(--culoare-secundara);
+    box-shadow: 0 0 0 3px rgb(69 123 157 / 15%);
+}
+
+.camp-formular small { color: var(--culoare-secundara); font-size: 0.78rem; margin-top: 0.25rem; }
+
+.input-culoare-grup {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.input-culoare-grup input[type="color"] {
+    width: 44px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 0.65rem;
+    background: var(--culoare-primara);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover { background: var(--culoare-secundara); }
+
+.link-alternativ { text-align: center; margin-top: 1rem; font-size: 0.875rem; }
+.link-alternativ a { color: var(--culoare-secundara); }
+
+/* ─── Pagina utilizatori (admin/moderator) ─────────────────────────────── */
+#main-useri hgroup { margin-bottom: 1.5rem; }
+#main-useri hgroup h2 { color: var(--culoare-primara); }
+
+.tabel-responsive { overflow-x: auto; }
+
+.tabel-useri {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    background: var(--culoare-suprafata);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 6%);
+}
+
+.tabel-useri thead tr { background: var(--culoare-primara); color: #fff; }
+.tabel-useri th, .tabel-useri td { padding: 0.65rem 0.9rem; text-align: left; }
+.tabel-useri tbody tr:nth-child(even) { background: var(--culoare-fundal); }
+.tabel-useri tbody tr:hover { background: var(--culoare-bordura); }
+
+.avatar-tabel {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
+.form-stergere { display: inline; }
+
+.btn-sterge {
+    background: #c0392b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-sterge:hover { background: #e74c3c; }
+
+.mesaj-gol { color: var(--culoare-secundara); font-style: italic; }
+
+/* ─── Poze uploadate accesibile web ────────────────────────────────────── */

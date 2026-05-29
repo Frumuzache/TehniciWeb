@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <title>Înregistrare | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-inregistrare">
+    <section class="form-card">
+      <hgroup>
+        <h2><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Creare cont</h2>
+        <p class="subtitlu">Completați formularul pentru a vă înregistra</p>
+      </hgroup>
+
+      <% if (eroare) { %>
+        <div class="alerta alerta--eroare" role="alert"><%= eroare %></div>
+      <% } %>
+      <% if (succes) { %>
+        <div class="alerta alerta--succes" role="status"><%= succes %></div>
+      <% } %>
+
+      <% if (!succes) { %>
+      <form action="/inregistrare" method="POST" id="form-inregistrare" novalidate>
+        <div class="camp-formular">
+          <label for="username">Username <span aria-hidden="true">*</span></label>
+          <input type="text" id="username" name="username" minlength="3" maxlength="30"
+                 pattern="[a-zA-Z0-9_]{3,30}" placeholder="ex: ion_popescu" required
+                 autocomplete="username" />
+          <small>3–30 caractere alfanumerice sau underscore</small>
+        </div>
+
+        <div class="camp-formular">
+          <label for="nume">Nume <span aria-hidden="true">*</span></label>
+          <input type="text" id="nume" name="nume" minlength="2" placeholder="ex: Popescu" required />
+        </div>
+
+        <div class="camp-formular">
+          <label for="prenume">Prenume <span aria-hidden="true">*</span></label>
+          <input type="text" id="prenume" name="prenume" minlength="2" placeholder="ex: Ion" required />
+        </div>
+
+        <div class="camp-formular">
+          <label for="email">Email <span aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" placeholder="ex: ion@exemplu.ro" required
+                 autocomplete="email" />
+        </div>
+
+        <div class="camp-formular">
+          <label for="parola">Parolă <span aria-hidden="true">*</span></label>
+          <input type="password" id="parola" name="parola" minlength="6"
+                 placeholder="Minim 6 caractere" required autocomplete="new-password" />
+        </div>
+
+        <div class="camp-formular">
+          <label for="culoare_chat">Culoare chat</label>
+          <div class="input-culoare-grup">
+            <input type="color" id="culoare_chat" name="culoare_chat" value="#1d3557" />
+            <span>Culoarea mesajelor dvs. în chat</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Înregistrare
+        </button>
+      </form>
+
+      <p class="link-alternativ">
+        Aveți deja cont? <a href="/">Autentificați-vă</a>
+      </p>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+</html>

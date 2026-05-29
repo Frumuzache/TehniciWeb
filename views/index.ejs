@@ -17,25 +17,27 @@
 
       <section id="welcome">
         <hgroup>
-          <h2>Bine ati venit</h2>
+          <h2 class="efect-reflexie" data-text="Bine ati venit">Bine ati venit</h2>
           <p class="subtitlu">Componente pentru robotică educațională și hobby</p>
         </hgroup>
 
-        <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>,
-          <b>servomotor</b>,
-          <b>senzor</b>, <b>Arduino</b> și <b>Raspberry Pi</b>. Oferim inclusiv <b>placă de dezvoltare</b> și module
-          cu <b>infrarosu</b>.
-        </p>
-        <p>Avem <em>"super-ieftin"</em> doar la produsele marcate, iar la comenzile urgente livrăm <i>ca la carte</i> și
-          <i>cu noaptea în cap</i>.
-        </p>
-        <p><strong>Anunț urgent:</strong> lotul nou de <dfn>senzor de distanță</dfn> și <dfn>senzor de temperatură</dfn>
-          este disponibil în stoc limitat.</p>
-        <p>Recomandăm lectura <cite>Getting Started with Arduino</cite> și citatul clasic
-          <q>measure twice, cut once</q> pentru orice proiect hardware.
-        </p>
-        <p>Protocolul standard folosit la module este <abbr title="Inter-Integrated Circuit">I2C</abbr>.</p>
-        <p>Pachet firmware vechi <s>v1.2</s> <ins>v1.3</ins>.</p>
+        <div class="text-coloane">
+          <p class="intro">Aici găsești rapid componente pentru proiecte de <b>robotică</b>: <b>motor</b>,
+            <b>servomotor</b>,
+            <b>senzor</b>, <b>Arduino</b> și <b>Raspberry Pi</b>. Oferim inclusiv <b>placă de dezvoltare</b> și module
+            cu <b>infrarosu</b>.
+          </p>
+          <p>Avem <em>"super-ieftin"</em> doar la produsele marcate, iar la comenzile urgente livrăm <i>ca la carte</i> și
+            <i>cu noaptea în cap</i>.
+          </p>
+          <p><strong>Anunț urgent:</strong> lotul nou de <dfn>senzor de distanță</dfn> și <dfn>senzor de temperatură</dfn>
+            este disponibil în stoc limitat.</p>
+          <p>Recomandăm lectura <cite>Getting Started with Arduino</cite> și citatul clasic
+            <q>measure twice, cut once</q> pentru orice proiect hardware.
+          </p>
+          <p>Protocolul standard folosit la module este <abbr title="Inter-Integrated Circuit">I2C</abbr>.</p>
+          <p>Pachet firmware vechi <s>v1.2</s> <ins>v1.3</ins>.</p>
+        </div>
 
         <div class="intro-oferte">
           <div>Arduino</div>
@@ -53,11 +55,11 @@
         </p>
         <div id="dv-prezentare-1">
           <div id="dv-prezentare">
-            <figure>
+            <figure class="efect-duotone">
               <picture>
                 <source srcset="/resurse/imagini/Arduino_Uno_-_R3.jpg" media="(max-width:700px)" />
                 <source srcset="/resurse/imagini/raspberry-pi-5-8gb.jpg" media="(max-width:1200px)" />
-                <img src="/resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
+                <img class="efect-duotone-img" src="/resurse/imagini/res_fb47bfb4982cbc24bcd5345d38943297.jpg" alt="Componente robotice"
                   title="Componente de robotică" />
               </picture>
               <figcaption>Kit demo cu placă de dezvoltare, module cu infrarosu și senzori digitali.</figcaption>
@@ -248,6 +250,10 @@
         <h2>Date site și server</h2>
         <p>Uptime server: 99.98% (ultimele 30 zile).</p>
         <p>Ultima sincronizare stoc: acum 5 minute.</p>
+        <!-- CERINTA (animatie-banner): afisat din cookie ultimul_produs, setat la vizitarea unui produs -->
+        <p id="ultim-produs-info" style="display:none;">
+          Ultimul produs vizitat: <a id="ultim-produs-link" href="#">—</a>
+        </p>
       </section>
 
       <section id="index-intrebari">
@@ -281,6 +287,29 @@
       </section>
 
     </div>
+
+    <!-- CERINTA INDIVIDUALA (bootstrap_js_): Carousel Bootstrap cu 5 produse aleatoare din BD -->
+    <section id="carusel-produse">
+      <h2>Produse recomandate</h2>
+      <div id="carusel-principal" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-indicators" id="carusel-indicatori"></div>
+        <div class="carousel-inner" id="carusel-continut">
+          <div class="carousel-item active">
+            <div class="carusel-placeholder d-flex justify-content-center align-items-center">
+              <p class="text-muted m-0">Se încarcă produsele...</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carusel-principal" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carusel-principal" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Următor</span>
+        </button>
+      </div>
+    </section>
 
     <!-- Galerie dinamică: același fragment ca /galerie — fără duplicare de cod -->
     <section id="galerie-acasa">
@@ -447,6 +476,79 @@
 
 
   <%- include('./fragmente/footer') %>
+
+  <script>
+    async function incarcaCarusel() {
+      try {
+        const raspuns = await fetch('/api/produse-carousel');
+        const produse = await raspuns.json();
+        if (!produse.length) return;
+
+        const indicatori = document.getElementById('carusel-indicatori');
+        const continut = document.getElementById('carusel-continut');
+
+        indicatori.innerHTML = '';
+        continut.innerHTML = '';
+
+        produse.forEach(function (prod, i) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.bsTarget = '#carusel-principal';
+          btn.dataset.bsSlideTo = String(i);
+          if (i === 0) { btn.classList.add('active'); btn.setAttribute('aria-current', 'true'); }
+          btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+          indicatori.appendChild(btn);
+
+          const slide = document.createElement('div');
+          slide.classList.add('carousel-item');
+          if (i === 0) slide.classList.add('active');
+
+          const pret = parseFloat(prod.pret).toFixed(2);
+          const desc = prod.descriere
+            ? prod.descriere.substring(0, 100) + (prod.descriere.length > 100 ? '...' : '')
+            : '';
+
+          slide.innerHTML =
+            '<img src="/resurse/imagini/produse/' + prod.imagine + '" ' +
+            '     class="d-block w-100 carusel-imagine" ' +
+            '     alt="' + prod.nume.replace(/"/g, '&quot;') + '" ' +
+            '     onerror="this.src=\'/resurse/imagini/produse/placeholder.svg\'">' +
+            '<div class="carousel-caption d-block">' +
+            '  <h5>' + prod.nume + '</h5>' +
+            '  <p class="d-none d-md-block carusel-descriere">' + desc + '</p>' +
+            '  <p><strong>' + pret + ' RON</strong> &bull; <em>' + prod.categorie + '</em></p>' +
+            '  <a href="/produs/' + prod.id + '" class="btn btn-sm btn-light mt-1">Detalii</a>' +
+            '</div>';
+          continut.appendChild(slide);
+        });
+
+        const caruselEl = document.getElementById('carusel-principal');
+        const vechi = bootstrap.Carousel.getInstance(caruselEl);
+        if (vechi) vechi.dispose();
+        new bootstrap.Carousel(caruselEl, { ride: 'carousel', interval: 3000 });
+      } catch (err) {
+        console.error('Eroare la încărcarea caruselului:', err);
+      }
+    }
+
+    incarcaCarusel();
+    setInterval(incarcaCarusel, 15000);
+
+    // Afiseaza ultimul produs vizitat (cookie setat la vizitarea paginii /produs/:id)
+    const ultimulProdusJson = getCookie('ultimul_produs');
+    if (ultimulProdusJson) {
+      try {
+        const prod = JSON.parse(ultimulProdusJson);
+        const el = document.getElementById('ultim-produs-info');
+        const link = document.getElementById('ultim-produs-link');
+        if (el && link) {
+          link.href = '/produs/' + prod.id;
+          link.textContent = prod.nume;
+          el.style.display = '';
+        }
+      } catch (e) { /* ignore */ }
+    }
+  </script>
 
 </body>
 

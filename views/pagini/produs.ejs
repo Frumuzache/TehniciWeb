@@ -103,5 +103,13 @@
 
   <%- include('../fragmente/footer') %>
 
+  <script>
+    setCookie(
+      'ultimul_produs',
+      JSON.stringify({ id: <%- produs.id %>, nume: <%- JSON.stringify(produs.nume) %> }),
+      7
+    );
+  </script>
+
 </body>
 </html>

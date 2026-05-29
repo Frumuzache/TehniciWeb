@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <title>Utilizatori | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-useri" class="container-fluid px-3 px-md-4 py-4">
+    <hgroup>
+      <h2><i class="fa-solid fa-users" aria-hidden="true"></i> Utilizatori înregistrați</h2>
+      <p class="subtitlu">Lista tuturor utilizatorilor platformei</p>
+    </hgroup>
+
+    <% if (utilizatori.length === 0) { %>
+      <p class="mesaj-gol">Nu există utilizatori înregistrați.</p>
+    <% } else { %>
+      <div class="tabel-responsive">
+        <table class="tabel-useri">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Nume complet</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Confirmat</th>
+              <th>Data înreg.</th>
+              <% if (locals.Drepturi && locals.utilizator && utilizator.areDreptul(Drepturi.stergereUtilizatori)) { %>
+                <th>Acțiuni</th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (const u of utilizatori) { %>
+              <tr>
+                <td><%= u.id %></td>
+                <td>
+                  <% if (u.poza) { %>
+                    <img src="/poze_uploadate/<%= u.poza %>" alt="Avatar" class="avatar-tabel" />
+                  <% } else { %>
+                    <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+                  <% } %>
+                  <%= u.username %>
+                </td>
+                <td><%= u.nume %> <%= u.prenume %></td>
+                <td><a href="mailto:<%= u.email %>"><%= u.email %></a></td>
+                <td><span class="badge-rol badge-rol--<%= u.rol %>"><%= u.rol %></span></td>
+                <td>
+                  <% if (u.confirmat_mail) { %>
+                    <i class="fa-solid fa-check text-success" aria-label="Da"></i>
+                  <% } else { %>
+                    <i class="fa-solid fa-xmark text-danger" aria-label="Nu"></i>
+                  <% } %>
+                </td>
+                <td><%= u.data_adaugare ? new Date(u.data_adaugare).toLocaleDateString('ro-RO') : '—' %></td>
+                <% if (locals.Drepturi && locals.utilizator && utilizator.areDreptul(Drepturi.stergereUtilizatori)) { %>
+                  <td>
+                    <% if (u.id !== utilizator.id) { %>
+                      <form action="/sterge_utiliz" method="POST" class="form-stergere"
+                            onsubmit="return confirm('Sigur doriți să ștergeți utilizatorul <%= u.username %>?');">
+                        <input type="hidden" name="id" value="<%= u.id %>" />
+                        <button type="submit" class="btn-sterge" title="Șterge utilizator">
+                          <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                        </button>
+                      </form>
+                    <% } else { %>
+                      <span class="text-muted">(contul tău)</span>
+                    <% } %>
+                  </td>
+                <% } %>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </main>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+</html>

@@ -1,10 +1,16 @@
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
-const sass = require("sass");
-const ejs = require("ejs");
-const sharp = require("sharp");
-const pg = require("pg");
+const express   = require("express");
+const path      = require("path");
+const fs        = require("fs");
+const sass      = require("sass");
+const ejs       = require("ejs");
+const sharp     = require("sharp");
+const pg        = require("pg");
+const session   = require("express-session");
+const formidable = require("formidable");
+
+const AccesBD        = require("./module_proprii/accesbd");
+const { Utilizator } = require("./module_proprii/utilizator");
+const Drepturi       = require("./module_proprii/drepturi");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -18,7 +24,7 @@ const obGlobal = {
     folderBackup: path.join(__dirname, "backup")
 };
 
-const vectFoldere = ["temp", "backup", "logs", "fisiere_uploadate"];
+const vectFoldere = ["temp", "backup", "logs", "fisiere_uploadate", "poze_uploadate"];
 for (const folder of vectFoldere) {
     const caleFolder = path.join(__dirname, folder);
     if (!fs.existsSync(caleFolder)) {
@@ -35,9 +41,35 @@ const client = new pg.Client({
     port: 5432
 });
 
+// ─── Session middleware ───────────────────────────────────────────────────────
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'robotica-tw-secret',
+    resave: true,
+    saveUninitialized: false
+}));
+app.use(express.urlencoded({ extended: true }));
+
 // ─── Helper URL ───────────────────────────────────────────────────────────────
+/**
+ * Construiește o cale URL din segmente, normalizând separatorii și slash-urile duble.
+ * @param   {...string} segmente
+ * @returns {string}
+ */
 function caleWeb(...segmente) {
     return segmente.join("/").replace(/\\/g, "/").replace(/\/+/g, "/");
+}
+
+/**
+ * Extrage IP-ul real al clientului din request (suportă proxy).
+ * @param   {import('express').Request} req
+ * @returns {string|null}
+ */
+function getIp(req) {
+    let ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+          || req.ip
+          || req.socket?.remoteAddress;
+    if (ip === '::1') ip = '127.0.0.1';
+    return ip || null;
 }
 
 // ─── Helper formatare data in romana ─────────────────────────────────────────
@@ -45,18 +77,60 @@ const LUNI_RO = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
                  'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
 const ZILE_RO = ['Duminică','Luni','Marți','Miercuri','Joi','Vineri','Sâmbătă'];
 
+/**
+ * Formatează un obiect Date sau un șir de dată în format românesc.
+ * @param   {Date|string} data
+ * @returns {string} Ex: "15-Ianuarie-2026 [Joi]"
+ */
 function formatDataRo(data) {
     const d = new Date(data);
     return `${d.getDate()}-${LUNI_RO[d.getMonth()]}-${d.getFullYear()} [${ZILE_RO[d.getDay()]}]`;
 }
 
-// ─── Middleware: injecteaza in locals categorii, ip si helper date ────────────
+// ─── Middleware global: categorii, ip, helper date, utilizator din sesiune ───
 app.use((req, res, next) => {
     res.locals.categorii = obGlobal.categorii;
     res.locals.ip = req.ip;
     res.locals.formatDataRo = formatDataRo;
+    res.locals.Drepturi = Drepturi;
+
+    if (req.session && req.session.utilizator) {
+        req.utilizator = res.locals.utilizator = new Utilizator(req.session.utilizator);
+        res.locals.mesajLogin = req.session.mesajLogin;
+        delete req.session.mesajLogin;
+    }
     next();
 });
+
+// ─── Middleware: înregistrare accesări pagini ─────────────────────────────────
+app.use((req, res, next) => {
+    const ip = getIp(req);
+    if (ip) {
+        try {
+            const campuri = { ip, pagina: req.url };
+            if (req.session?.utilizator?.id) campuri.user_id = req.session.utilizator.id;
+            AccesBD.getInstanta().insert({ tabel: 'accesari', campuri }, (err) => {
+                if (err) console.error('[accesari] Eroare insert:', err.message);
+            });
+        } catch (_e) { /* AccesBD neinitialized yet */ }
+    }
+    next();
+});
+
+/**
+ * Șterge din tabela `accesari` toate înregistrările mai vechi de 10 minute.
+ * Apelată automat la fiecare 10 minute prin `setInterval`.
+ * @returns {void}
+ */
+function stergeAccesariVechi() {
+    try {
+        AccesBD.getInstanta().delete(
+            { tabel: 'accesari', conditiiAnd: ["now() - data_accesare >= interval '10 minutes'"] },
+            (err) => { if (err) console.error('[accesari] Eroare ștergere vechi:', err.message); }
+        );
+    } catch (_e) { /* AccesBD neinitialized yet */ }
+}
+setInterval(stergeAccesariVechi, 10 * 60 * 1000);
 
 // ─── Rute statice ────────────────────────────────────────────────────────────
 app.get('/resurse/imagini/galerie/:fisier_imagine', async (req, res) => {
@@ -96,9 +170,151 @@ app.get(["/resurse", "/resurse/"], (_req, res) => {
 });
 
 app.use("/resurse", express.static(path.join(__dirname, "resurse")));
+app.use("/dist", express.static(path.join(__dirname, "node_modules/bootstrap/dist")));
+app.use("/poze_uploadate", express.static(path.join(__dirname, "poze_uploadate")));
 app.use(express.static(__dirname, { index: false }));
 
 // ─── Erori ───────────────────────────────────────────────────────────────────
+
+/**
+ * Parsează un șir JSON raw și detectează proprietăți duplicate în același obiect.
+ * Folosit în {@link verificaErori} pentru validarea integrității erori.json.
+ * @param   {string}   jsonString - Conținutul JSON ca șir brut
+ * @returns {string[]} Lista mesajelor de avertisment pentru duplicate găsite
+ */
+function verificaCheiDuplicate(jsonString) {
+    const probleme = [];
+    const stackChei = [];
+    let i = 0;
+
+    function citesteSir() {
+        let s = '';
+        i++;
+        while (i < jsonString.length) {
+            if (jsonString[i] === '\\') { s += jsonString[i] + jsonString[i + 1]; i += 2; }
+            else if (jsonString[i] === '"') { i++; break; }
+            else s += jsonString[i++];
+        }
+        return s;
+    }
+
+    while (i < jsonString.length) {
+        const ch = jsonString[i];
+        if (ch === '{') { stackChei.push(new Map()); i++; }
+        else if (ch === '}') { stackChei.pop(); i++; }
+        else if (ch === '[' || ch === ']') { i++; }
+        else if (ch === '"') {
+            const cheie = citesteSir();
+            let j = i;
+            while (j < jsonString.length && ' \t\n\r'.includes(jsonString[j])) j++;
+            if (j < jsonString.length && jsonString[j] === ':' && stackChei.length > 0) {
+                const map = stackChei[stackChei.length - 1];
+                const count = (map.get(cheie) || 0) + 1;
+                map.set(cheie, count);
+                if (count > 1)
+                    probleme.push(`Proprietatea "${cheie}" apare de ${count} ori în același obiect JSON.`);
+            }
+        } else { i++; }
+    }
+    return probleme;
+}
+
+/**
+ * Validează fișierul erori.json la pornirea serverului.
+ * Afișează mesaje de eroare clare pentru orice problemă detectată
+ * (fișier lipsă, proprietăți obligatorii absente, imagini inexistente pe disc,
+ * chei duplicate, identificatori duplicați). Oprește procesul dacă fișierul lipsește
+ * sau nu poate fi parsat.
+ * @returns {void}
+ */
+function verificaErori() {
+    const caleJson = path.join(__dirname, "resurse/json/erori.json");
+
+    // A: fișierul nu există → exit
+    if (!fs.existsSync(caleJson)) {
+        console.error("[verificaErori] CRITIC: Fișierul erori.json nu există la calea:", caleJson);
+        console.error("[verificaErori] Aplicația nu poate porni fără fișierul de erori. Se închide.");
+        process.exit(1);
+    }
+
+    let continut, erori;
+    try {
+        continut = fs.readFileSync(caleJson, "utf-8");
+        erori = JSON.parse(continut);
+    } catch (err) {
+        console.error("[verificaErori] CRITIC: erori.json nu poate fi parsat:", err.message);
+        process.exit(1);
+    }
+
+    // B: lipsesc proprietăți obligatorii de nivel top
+    for (const prop of ["cale_baza", "eroare_default", "info_erori"]) {
+        if (erori[prop] === undefined)
+            console.error(`[verificaErori] Proprietatea obligatorie "${prop}" lipsește din erori.json.`);
+    }
+
+    // C: eroare_default fără titlu, text sau imagine
+    if (erori.eroare_default) {
+        for (const prop of ["titlu", "text", "imagine"]) {
+            if (!erori.eroare_default[prop])
+                console.error(`[verificaErori] Proprietatea "${prop}" lipsește din eroare_default.`);
+        }
+    }
+
+    // D: folderul cale_baza nu există pe disc
+    if (erori.cale_baza) {
+        const caleBazaAbs = path.join(__dirname, erori.cale_baza);
+        if (!fs.existsSync(caleBazaAbs))
+            console.error(`[verificaErori] Folderul din "cale_baza" nu există pe disc: ${caleBazaAbs}`);
+    }
+
+    // E: fișierele imagine nu există pe disc
+    if (erori.cale_baza) {
+        const caleBazaAbs = path.join(__dirname, erori.cale_baza);
+
+        if (erori.eroare_default?.imagine) {
+            const cale = path.join(caleBazaAbs, erori.eroare_default.imagine);
+            if (!fs.existsSync(cale))
+                console.error(`[verificaErori] Imaginea din eroare_default nu există pe disc: ${cale}`);
+        }
+
+        if (Array.isArray(erori.info_erori)) {
+            for (const eroare of erori.info_erori) {
+                if (eroare.imagine) {
+                    const cale = path.join(caleBazaAbs, eroare.imagine);
+                    if (!fs.existsSync(cale))
+                        console.error(`[verificaErori] Imaginea pentru eroarea ${eroare.identificator} nu există pe disc: ${cale}`);
+                }
+            }
+        }
+    }
+
+    // F: proprietăți duplicate în raw JSON string
+    for (const msg of verificaCheiDuplicate(continut))
+        console.error(`[verificaErori] Proprietate duplicată în JSON: ${msg}`);
+
+    // G: mai multe erori cu același identificator
+    if (Array.isArray(erori.info_erori)) {
+        const contor = new Map();
+        for (const eroare of erori.info_erori) {
+            const id = eroare.identificator;
+            if (!contor.has(id)) contor.set(id, []);
+            contor.get(id).push(eroare);
+        }
+        for (const [id, lista] of contor) {
+            if (lista.length > 1) {
+                const detalii = lista.map(({ identificator, ...rest }) => JSON.stringify(rest)).join(" | ");
+                console.error(`[verificaErori] Există ${lista.length} erori cu identificatorul ${id}: ${detalii}`);
+            }
+        }
+    }
+}
+
+/**
+ * Încarcă configurația erorilor din erori.json în {@link obGlobal.obErori}.
+ * Construiește căile absolute ale imaginilor pentru fiecare eroare, concatenând
+ * `cale_baza` cu `imagine`. Trebuie apelat o singură dată, după {@link verificaErori}.
+ * @returns {void}
+ */
 function initErori() {
     const continut = fs.readFileSync(path.join(__dirname, "resurse/json/erori.json"), "utf-8");
     const erori = JSON.parse(continut);
@@ -112,6 +328,17 @@ function initErori() {
     }
 }
 
+/**
+ * Randează pagina de eroare folosind template-ul `pagini/eroare`.
+ * Dacă parametrii opționali lipsesc, preia valorile din {@link obGlobal.obErori}.
+ * Fallback la HTML simplu dacă EJS eșuează.
+ * @param {import('express').Response} res          - Obiectul Response Express
+ * @param {number}                     identificator - Codul erorii (ex: 404, 403, 500)
+ * @param {string}                     [titlu]       - Titlu custom (suprascrie JSON)
+ * @param {string}                     [text]        - Text custom (suprascrie JSON)
+ * @param {string}                     [imagine]     - Cale imagine custom (suprascrie JSON)
+ * @returns {void}
+ */
 function afisareEroare(res, identificator, titlu, text, imagine) {
     const eroare = obGlobal.obErori?.info_erori?.find((elem) => elem.identificator === identificator);
     const errDefault = obGlobal.obErori?.eroare_default || {
@@ -142,6 +369,15 @@ function afisareEroare(res, identificator, titlu, text, imagine) {
 }
 
 // ─── SCSS ────────────────────────────────────────────────────────────────────
+/**
+ * Compilează un fișier SCSS în CSS folosind pachetul `sass`.
+ * Înainte de suprascriere, salvează o copie de backup a CSS-ului existent
+ * în `backup/resurse/css/` cu timestamp în nume.
+ * Căile relative sunt rezolvate față de `obGlobal.folderScss` / `obGlobal.folderCss`.
+ * @param {string}  caleScss - Calea fișierului SCSS (absolută sau relativă la folderScss)
+ * @param {string}  [caleCss]- Calea fișierului CSS de ieșire (implicit: același nume, extensie .css)
+ * @returns {void}
+ */
 function compileazaScss(caleScss, caleCss) {
     if (!caleCss) {
         const numeFis = path.basename(caleScss, ".scss");
@@ -180,6 +416,11 @@ function compileazaScss(caleScss, caleCss) {
     fs.writeFileSync(caleCss, rez.css);
 }
 
+/**
+ * Compilează toate fișierele SCSS din `obGlobal.folderScss` la pornirea serverului,
+ * apoi activează un watcher `fs.watch` care recompilează automat la orice modificare.
+ * @returns {void}
+ */
 function compileazaToateScss() {
     if (!fs.existsSync(obGlobal.folderScss)) return;
 
@@ -200,6 +441,10 @@ function compileazaToateScss() {
 }
 
 // ─── Galerie ─────────────────────────────────────────────────────────────────
+/**
+ * Citește și returnează datele galeriei din `resurse/json/galerie.json`.
+ * @returns {{ cale_galerie: string, imagini: object[] }} Obiectul galerie sau valori implicite goale la eroare
+ */
 function incarcaGalerie() {
     try {
         const caleFisier = path.join(__dirname, "resurse/json/galerie.json");
@@ -212,6 +457,11 @@ function incarcaGalerie() {
     return { cale_galerie: "", imagini: [] };
 }
 
+/**
+ * Validează galerie.json la pornire: verifică existența fișierului, a folderului
+ * `cale_galerie` și a fiecărui fișier de imagine declarat. Afișează erori la consolă.
+ * @returns {void}
+ */
 function verificaGalerie() {
     const caleFisier = path.join(__dirname, "resurse/json/galerie.json");
     if (!fs.existsSync(caleFisier)) {
@@ -244,6 +494,15 @@ function verificaGalerie() {
 
 const indexZile = { "duminică":0,"luni":1,"marți":2,"miercuri":3,"joi":4,"vineri":5,"sâmbată":6 };
 
+/**
+ * Filtrează lista de imagini din galerie, returnând doar cele valabile în ziua specificată.
+ * Fiecare imagine are un câmp `intervale_zile` — vector de perechi `[ziStart, ziSfârșit]`
+ * cu denumiri în română (ex: `["luni", "vineri"]`). Suportă intervale ce trec peste
+ * weekend (ex: `["sâmbătă", "luni"]`).
+ * @param   {object[]}  imagini          - Lista completă de imagini din galerie.json
+ * @param   {Date|null} [dataTest=null]  - Dată de test; dacă null, folosește ziua curentă
+ * @returns {object[]} Imaginile valabile pentru ziua dată
+ */
 function esteImagineAstazi(imagini, dataTest = null) {
     const data = dataTest || new Date();
     const indexZilaCurenta = data.getDay();
@@ -255,6 +514,10 @@ function esteImagineAstazi(imagini, dataTest = null) {
     }));
 }
 
+/**
+ * Citește și returnează lista produselor din `resurse/json/produse.json`.
+ * @returns {object[]} Vectorul de produse sau un vector gol dacă fișierul lipsește/este invalid
+ */
 function incarcaProduse() {
     try {
         const caleFisier = path.join(__dirname, "resurse/json/produse.json");
@@ -283,6 +546,10 @@ app.get(["/", "/index", "/home"], (req, res) => {
         dataAstazi: dataDeTestare,
         ip: req.ip
     });
+});
+
+app.get("/about", (req, res) => {
+    res.render("pagini/about", { ip: req.ip });
 });
 
 app.get("/galerie", (req, res) => {
@@ -349,6 +616,149 @@ app.get("/produs/:id", async (req, res) => {
     }
 });
 
+// ─── API carousel produse ────────────────────────────────────────────────────
+app.get("/api/produse-carousel", async (req, res) => {
+    try {
+        const rez = await client.query(
+            "SELECT id, nume, categorie, pret, descriere, imagine FROM piese ORDER BY RANDOM() LIMIT 5"
+        );
+        res.json(rez.rows);
+    } catch (err) {
+        console.error("Eroare la /api/produse-carousel:", err.message);
+        res.json([]);
+    }
+});
+
+// ─── Rute utilizatori ────────────────────────────────────────────────────────
+
+app.get('/inregistrare', (req, res) => {
+    if (req.session?.utilizator) return res.redirect('/');
+    res.render('pagini/inregistrare', { eroare: null, succes: null });
+});
+
+app.post('/inregistrare', (req, res) => {
+    if (req.session?.utilizator) return res.redirect('/');
+    const { username, nume, prenume, email, parola, culoare_chat } = req.body;
+    if (!Utilizator.verificaUsername(username))
+        return res.render('pagini/inregistrare', { eroare: 'Username invalid — 3-30 caractere alfanumerice sau underscore.', succes: null });
+    if (!Utilizator.verificaNume(nume))
+        return res.render('pagini/inregistrare', { eroare: 'Numele trebuie să conțină doar litere, spații sau cratime (min. 2 car.).', succes: null });
+    if (!Utilizator.verificaNume(prenume))
+        return res.render('pagini/inregistrare', { eroare: 'Prenumele trebuie să conțină doar litere, spații sau cratime (min. 2 car.).', succes: null });
+    if (!Utilizator.verificaEmail(email))
+        return res.render('pagini/inregistrare', { eroare: 'Adresa de email nu este validă.', succes: null });
+    if (!parola || parola.length < 6)
+        return res.render('pagini/inregistrare', { eroare: 'Parola trebuie să aibă cel puțin 6 caractere.', succes: null });
+
+    Utilizator.getUtilizDupaUsername(username, {}, (utilizatorExistent) => {
+        if (utilizatorExistent)
+            return res.render('pagini/inregistrare', { eroare: 'Acest username este deja folosit.', succes: null });
+        const u = new Utilizator({ username, nume, prenume, email, parola, culoare_chat: culoare_chat || '#1d3557' });
+        u.salvareUtilizator();
+        res.render('pagini/inregistrare', {
+            eroare: null,
+            succes: `Cont creat! Verificați emailul ${email} pentru a confirma contul.`
+        });
+    });
+});
+
+app.post('/login', (req, res) => {
+    if (req.session?.utilizator) return res.redirect('/');
+    const { username, parola } = req.body;
+    Utilizator.getUtilizDupaUsername(username, {}, (utilizator, _ob, eroare) => {
+        if (eroare || !utilizator || utilizator.parola !== Utilizator.criptareParola(parola)) {
+            req.session.mesajLogin = 'Username sau parolă incorectă.';
+            return res.redirect('/');
+        }
+        if (!utilizator.confirmat_mail) {
+            req.session.mesajLogin = 'Contul nu a fost confirmat. Verificați emailul.';
+            return res.redirect('/');
+        }
+        req.session.utilizator = utilizator;
+        res.redirect('/');
+    });
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => res.redirect('/'));
+});
+
+app.get('/cod/:username/:token', (req, res) => {
+    const { username, token } = req.params;
+    Utilizator.getUtilizDupaUsername(username, {}, (utilizator, _ob, eroare) => {
+        if (eroare || !utilizator)
+            return res.render('pagini/confirmare', { mesaj: 'Utilizatorul nu a fost găsit.' });
+        if (utilizator.confirmat_mail)
+            return res.render('pagini/confirmare', { mesaj: 'Contul este deja confirmat. Puteți să vă autentificați.' });
+        if (utilizator.cod !== token)
+            return res.render('pagini/confirmare', { mesaj: 'Token de confirmare invalid.' });
+        AccesBD.getInstanta().update({
+            tabel: 'utilizatori',
+            campuri: { confirmat_mail: true, cod: null },
+            conditiiAnd: [`id=${utilizator.id}`]
+        }, (err) => {
+            res.render('pagini/confirmare', {
+                mesaj: err
+                    ? 'Eroare la confirmarea contului. Încercați din nou.'
+                    : 'Contul a fost confirmat cu succes! Vă puteți autentifica.'
+            });
+        });
+    });
+});
+
+app.get('/profil', (req, res) => {
+    if (!req.utilizator) return res.redirect('/');
+    res.render('pagini/profil', { eroare: null, succes: null });
+});
+
+app.post('/profil', (req, res) => {
+    if (!req.utilizator) return res.redirect('/');
+    const form = new formidable.IncomingForm({
+        uploadDir: path.join(__dirname, 'poze_uploadate'),
+        keepExtensions: true,
+        maxFileSize: 5 * 1024 * 1024
+    });
+    form.parse(req, (err, fields, files) => {
+        if (err) return res.render('pagini/profil', { eroare: 'Eroare la procesarea formularului.', succes: null });
+        const u = req.utilizator;
+        const get = (f) => (Array.isArray(fields[f]) ? fields[f][0] : fields[f]) || '';
+        try {
+            if (get('nume'))         u.setareNume    = get('nume');
+            if (get('prenume'))      u.prenume       = get('prenume');
+            if (get('email'))        u.email         = get('email');
+            if (get('culoare_chat')) u.culoare_chat  = get('culoare_chat');
+        } catch (e) {
+            return res.render('pagini/profil', { eroare: e.message, succes: null });
+        }
+        const pozaFile = Array.isArray(files.poza) ? files.poza[0] : files.poza;
+        if (pozaFile && pozaFile.size > 0)
+            u.poza = path.basename(pozaFile.filepath || pozaFile.path || '');
+        u.modifica();
+        req.session.utilizator = u;
+        res.render('pagini/profil', { eroare: null, succes: 'Profil actualizat cu succes!' });
+    });
+});
+
+app.get('/useri', (req, res) => {
+    if (!req.utilizator || !req.utilizator.areDreptul(Drepturi.vizualizareUtilizatori))
+        return afisareEroare(res, 403);
+    AccesBD.getInstanta().select({ tabel: 'utilizatori', orderBy: 'id' }, (err, rez) => {
+        const utilizatori = (err || !rez) ? [] : rez.rows.map(r => new Utilizator(r));
+        res.render('pagini/useri', { utilizatori });
+    });
+});
+
+app.post('/sterge_utiliz', (req, res) => {
+    if (!req.utilizator || !req.utilizator.areDreptul(Drepturi.stergereUtilizatori))
+        return afisareEroare(res, 403);
+    const id = parseInt(req.body.id);
+    if (!isNaN(id) && id !== req.utilizator.id) {
+        const u = new Utilizator({ id });
+        u.sterge();
+    }
+    res.redirect('/useri');
+});
+
 // ─── Ruta generica + 404 ─────────────────────────────────────────────────────
 app.get("/eroare", (req, res) => {
     afisareEroare(res, 404, "Eroare 404", "Pagina nu a fost găsită");
@@ -392,6 +802,11 @@ app.use((req, res) => {
 // ─── Pornire server ───────────────────────────────────────────────────────────
 const PORT_BAZA = 8080;
 
+/**
+ * Pornește serverul Express pe {@link PORT_BAZA} și afișează la consolă
+ * informații despre directoarele de lucru.
+ * @returns {void}
+ */
 function pornesteServer() {
     app.listen(PORT_BAZA, () => {
         console.log("Folder index.js (__dirname)", __dirname);
@@ -401,7 +816,16 @@ function pornesteServer() {
     });
 }
 
+/**
+ * Inițializează conexiunile la baza de date: instanțiază {@link AccesBD} Singleton
+ * și conectează clientul `pg` principal. Încarcă în {@link obGlobal.categorii}
+ * valorile enum `categ_piesa` din PostgreSQL.
+ * @async
+ * @returns {Promise<void>}
+ * @throws {Error} Dacă conexiunea la BD eșuează
+ */
 async function initDB() {
+    AccesBD.getInstanta({ database: 'cti_2026', user: 'frumu', password: 'frumu', host: 'localhost', port: 5432 });
     await client.connect();
     const rez = await client.query(
         "SELECT unnest FROM unnest(enum_range(null::categ_piesa)) AS unnest"
@@ -410,6 +834,7 @@ async function initDB() {
     console.log("Categorii încărcate din DB:", obGlobal.categorii);
 }
 
+verificaErori();
 initErori();
 verificaGalerie();
 compileazaToateScss();

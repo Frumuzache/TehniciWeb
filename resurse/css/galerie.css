@@ -1,6 +1,3 @@
-/* ============================================
-   GALERIE - LAYOUT și STYLING
-   ============================================ */
 
 .galerie-container {
     width: 100%;
@@ -15,7 +12,6 @@
     1 → img spacer img   (spacer mijloc)
     2 → spacer img img   (spacer stânga)
     3 → img spacer img   (spacer mijloc)
-  Spacer-ele sunt div.galerie-spacer inserate din EJS.
 */
 .galerie-grid {
     display: grid;
@@ -24,11 +20,9 @@
     width: 100%;
     padding: 0 1rem;
     box-sizing: border-box;
-    /* Counter CSS pentru cifre romane mici */
     counter-reset: galerie-counter;
 }
 
-/* Fiecare item incrementează counter-ul (spacer-ele nu) */
 .galerie-item {
     counter-increment: galerie-counter;
     display: flex;
@@ -40,7 +34,6 @@
     min-width: 0;
 }
 
-/* Spacer: ocupă o celulă goală în grid (vizibil doar pe desktop) */
 .galerie-spacer {
     display: block;
 }

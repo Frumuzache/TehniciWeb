@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <title>Profil | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-profil">
+    <section class="form-card">
+      <hgroup>
+        <h2><i class="fa-solid fa-user-gear" aria-hidden="true"></i> Profilul meu</h2>
+        <p class="subtitlu">Modificați datele contului dvs.</p>
+      </hgroup>
+
+      <% if (eroare) { %>
+        <div class="alerta alerta--eroare" role="alert"><%= eroare %></div>
+      <% } %>
+      <% if (succes) { %>
+        <div class="alerta alerta--succes" role="status"><%= succes %></div>
+      <% } %>
+
+      <div class="info-cont">
+        <p><strong>Username:</strong> <%= utilizator.username %></p>
+        <p><strong>Rol:</strong> <span class="badge-rol badge-rol--<%= utilizator.rol %>"><%= utilizator.rol %></span></p>
+        <p><strong>Data înregistrării:</strong>
+          <%= utilizator.data_adaugare ? new Date(utilizator.data_adaugare).toLocaleDateString('ro-RO') : 'N/A' %>
+        </p>
+        <% if (utilizator.poza) { %>
+          <div class="poza-profil-container">
+            <img src="/poze_uploadate/<%= utilizator.poza %>" alt="Poza de profil" class="poza-profil-mare" />
+          </div>
+        <% } %>
+      </div>
+
+      <form action="/profil" method="POST" enctype="multipart/form-data" id="form-profil">
+        <div class="camp-formular">
+          <label for="nume">Nume</label>
+          <input type="text" id="nume" name="nume" value="<%= utilizator.nume %>" minlength="2" />
+        </div>
+
+        <div class="camp-formular">
+          <label for="prenume">Prenume</label>
+          <input type="text" id="prenume" name="prenume" value="<%= utilizator.prenume %>" minlength="2" />
+        </div>
+
+        <div class="camp-formular">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="<%= utilizator.email %>" autocomplete="email" />
+        </div>
+
+        <div class="camp-formular">
+          <label for="culoare_chat">Culoare chat</label>
+          <div class="input-culoare-grup">
+            <input type="color" id="culoare_chat" name="culoare_chat"
+                   value="<%= utilizator.culoare_chat || '#1d3557' %>" />
+            <span>Culoarea mesajelor dvs. în chat</span>
+          </div>
+        </div>
+
+        <div class="camp-formular">
+          <label for="poza">Poză de profil</label>
+          <input type="file" id="poza" name="poza" accept="image/*" />
+          <small>JPG, PNG, WebP — max. 5 MB</small>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Salvează modificările
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+</html>
