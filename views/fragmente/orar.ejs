@@ -1,0 +1,110 @@
+<!-- ═══ Bonus 19: Orar de funcționare (fragment inclus în toate paginile) ═══ -->
+
+<!-- Buton flotant -->
+<button id="btn-orar" type="button" title="Program de funcționare" aria-haspopup="true" aria-expanded="false">
+  <i class="bi bi-clock-fill" aria-hidden="true"></i>
+  <span>Orar</span>
+</button>
+
+<!-- Panou orar -->
+<div id="container-orar" hidden role="dialog" aria-label="Program de funcționare">
+  <div id="panel-orar">
+    <button id="btn-inchide-orar" type="button" aria-label="Închide orarul">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
+    <h3><i class="bi bi-shop" aria-hidden="true"></i> Program de funcționare</h3>
+    <table id="tabel-orar">
+      <thead>
+        <tr><th>Ziua</th><th>Program</th></tr>
+      </thead>
+      <tbody>
+        <tr id="orar-luni">     <td>Luni</td>     <td>09:00 – 18:00</td></tr>
+        <tr id="orar-marti">    <td>Marți</td>    <td>09:00 – 18:00</td></tr>
+        <tr id="orar-miercuri"> <td>Miercuri</td> <td>09:00 – 18:00</td></tr>
+        <tr id="orar-joi">      <td>Joi</td>      <td>09:00 – 18:00</td></tr>
+        <tr id="orar-vineri">   <td>Vineri</td>   <td>09:00 – 16:00</td></tr>
+        <tr id="orar-sambata">  <td>Sâmbătă</td>  <td>10:00 – 14:00</td></tr>
+        <tr id="orar-duminica"> <td>Duminică</td> <td>Închis</td></tr>
+      </tbody>
+    </table>
+    <p id="status-firma" aria-live="polite"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+    /* Vectorul orarului: start/end în ore (0/0 = zi liberă) */
+    const ORAR = [
+        { id: 'orar-luni',     start: 9,  end: 18 },
+        { id: 'orar-marti',    start: 9,  end: 18 },
+        { id: 'orar-miercuri', start: 9,  end: 18 },
+        { id: 'orar-joi',      start: 9,  end: 18 },
+        { id: 'orar-vineri',   start: 9,  end: 16 },
+        { id: 'orar-sambata',  start: 10, end: 14 },
+        { id: 'orar-duminica', start: 0,  end: 0  }
+    ];
+
+    function actualizeazaOrar() {
+        const acum       = new Date();
+        const ziJs       = acum.getDay();              // 0=Dum, 1=Lun ... 6=Sam
+        const indexOrar  = ziJs === 0 ? 6 : ziJs - 1; // mapare la vectorul nostru
+        const oraDecim   = acum.getHours() + acum.getMinutes() / 60;
+
+        /* Marchează ziua curentă în tabel */
+        ORAR.forEach((z, i) => {
+            const rand = document.getElementById(z.id);
+            if (rand) rand.classList.toggle('ziua-curenta', i === indexOrar);
+        });
+
+        /* Afișează statusul */
+        const zi       = ORAR[indexOrar];
+        const statusEl = document.getElementById('status-firma');
+        if (!statusEl) return;
+
+        if (zi.start === 0 && zi.end === 0) {
+            statusEl.textContent  = 'Magazinul este ÎNCHIS astăzi.';
+            statusEl.className    = 'status-inchis';
+        } else if (oraDecim >= zi.start && oraDecim < zi.end) {
+            statusEl.textContent  = `Magazinul este DESCHIS — se închide la ${zi.end}:00.`;
+            statusEl.className    = 'status-deschis';
+        } else if (oraDecim < zi.start) {
+            statusEl.textContent  = `Magazinul deschide azi la ${zi.start}:00.`;
+            statusEl.className    = 'status-inchis';
+        } else {
+            statusEl.textContent  = 'Magazinul s-a închis azi. Reveniți mâine!';
+            statusEl.className    = 'status-inchis';
+        }
+    }
+
+    const btnOrar       = document.getElementById('btn-orar');
+    const containerOrar = document.getElementById('container-orar');
+    const btnInchide    = document.getElementById('btn-inchide-orar');
+
+    if (btnOrar) {
+        btnOrar.addEventListener('click', function () {
+            const deschis = !containerOrar.hidden;
+            containerOrar.hidden = deschis;
+            btnOrar.setAttribute('aria-expanded', String(!deschis));
+            if (!deschis) actualizeazaOrar();
+        });
+    }
+
+    if (btnInchide) {
+        btnInchide.addEventListener('click', function () {
+            containerOrar.hidden = true;
+            btnOrar?.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    /* Închide dacă utilizatorul dă click în afara panoului */
+    document.addEventListener('click', function (e) {
+        if (!containerOrar.hidden &&
+            !containerOrar.contains(e.target) &&
+            e.target !== btnOrar &&
+            !btnOrar?.contains(e.target)) {
+            containerOrar.hidden = true;
+            btnOrar?.setAttribute('aria-expanded', 'false');
+        }
+    });
+})();
+</script>

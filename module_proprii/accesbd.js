@@ -58,12 +58,21 @@ class AccesBD {
     // ─── Utilitare interne ───────────────────────────────────────────────────
 
     /**
-     * Construiește clauza WHERE din un vector de condiții AND.
-     * @param   {string[]} conditii
+     * Construiește clauza WHERE.
+     * Format plat  `["a=1","b=2"]`           → WHERE a=1 AND b=2
+     * Format nested `[["a=1","b=2"],["c=3"]]` → WHERE (a=1 AND b=2) OR (c=3)
+     * @param   {string[]|string[][]} conditii
      * @returns {string}
      */
     _buildWhere(conditii) {
-        return (conditii && conditii.length) ? ' WHERE ' + conditii.join(' AND ') : '';
+        if (!conditii || conditii.length === 0) return '';
+        if (Array.isArray(conditii[0])) {
+            const orParts = conditii
+                .filter(g => Array.isArray(g) && g.length > 0)
+                .map(g => g.length === 1 ? g[0] : '(' + g.join(' AND ') + ')');
+            return orParts.length ? ' WHERE ' + orParts.join(' OR ') : '';
+        }
+        return ' WHERE ' + conditii.join(' AND ');
     }
 
     /**

@@ -48,6 +48,7 @@ app.use(session({
     saveUninitialized: false
 }));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // ─── Helper URL ───────────────────────────────────────────────────────────────
 /**
@@ -131,6 +132,29 @@ function stergeAccesariVechi() {
     } catch (_e) { /* AccesBD neinitialized yet */ }
 }
 setInterval(stergeAccesariVechi, 10 * 60 * 1000);
+
+// ─── Bonus 13: Ștergere fișiere backup vechi ─────────────────────────────────
+const BACKUP_MAX_AGE_MIN = 30;
+
+function stergeBackupVechi() {
+    const caleBackup = path.join(obGlobal.folderBackup, 'resurse', 'css');
+    if (!fs.existsSync(caleBackup)) return;
+    const acum = Date.now();
+    try {
+        for (const fisier of fs.readdirSync(caleBackup)) {
+            const cale = path.join(caleBackup, fisier);
+            try {
+                if (acum - fs.statSync(cale).mtimeMs > BACKUP_MAX_AGE_MIN * 60 * 1000) {
+                    fs.unlinkSync(cale);
+                    console.log(`[backup] Șters fișier vechi: ${fisier}`);
+                }
+            } catch (_e) {}
+        }
+    } catch (err) {
+        console.error('[backup] Eroare la ștergerea fișierelor vechi:', err.message);
+    }
+}
+setInterval(stergeBackupVechi, 5 * 60 * 1000);
 
 // ─── Rute statice ────────────────────────────────────────────────────────────
 app.get('/resurse/imagini/galerie/:fisier_imagine', async (req, res) => {
@@ -604,12 +628,40 @@ app.get("/produs/:id", async (req, res) => {
         return;
     }
     try {
-        const rez = await client.query("SELECT * FROM piese WHERE id = $1", [id]);
-        if (rez.rowCount === 0) {
+        const [rezProdus, rezSimilare, rezSeturi] = await Promise.all([
+            client.query("SELECT * FROM piese WHERE id = $1", [id]),
+            // Bonus 16: produse similare (aceeași categorie, random, max 4)
+            client.query(
+                "SELECT id, nume, pret, imagine FROM piese WHERE id != $1 ORDER BY RANDOM() LIMIT 4",
+                [id]
+            ).catch(() => ({ rows: [] })),
+            // Bonus 17d: seturi care conțin acest produs
+            client.query(
+                `SELECT s.id, s.nume_set FROM seturi s
+                 JOIN asociere_set a ON a.id_set = s.id
+                 WHERE a.id_produs = $1`,
+                [id]
+            ).catch(() => ({ rows: [] }))
+        ]);
+
+        if (rezProdus.rowCount === 0) {
             afisareEroare(res, 404, "Produs inexistent", `Nu există niciun produs cu id-ul ${id}.`);
             return;
         }
-        res.render("pagini/produs", { produs: rez.rows[0], ip: req.ip });
+
+        // Refiltrare similare dupa categorie (query simplu fara categorie disponibila inainte)
+        const catProdus = rezProdus.rows[0].categorie;
+        const rezSimilareFiltrate = await client.query(
+            "SELECT id, nume, pret, imagine FROM piese WHERE categorie = $1 AND id != $2 ORDER BY RANDOM() LIMIT 4",
+            [catProdus, id]
+        ).catch(() => ({ rows: [] }));
+
+        res.render("pagini/produs", {
+            produs: rezProdus.rows[0],
+            produseSimilare: rezSimilareFiltrate.rows,
+            seturiProdus: rezSeturi.rows,
+            ip: req.ip
+        });
     } catch (err) {
         console.error("Eroare la /produs/:id:", err.message);
         afisareEroare(res, 500, "Eroare baza de date", "Nu s-au putut încărca datele produsului.");
@@ -626,6 +678,146 @@ app.get("/api/produse-carousel", async (req, res) => {
     } catch (err) {
         console.error("Eroare la /api/produse-carousel:", err.message);
         res.json([]);
+    }
+});
+
+// ─── Bonus 10: API filtrare produse server-side ──────────────────────────────
+app.post("/api/filtrare-produse", async (req, res) => {
+    try {
+        const { protocoale, pretMax, greutateMax, inStoc, subcategorii, descriere, compat, protoExcluse } = req.body;
+
+        const conditii = [];
+        const params   = [];
+
+        if (protocoale) {
+            params.push(`%${protocoale}%`);
+            conditii.push(`protocoale::text ILIKE $${params.length}`);
+        }
+
+        if (pretMax !== undefined && pretMax !== null && !isNaN(pretMax)) {
+            params.push(pretMax);
+            conditii.push(`pret <= $${params.length}`);
+        }
+
+        if (greutateMax) {
+            params.push(parseFloat(greutateMax));
+            conditii.push(`greutate <= $${params.length}`);
+        }
+
+        if (inStoc === 'da') conditii.push('in_stoc = true');
+        if (inStoc === 'nu') conditii.push('in_stoc = false');
+
+        if (subcategorii && subcategorii.length > 0) {
+            params.push(subcategorii);
+            conditii.push(`subcategorie = ANY($${params.length}::subcateg_piesa[])`);
+        }
+
+        if (descriere) {
+            params.push(`%${descriere}%`);
+            conditii.push(`descriere ILIKE $${params.length}`);
+        }
+
+        if (compat) {
+            params.push(compat);
+            conditii.push(`compatibilitate = $${params.length}`);
+        }
+
+        if (protoExcluse && protoExcluse.length > 0) {
+            for (const proto of protoExcluse) {
+                params.push(proto);
+                conditii.push(`NOT ($${params.length} = ANY(protocoale))`);
+            }
+        }
+
+        const where = conditii.length > 0 ? `WHERE ${conditii.join(' AND ')}` : '';
+        const rez   = await client.query(`SELECT * FROM piese ${where} ORDER BY id`, params);
+        res.json({ produse: rez.rows });
+    } catch (err) {
+        console.error("Eroare la /api/filtrare-produse:", err.message);
+        res.status(500).json({ produse: [], eroare: err.message });
+    }
+});
+
+// ─── Bonus 12: Oferte automate ───────────────────────────────────────────────
+const T_OFERTA_SEC  = 60;
+const T_CLEANUP_MIN = 5;
+const CALE_OFERTE   = path.join(__dirname, 'resurse/json/oferte.json');
+
+function citesteOferte() {
+    try {
+        return JSON.parse(fs.readFileSync(CALE_OFERTE, 'utf-8'));
+    } catch (_) { return []; }
+}
+
+function scrieOferte(oferte) {
+    try {
+        fs.writeFileSync(CALE_OFERTE, JSON.stringify(oferte, null, 2));
+    } catch (err) {
+        console.error('[oferte] Eroare scriere:', err.message);
+    }
+}
+
+let ultimaCategOferta = null;
+
+function genereazaOferta() {
+    const categorii = obGlobal.categorii;
+    if (!categorii || categorii.length === 0) return;
+
+    let categ;
+    const altele = categorii.filter(c => c !== ultimaCategOferta);
+    categ = altele[Math.floor(Math.random() * altele.length)] || categorii[0];
+    ultimaCategOferta = categ;
+
+    const reducere   = Math.floor(Math.random() * 31) + 10; // 10-40
+    const acum       = new Date();
+    const finalizare = new Date(acum.getTime() + T_OFERTA_SEC * 1000);
+
+    const oferta = {
+        categorie:       categ,
+        data_incepere:   acum.toISOString(),
+        data_finalizare: finalizare.toISOString(),
+        reducere
+    };
+
+    const oferte = citesteOferte();
+    oferte.unshift(oferta);
+    scrieOferte(oferte);
+    console.log(`[oferte] Ofertă nouă: ${categ} -${reducere}%`);
+}
+
+function stergeOfertaVechi() {
+    const oferte = citesteOferte();
+    const limita = new Date(Date.now() - T_CLEANUP_MIN * 60 * 1000);
+    const filtrate = oferte.filter(o => new Date(o.data_finalizare) > limita);
+    if (filtrate.length !== oferte.length) {
+        scrieOferte(filtrate);
+        console.log(`[oferte] Șterse ${oferte.length - filtrate.length} oferte vechi`);
+    }
+}
+
+app.get("/api/oferta-curenta", (req, res) => {
+    const oferte = citesteOferte();
+    res.json(oferte[0] || {});
+});
+
+// ─── Bonus 17b: Ruta /seturi ─────────────────────────────────────────────────
+app.get("/seturi", async (req, res) => {
+    try {
+        const rezSeturi = await client.query("SELECT * FROM seturi ORDER BY id");
+        const seturi = [];
+        for (const set of rezSeturi.rows) {
+            const rezProduse = await client.query(
+                `SELECT p.id, p.nume, p.pret FROM piese p
+                 JOIN asociere_set a ON a.id_produs = p.id
+                 WHERE a.id_set = $1`,
+                [set.id]
+            );
+            seturi.push({ ...set, produse: rezProduse.rows });
+        }
+        res.render("pagini/seturi", { seturi, ip: req.ip });
+    } catch (err) {
+        console.error("Eroare la /seturi:", err.message);
+        afisareEroare(res, 500, "Eroare baza de date", "Nu s-au putut încărca seturile.");
     }
 });
 
@@ -832,6 +1024,11 @@ async function initDB() {
     );
     obGlobal.categorii = rez.rows.map(r => r.unnest);
     console.log("Categorii încărcate din DB:", obGlobal.categorii);
+
+    // Bonus 12: Pornire oferte automate
+    genereazaOferta();
+    setInterval(genereazaOferta, T_OFERTA_SEC * 1000);
+    setInterval(stergeOfertaVechi, T_CLEANUP_MIN * 60 * 1000);
 }
 
 verificaErori();

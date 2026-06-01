@@ -230,15 +230,21 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .produs-imagine {
     width: 140px;
     height: 110px;
+    max-width: 100%;
     object-fit: cover;
+    object-position: center;
     border-radius: 7px;
     border: 1px solid var(--culoare-bordura);
     background: #f0f4f8;
+    display: block;
+    flex-shrink: 0;
 }
 
 .produs-descriere {
@@ -377,15 +383,28 @@
     grid-template-columns: 280px 1fr;
     gap: 2rem;
     margin-top: 1.2rem;
+    min-width: 0;
+}
+
+.produs-detaliu-imagine {
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid var(--culoare-bordura);
+    background: #f0f4f8;
+    width: 280px;
+    max-width: 100%;
+    height: 220px;
+    flex-shrink: 0;
 }
 
 .produs-detaliu-imagine img {
     width: 100%;
-    max-width: 280px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 1px solid var(--culoare-bordura);
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    border-radius: 0;
+    border: none;
 }
 
 .tabel-detalii {
@@ -447,4 +466,623 @@
     }
     .col-stanga { align-items: flex-start; }
     .produs-detaliu-layout { grid-template-columns: 1fr; }
+    .produs-detaliu-imagine {
+        width: 100%;
+        height: 200px;
+    }
+    .produs-imagine {
+        width: 100%;
+        height: 140px;
+    }
+}
+
+/* ══ Bonus 18: Badge NOU ══ */
+.badge-nou {
+    display: inline-block;
+    background: #e63946;
+    color: #fff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0.1rem 0.38rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ══ Bonus 14: Cel mai ieftin per subcategorie ══ */
+.produs.cel-mai-ieftin {
+    border-color: #2a9d8f;
+    box-shadow: 0 0 0 2px rgba(42,157,143,.25), 0 2px 8px var(--culoare-umbra-card, rgba(15,23,42,0.08));
+}
+
+.badge-ieftin {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #2a9d8f;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.45rem;
+}
+
+/* ══ Bonus 3 Etapa 6: Mesaj filtru gol ══ */
+#mesaj-filtru-gol {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #888;
+    font-style: italic;
+    font-size: 0.98rem;
+    background: var(--culoare-zona-2, #f5f9ff);
+    border: 1.5px dashed var(--culoare-bordura, #c7d9ec);
+    border-radius: 10px;
+}
+
+/* ══ Bonus 8: Sortare avansată ══ */
+#sectiune-sortare-multipla {
+    border-top: 1px solid var(--culoare-bordura, #c7d9ec);
+}
+
+/* ══ Bonus 19: Orar flotant ══ */
+#btn-orar {
+    position: fixed;
+    bottom: 4.8rem;
+    right: 1.2rem;
+    background: var(--culoare-primara, #1d3557);
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    padding: 0.5rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 1050;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+}
+
+#btn-orar:hover { background: var(--culoare-secundara, #457b9d); }
+
+#container-orar {
+    position: fixed;
+    bottom: 8rem;
+    right: 1.2rem;
+    z-index: 1049;
+    width: 300px;
+}
+
+#panel-orar {
+    background: var(--culoare-suprafata, #fff);
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 12px;
+    padding: 1rem 1.25rem 0.9rem;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18);
+    position: relative;
+}
+
+#panel-orar h3 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--culoare-primara);
+    margin-bottom: 0.75rem;
+    padding-right: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+#btn-inchide-orar {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.7rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 0.95rem;
+    padding: 0.2rem 0.3rem;
+    line-height: 1;
+    border-radius: 4px;
+    transition: color 0.15s;
+}
+
+#btn-inchide-orar:hover { color: var(--culoare-primara); }
+
+#tabel-orar {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin-bottom: 0.6rem;
+}
+
+#tabel-orar th {
+    background: var(--culoare-primara, #1d3557);
+    color: #fff;
+    padding: 0.28rem 0.55rem;
+    text-align: left;
+}
+
+#tabel-orar td {
+    padding: 0.25rem 0.55rem;
+    border-bottom: 1px solid var(--culoare-bordura, #c7d9ec);
+}
+
+#tabel-orar tr:last-child td { border-bottom: none; }
+
+#tabel-orar .ziua-curenta td {
+    background: var(--culoare-accent, #d4a017);
+    color: #1d3557;
+    font-weight: 700;
+}
+
+.status-deschis {
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: #2a9d8f;
+    margin: 0;
+}
+
+.status-inchis {
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: #e63946;
+    margin: 0;
+}
+
+/* ══ Bonus 15: Contor produse ══ */
+#titlu-produse small { font-weight: 400; }
+#nr-produse-afisate  { font-weight: 700; color: var(--culoare-secundara, #457b9d); }
+
+/* ══ Bonus 5: Paginare ══ */
+#controale-paginare {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--culoare-zona-2, #f5f9ff);
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+
+#controale-paginare label {
+    font-weight: 600;
+    color: var(--culoare-primara);
+}
+
+#select-k {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 5px;
+    font-size: 0.85rem;
+    background: var(--culoare-suprafata);
+    color: var(--culoare-text);
+}
+
+#butoane-pagini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.btn-pagina {
+    min-width: 2.2rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 5px;
+    background: var(--culoare-suprafata);
+    color: var(--culoare-primara);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.btn-pagina:hover {
+    background: var(--culoare-primara);
+    color: #fff;
+}
+
+.btn-pagina.activa {
+    background: var(--culoare-primara);
+    color: #fff;
+    border-color: var(--culoare-primara);
+}
+
+/* ══ Bonus 6: Butoane acțiuni produs ══ */
+.butoane-produs {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+}
+
+.btn-actiune {
+    background: var(--culoare-zona-2, #f5f9ff);
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 5px;
+    padding: 0.28rem 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--culoare-text-secundar, #334155);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    line-height: 1;
+}
+
+.btn-actiune:hover {
+    background: var(--culoare-primara);
+    color: #fff;
+    border-color: var(--culoare-primara);
+}
+
+.btn-salveaza.activ {
+    background: var(--culoare-accent, #d4a017);
+    color: #1d3557;
+    border-color: var(--culoare-accent);
+}
+
+/* ══ Bonus 10: Buton filtrare server ══ */
+#btn-filtreaza-server {
+    background: var(--culoare-secundara, #457b9d);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.2s;
+}
+
+#btn-filtreaza-server:hover { background: var(--culoare-primara, #1d3557); }
+#btn-filtreaza-server:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ══ Bonus 12: Ofertă curentă / banner ofertă ══ */
+#oferta-curenta {
+    background: linear-gradient(135deg, var(--culoare-accent, #d4a017) 0%, #e0b030 100%);
+    color: #1d3557;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border: 1px solid rgba(0,0,0,.1);
+}
+
+.timer-oferta {
+    font-weight: 700;
+    margin-left: 0.5rem;
+    color: #1d3557;
+}
+
+.timer-urgent {
+    color: #c0392b !important;
+    animation: pulsTimer 0.6s ease infinite alternate;
+}
+
+@keyframes pulsTimer {
+    from { opacity: 1; }
+    to   { opacity: 0.5; }
+}
+
+#banner-oferta {
+    background: linear-gradient(135deg, var(--culoare-accent, #d4a017) 0%, #e0b030 100%);
+    color: #1d3557;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid rgba(0,0,0,.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ══ Prețuri reduse (Bonus 12) ══ */
+.pret-redus {
+    color: #2a9d8f;
+    font-weight: 700;
+}
+
+.pret-vechi {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.85em;
+    margin-right: 0.3rem;
+}
+
+/* ══ Bonus 16: Produse similare ══ */
+#produse-similare {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--culoare-umbra-card);
+}
+
+#produse-similare h3 {
+    font-size: 1.1rem;
+    color: var(--culoare-primara);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--culoare-accent);
+    padding-bottom: 0.3rem;
+}
+
+.similare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.card-similar {
+    background: var(--culoare-zona-2);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+    transition: box-shadow 0.2s;
+    text-decoration: none;
+    color: var(--culoare-text);
+    display: block;
+}
+
+.card-similar:hover {
+    box-shadow: 0 4px 12px var(--culoare-umbra-hover);
+    border-color: var(--culoare-accent);
+    color: var(--culoare-text);
+    text-decoration: none;
+}
+
+.card-similar img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 5px;
+    border: 1px solid var(--culoare-bordura);
+    margin-bottom: 0.5rem;
+    display: block;
+    background: #f0f4f8;
+}
+
+.card-similar .similar-nume {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    color: var(--culoare-primara);
+}
+
+.card-similar .similar-pret {
+    font-weight: 700;
+    color: var(--culoare-accent);
+    font-size: 0.9rem;
+}
+
+/* ══ Bonus 17: Seturi produse ══ */
+#main-seturi {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+}
+
+#main-seturi h2 {
+    color: var(--culoare-primara);
+    border-bottom: 3px solid var(--culoare-accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.set-card {
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px var(--culoare-umbra-card);
+}
+
+.set-card h3 {
+    font-size: 1.1rem;
+    color: var(--culoare-primara);
+    margin-bottom: 0.3rem;
+}
+
+.set-card .set-descriere {
+    color: var(--culoare-text-secundar);
+    font-size: 0.88rem;
+    margin-bottom: 0.75rem;
+}
+
+.set-produse {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.set-produs-tag {
+    background: var(--culoare-zona-2);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 5px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.82rem;
+    text-decoration: none;
+    color: var(--culoare-primara);
+    transition: background 0.15s;
+}
+
+.set-produs-tag:hover {
+    background: var(--culoare-primara);
+    color: #fff;
+}
+
+.set-pret {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--culoare-accent);
+}
+
+.set-pret-normal {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+    margin-right: 0.4rem;
+}
+
+.set-discount-info {
+    font-size: 0.8rem;
+    color: #2a9d8f;
+    margin-left: 0.4rem;
+}
+
+#seturi-produs {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--culoare-zona-2);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 10px;
+}
+
+#seturi-produs h3 {
+    font-size: 1rem;
+    color: var(--culoare-primara);
+    margin-bottom: 0.75rem;
+}
+
+.set-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--culoare-suprafata);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 6px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--culoare-primara);
+    margin: 0.25rem;
+    transition: background 0.15s;
+}
+
+.set-link:hover {
+    background: var(--culoare-primara);
+    color: #fff;
+}
+
+/* ══ Bonus 20: Comparare produse ══ */
+#container-comparare {
+    position: fixed;
+    bottom: 8rem;
+    left: 1rem;
+    z-index: 1055;
+    width: 260px;
+    background: var(--culoare-suprafata, #fff);
+    border: 2px solid var(--culoare-primara, #1d3557);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.22);
+    padding: 0.75rem 1rem;
+}
+
+.comparare-inner h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--culoare-primara);
+    margin-bottom: 0.5rem;
+}
+
+.comparare-slot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--culoare-bordura, #c7d9ec);
+    min-height: 1.8rem;
+    font-size: 0.83rem;
+    color: var(--culoare-text-secundar);
+}
+
+.comparare-slot:last-of-type { border-bottom: none; }
+
+.comparare-slot button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0 0.2rem;
+    transition: color 0.15s;
+    flex-shrink: 0;
+}
+
+.comparare-slot button:hover { color: #e63946; }
+
+#btn-comparare-afiseaza {
+    width: 100%;
+    margin-top: 0.6rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--culoare-primara);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+#btn-comparare-afiseaza:hover { background: var(--culoare-secundara); }
+
+/* Buton comparare pe produs */
+.btn-compara {
+    margin-top: 0.4rem;
+    padding: 0.28rem 0.65rem;
+    background: var(--culoare-zona-2, #f5f9ff);
+    border: 1px solid var(--culoare-bordura, #c7d9ec);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--culoare-primara);
+    transition: background 0.15s, color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.btn-compara:hover {
+    background: var(--culoare-primara);
+    color: #fff;
+}
+
+.btn-compara--activ {
+    background: var(--culoare-primara);
+    color: #fff;
+    border-color: var(--culoare-primara);
+}
+
+.btn-compara--dezactivat {
+    opacity: 0.45;
+    cursor: not-allowed;
 }

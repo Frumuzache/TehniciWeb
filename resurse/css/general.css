@@ -1394,3 +1394,116 @@ footer iframe {
 .mesaj-gol { color: var(--culoare-secundara); font-style: italic; }
 
 /* ─── Poze uploadate accesibile web ────────────────────────────────────── */
+
+/* ══ Bonus 2: Teme cromatice ══ */
+body[data-tema="dark"] {
+    --culoare-fundal: #0f172a;
+    --culoare-suprafata: #1e293b;
+    --culoare-primara: #93c5fd;
+    --culoare-secundara: #60a5fa;
+    --culoare-accent: #fbbf24;
+    --culoare-text: #e2e8f0;
+    --culoare-text-invers: #0f172a;
+    --culoare-bordura: #334155;
+    --culoare-zona-2: #1e293b;
+    --culoare-primara-intensa: #bfdbfe;
+    --culoare-text-secundar: #94a3b8;
+    --culoare-umbra-card: rgba(0,0,0,.4);
+    --culoare-umbra-hover: rgba(0,0,0,.6);
+    --culoare-fundal-top: #0f172a;
+    --culoare-fundal-suprafata-95: rgba(30,41,59,.95);
+    --culoare-fundal-suprafata-90: rgba(30,41,59,.90);
+    --culoare-fundal-suprafata-86: rgba(30,41,59,.86);
+    --culoare-fundal-suprafata-96: rgba(30,41,59,.96);
+    --culoare-zona-3: #1e293b;
+    --culoare-zona-4: #0f172a;
+    --culoare-zona-5: #1e293b;
+    --culoare-zona-6: #1e293b;
+    --culoare-zona-7: #1e293b;
+    --culoare-zona-8: #1e293b;
+    --culoare-zona-9: #263347;
+    --culoare-zona-10: #1e293b;
+    --culoare-zona-11: #1e293b;
+    --culoare-zona-12: #263347;
+    color: var(--culoare-text);
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+body[data-tema="verde"] {
+    --culoare-fundal: #f0fdf4;
+    --culoare-suprafata: #ffffff;
+    --culoare-primara: #166534;
+    --culoare-secundara: #16a34a;
+    --culoare-accent: #facc15;
+    --culoare-text: #14532d;
+    --culoare-text-invers: #f0fdf4;
+    --culoare-bordura: #86efac;
+    --culoare-zona-2: #dcfce7;
+    --culoare-primara-intensa: #14532d;
+    --culoare-text-secundar: #15803d;
+    --culoare-umbra-card: rgba(22,101,52,.12);
+    --culoare-umbra-hover: rgba(22,101,52,.22);
+    --culoare-fundal-top: #f0fdf4;
+    --culoare-fundal-suprafata-95: rgba(255,255,255,.95);
+    --culoare-fundal-suprafata-90: rgba(255,255,255,.90);
+    --culoare-fundal-suprafata-86: rgba(255,255,255,.86);
+    --culoare-fundal-suprafata-96: rgba(255,255,255,.96);
+    --culoare-zona-3: #f0fdf4;
+    --culoare-zona-4: #dcfce7;
+    --culoare-zona-5: #f0fdf4;
+    --culoare-zona-6: #dcfce7;
+    --culoare-zona-7: #f0fdf4;
+    --culoare-zona-8: #dcfce7;
+    --culoare-zona-9: #bbf7d0;
+    --culoare-zona-10: #f0fdf4;
+    --culoare-zona-11: #f0fdf4;
+    --culoare-zona-12: #dcfce7;
+    color: var(--culoare-text);
+    background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+/* ── Selector teme (header) ── */
+.selectorTema {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.3rem 0.6rem;
+    background: var(--culoare-zona-2);
+    border: 1px solid var(--culoare-bordura);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    grid-column: 1 / -1;
+}
+
+.selectorTema .tema-label {
+    font-weight: 600;
+    color: var(--culoare-primara);
+    margin-right: 0.3rem;
+    white-space: nowrap;
+}
+
+.selectorTema .btn-check + label {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.78rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#btn-tema {
+    background: var(--culoare-primara);
+    color: var(--culoare-text-invers);
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+#btn-tema:hover { background: var(--culoare-secundara); }

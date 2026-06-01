@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <%- include('../fragmente/head') %>
+  <link rel="stylesheet" href="/resurse/css/produse.css" type="text/css" />
+  <title>Seturi de produse | Magazin de piese de robotică</title>
+</head>
+
+<body id="inceput-pagina">
+
+  <%- include('../fragmente/header') %>
+
+  <main id="main-seturi">
+
+    <h2><i class="bi bi-box-seam-fill"></i> Seturi de produse</h2>
+    <p class="text-muted mb-4">Combinații de produse gândite pentru proiecte complete, cu discount progresiv.</p>
+
+    <% if (!seturi || seturi.length === 0) { %>
+      <p class="mesaj-gol">Nu există seturi disponibile momentan.</p>
+    <% } else { %>
+      <% for (const set of seturi) { %>
+        <div class="set-card" id="set-<%= set.id %>">
+          <h3><i class="bi bi-collection-fill"></i> <%= set.nume_set %></h3>
+          <% if (set.descriere_set) { %>
+            <p class="set-descriere"><%= set.descriere_set %></p>
+          <% } %>
+
+          <div class="set-produse">
+            <% for (const prod of set.produse) { %>
+              <a href="/produs/<%= prod.id %>" class="set-produs-tag">
+                <%= prod.nume %> (<%= parseFloat(prod.pret).toFixed(2) %> RON)
+              </a>
+            <% } %>
+          </div>
+
+          <div>
+            <% var pretTotal = set.produse.reduce(function(s, p) { return s + parseFloat(p.pret); }, 0); %>
+            <% var nrProduse = set.produse.length; %>
+            <% var discountPct = Math.min(5, nrProduse) * 5; %>
+            <% var pretFinal = pretTotal * (1 - discountPct / 100); %>
+            <span class="set-pret-normal"><%= pretTotal.toFixed(2) %> RON</span>
+            <span class="set-pret"><%= pretFinal.toFixed(2) %> RON</span>
+            <span class="set-discount-info">(-<%= discountPct %>% reducere set)</span>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+
+  </main>
+
+  <a id="link-top" href="#inceput-pagina" title="Mergi la începutul paginii">
+    <span class="simbol-top" aria-hidden="true"><span id="triunghi"></span></span>
+    <span class="text-link-top">Back to top</span>
+  </a>
+
+  <%- include('../fragmente/footer') %>
+
+</body>
+</html>

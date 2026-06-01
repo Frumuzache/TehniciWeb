@@ -37,6 +37,7 @@
               <li><a href="/produse?categorie=<%= cat %>"><%= cat.charAt(0).toUpperCase() + cat.slice(1) %></a></li>
             <% } %>
           <% } %>
+          <li><a href="/seturi"><i class="fa-solid fa-layer-group"></i> Seturi</a></li>
         </ul>
       </li>
       <li>
@@ -67,6 +68,30 @@
       </li>
     </ul>
   </nav>
+
+  <!-- Bonus 2: Selector teme cromatice -->
+  <div class="selectorTema" role="group" aria-label="Selectare temă">
+    <span class="tema-label"><i class="fa-solid fa-palette" aria-hidden="true"></i> Temă:</span>
+
+    <input type="radio" class="btn-check" name="tema-radio" id="tema-luminos" value="luminos" autocomplete="off">
+    <label class="btn btn-outline-secondary btn-sm" for="tema-luminos" title="Temă luminoasă">
+      <i class="fa-solid fa-sun" aria-hidden="true"></i> Luminos
+    </label>
+
+    <input type="radio" class="btn-check" name="tema-radio" id="tema-dark" value="dark" autocomplete="off">
+    <label class="btn btn-outline-secondary btn-sm" for="tema-dark" title="Temă întunecată">
+      <i class="fa-solid fa-moon" aria-hidden="true"></i> Întunecat
+    </label>
+
+    <input type="radio" class="btn-check" name="tema-radio" id="tema-verde" value="verde" autocomplete="off">
+    <label class="btn btn-outline-success btn-sm" for="tema-verde" title="Temă verde">
+      <i class="fa-solid fa-leaf" aria-hidden="true"></i> Verde
+    </label>
+
+    <button id="btn-tema" title="Comutare temă luminoasă / întunecată" aria-label="Comutare temă">
+      <i class="fa-solid fa-moon" aria-hidden="true"></i>
+    </button>
+  </div>
 
   <!-- Zona utilizator: login sau info cont -->
   <div id="zona-user">

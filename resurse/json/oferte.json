@@ -1,0 +1,98 @@
+[
+  {
+    "categorie": "alimentare",
+    "data_incepere": "2026-06-01T13:14:36.009Z",
+    "data_finalizare": "2026-06-01T13:15:36.009Z",
+    "reducere": 29
+  },
+  {
+    "categorie": "senzori",
+    "data_incepere": "2026-06-01T13:13:36.008Z",
+    "data_finalizare": "2026-06-01T13:14:36.008Z",
+    "reducere": 18
+  },
+  {
+    "categorie": "motoare",
+    "data_incepere": "2026-06-01T13:12:36.008Z",
+    "data_finalizare": "2026-06-01T13:13:36.008Z",
+    "reducere": 27
+  },
+  {
+    "categorie": "alimentare",
+    "data_incepere": "2026-06-01T13:11:36.007Z",
+    "data_finalizare": "2026-06-01T13:12:36.007Z",
+    "reducere": 30
+  },
+  {
+    "categorie": "alimentare",
+    "data_incepere": "2026-06-01T13:10:02.676Z",
+    "data_finalizare": "2026-06-01T13:11:02.676Z",
+    "reducere": 29
+  },
+  {
+    "categorie": "alimentare",
+    "data_incepere": "2026-06-01T13:09:52.074Z",
+    "data_finalizare": "2026-06-01T13:10:52.074Z",
+    "reducere": 20
+  },
+  {
+    "categorie": "senzori",
+    "data_incepere": "2026-06-01T13:08:52.072Z",
+    "data_finalizare": "2026-06-01T13:09:52.072Z",
+    "reducere": 23
+  },
+  {
+    "categorie": "module",
+    "data_incepere": "2026-06-01T13:07:52.070Z",
+    "data_finalizare": "2026-06-01T13:08:52.070Z",
+    "reducere": 36
+  },
+  {
+    "categorie": "motoare",
+    "data_incepere": "2026-06-01T13:07:37.341Z",
+    "data_finalizare": "2026-06-01T13:08:37.341Z",
+    "reducere": 15
+  },
+  {
+    "categorie": "microcontrolere",
+    "data_incepere": "2026-06-01T13:07:32.472Z",
+    "data_finalizare": "2026-06-01T13:08:32.472Z",
+    "reducere": 39
+  },
+  {
+    "categorie": "motoare",
+    "data_incepere": "2026-06-01T13:06:32.472Z",
+    "data_finalizare": "2026-06-01T13:07:32.472Z",
+    "reducere": 14
+  },
+  {
+    "categorie": "microcontrolere",
+    "data_incepere": "2026-06-01T13:05:32.470Z",
+    "data_finalizare": "2026-06-01T13:06:32.470Z",
+    "reducere": 20
+  },
+  {
+    "categorie": "alimentare",
+    "data_incepere": "2026-06-01T13:04:32.470Z",
+    "data_finalizare": "2026-06-01T13:05:32.470Z",
+    "reducere": 14
+  },
+  {
+    "categorie": "module",
+    "data_incepere": "2026-06-01T13:03:32.469Z",
+    "data_finalizare": "2026-06-01T13:04:32.469Z",
+    "reducere": 40
+  },
+  {
+    "categorie": "microcontrolere",
+    "data_incepere": "2026-06-01T13:02:32.468Z",
+    "data_finalizare": "2026-06-01T13:03:32.468Z",
+    "reducere": 40
+  },
+  {
+    "categorie": "senzori",
+    "data_incepere": "2026-06-01T13:01:32.467Z",
+    "data_finalizare": "2026-06-01T13:02:32.467Z",
+    "reducere": 27
+  }
+]

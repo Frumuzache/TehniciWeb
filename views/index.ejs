@@ -71,6 +71,14 @@
 
       <section id="promotii">
         <h2>Promoții și oferte</h2>
+
+        <!-- Bonus 12: Ofertă curentă generată automat -->
+        <div id="oferta-curenta" hidden>
+          <strong>Ofertă specială: </strong><span id="oferta-categorie"></span>
+          &mdash; reducere <span id="oferta-reducere"></span>%!
+          <span id="timer-oferta" class="timer-oferta"></span>
+        </div>
+
         <article>
           <h3 class="titlu">Super ofertă de weekend</h3>
           <p>Reduceri de <s>10%</s> <ins>15%</ins> la kiturile cu <b>motor</b> + <b>senzor de distanță</b>.</p>
@@ -548,6 +556,63 @@
         }
       } catch (e) { /* ignore */ }
     }
+
+    // Bonus 12: Ofertă curentă — actualizare la fiecare secundă
+    (function() {
+      var elOferta   = document.getElementById('oferta-curenta');
+      var elCateg    = document.getElementById('oferta-categorie');
+      var elReducere = document.getElementById('oferta-reducere');
+      var elTimer    = document.getElementById('timer-oferta');
+      var ofertaCur  = null;
+
+      function formateazaTimer(secunde) {
+        var m = Math.floor(secunde / 60);
+        var s = secunde % 60;
+        return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      }
+
+      function actualizeazaTimer() {
+        if (!ofertaCur || !ofertaCur.data_finalizare) {
+          elOferta.hidden = true;
+          return;
+        }
+        var acum = new Date();
+        var sf   = new Date(ofertaCur.data_finalizare);
+        var diff = Math.round((sf - acum) / 1000);
+        if (diff <= 0) {
+          elOferta.hidden = true;
+          ofertaCur = null;
+          return;
+        }
+        elTimer.textContent = '(' + formateazaTimer(diff) + ')';
+        if (diff <= 10) {
+          elTimer.classList.add('timer-urgent');
+        } else {
+          elTimer.classList.remove('timer-urgent');
+        }
+      }
+
+      function incarcaOferta() {
+        fetch('/api/oferta-curenta')
+          .then(function(r) { return r.json(); })
+          .then(function(oferta) {
+            if (!oferta || !oferta.categorie) {
+              elOferta.hidden = true;
+              ofertaCur = null;
+              return;
+            }
+            ofertaCur = oferta;
+            elCateg.textContent    = oferta.categorie;
+            elReducere.textContent = oferta.reducere;
+            elOferta.hidden = false;
+          })
+          .catch(function() { elOferta.hidden = true; });
+      }
+
+      incarcaOferta();
+      setInterval(incarcaOferta, 30000);
+      setInterval(actualizeazaTimer, 1000);
+    })();
   </script>
 
 </body>

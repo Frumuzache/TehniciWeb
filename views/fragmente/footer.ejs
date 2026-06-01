@@ -38,3 +38,27 @@
 
 <script src="/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/resurse/js/cookies.js"></script>
+
+<!-- Bonus 2: Teme -->
+<script src="/resurse/js/teme.js"></script>
+
+<!-- Bonus 20: Comparare produse -->
+<div id="container-comparare" style="display:none" aria-live="polite" aria-label="Comparare produse">
+  <div class="comparare-inner">
+    <h4><i class="bi bi-arrow-left-right"></i> Comparare</h4>
+    <div class="comparare-slot">
+      <span class="comparare-slot-1"></span>
+      <button id="btn-comparare-sterge-0" aria-label="Elimină primul produs">&times;</button>
+    </div>
+    <div class="comparare-slot">
+      <span class="comparare-slot-2"></span>
+      <button id="btn-comparare-sterge-1" aria-label="Elimină al doilea produs">&times;</button>
+    </div>
+    <button id="btn-comparare-afiseaza" style="display:none">
+      <i class="bi bi-table"></i> Afișează comparare
+    </button>
+  </div>
+</div>
+<script src="/resurse/js/comparare.js"></script>
+
+<%- include('./orar') %>

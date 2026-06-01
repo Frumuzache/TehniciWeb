@@ -7,7 +7,7 @@
   <title><%= produs.nume %> | Magazin de piese de robotică</title>
 </head>
 
-<body id="inceput-pagina">
+<body id="inceput-pagina" data-tip-pagina="produs">
 
   <%- include('../fragmente/header') %>
 
@@ -88,11 +88,59 @@
             <p><%= produs.descriere %></p>
           </div>
 
+          <!-- Bonus 20: Buton comparare -->
+          <button class="btn-compara" title="Adaugă la comparare"
+                  data-id="<%= produs.id %>"
+                  data-nume="<%= (produs.nume || '').replace(/"/g, '&quot;') %>"
+                  data-pret="<%= produs.pret %>"
+                  data-compatibilitate="<%= produs.compatibilitate %>"
+                  data-protocoale="<%= produs.protocoale ? produs.protocoale.join(',') : '' %>"
+                  data-in-stoc="<%= produs.in_stoc ? 'da' : 'nu' %>"
+                  data-greutate="<%= produs.greutate %>"
+                  data-imagine="<%= produs.imagine %>">
+            <i class="bi bi-arrow-left-right"></i> Adaugă la comparare
+          </button>
+
         </div><!-- /.produs-detaliu-info -->
 
       </div><!-- /.produs-detaliu-layout -->
 
     </article>
+
+    <!-- Bonus 16: Produse similare -->
+    <% if (typeof produseSimilare !== 'undefined' && produseSimilare.length > 0) { %>
+    <section id="produse-similare">
+      <h3><i class="bi bi-grid-3x3-gap-fill"></i> Produse similare</h3>
+      <div class="similare-grid">
+        <% for (const sim of produseSimilare) { %>
+          <a href="/produs/<%= sim.id %>" class="card-similar">
+            <img
+              src="/resurse/imagini/produse/<%= sim.imagine %>"
+              alt="<%= sim.nume %>"
+              onerror="this.src='/resurse/imagini/produse/placeholder.svg'"
+            >
+            <div class="similar-nume"><%= sim.nume %></div>
+            <div class="similar-pret"><%= parseFloat(sim.pret).toFixed(2) %> RON</div>
+          </a>
+        <% } %>
+      </div>
+    </section>
+    <% } %>
+
+    <!-- Bonus 17d: Seturi care conțin acest produs -->
+    <% if (typeof seturiProdus !== 'undefined' && seturiProdus.length > 0) { %>
+    <section id="seturi-produs">
+      <h3><i class="bi bi-collection-fill"></i> Acest produs face parte din seturile:</h3>
+      <div>
+        <% for (const set of seturiProdus) { %>
+          <a href="/seturi#set-<%= set.id %>" class="set-link">
+            <i class="bi bi-box-seam"></i>
+            <%= set.nume_set %>
+          </a>
+        <% } %>
+      </div>
+    </section>
+    <% } %>
 
   </main>
 
